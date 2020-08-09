@@ -34,4 +34,4 @@ Headers.PropTypes = {
 };
  
 // export to render
-export default Headers;
+export {Headers};

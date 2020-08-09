@@ -4,7 +4,7 @@ import {Text , TouchableOpacity} from 'react-native';
 // init card component.
 const Button = (props)=>{
     return (
-        <TouchableOpacity style={stlyes.buttonStyle}> 
+        <TouchableOpacity style={stlyes.buttonStyle} onPress={props.onPress}> 
             <Text style={stlyes.textStyle}>
                 {props.children} 
             </Text>
@@ -28,4 +28,4 @@ const stlyes ={
 };
  
 // export to render
-export default Button;
+export {Button};

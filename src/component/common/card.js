@@ -29,5 +29,5 @@ const stlyes ={
 };
  
 // export to render
-export default Card;
+export {Card};
  
