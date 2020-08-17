@@ -3,19 +3,32 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert, ActivityIndicator } from 'react-native';
 import firebase from '../database/firebase';
-
+//import firebase from 'firebase';
+//firebase.initializeApp(firebaseConfig);
 
 export default class Signup extends Component {
-  
+ 
+
   constructor() {
     super();
     this.state = { 
       displayName: '',
       email: '', 
       password: '',
+      address: '',
       isLoading: false
     }
   }
+    writeuserdata(email,address){
+    firebase.database().ref(this.state.displayName).set({
+      email,
+      address 
+      }).then((data)=>{
+         console.log("data",data)
+      }).catch((error)=>{
+         console.log(error)
+    })
+}
 
   updateInputVal = (val, prop) => {
     const state = this.state;
@@ -38,13 +51,16 @@ export default class Signup extends Component {
           displayName: this.state.displayName
         })
         console.log('User registered successfully!')
+        this.writeuserdata(this.state.email,this.state.address)
         this.setState({
           isLoading: false,
           displayName: '',
           email: '', 
-          password: ''
-        })
+          password: '',
+          address: ''
+        })      
         this.props.navigation.navigate('Login')
+       
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -63,9 +79,22 @@ export default class Signup extends Component {
        });      
     }
   }
+  /*
+    functionOne(){
+    this.registerUser()
+    }
+    functionTwo(){
+    this.writeuserdata(this.state.email,this.state.address)
+    }
+    functionCombined() {
+      this.functionOne();
+      this.functionTwo();
+  }  
+*/
 
   render() {
     if(this.state.isLoading){
+      
       return(
         <View style={styles.preloader}>
           <ActivityIndicator size="large" color="#9E9E9E"/>
@@ -94,12 +123,19 @@ export default class Signup extends Component {
           maxLength={15}
           secureTextEntry={true}
         />   
+         <TextInput
+          style={styles.inputStyle}
+          placeholder="Address"
+          value={this.state.address}
+          onChangeText={(val) => this.updateInputVal(val, 'address')}
+          maxLength={50}
+        />  
         <Button
           color="#3740FE"
           title="Signup"
+         // TouchableHighlight onPress={() => this.functionCombined()}
           onPress={() => this.registerUser()}
         />
-
         <Text 
           style={styles.loginText}
           onPress={() => this.props.navigation.navigate('Login')}>
