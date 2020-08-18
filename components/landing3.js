@@ -16,7 +16,7 @@ export default class Landing1 extends Component {
         <Button
           color="#3740FE"
           title="GET STATED"
-          onPress={() => this.props.navigation.navigate("Signup")}
+          onPress={() => this.props.navigation.navigate("Login")}
         />
       </View>
     );

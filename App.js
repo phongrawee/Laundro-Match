@@ -8,6 +8,7 @@ import Dashboard from "./components/dashboard";
 import Landing1 from "./components/landing1";
 import Landing2 from "./components/landing2";
 import Landing3 from "./components/landing3";
+import Feed from "./components/feed";
 
 const Stack = createStackNavigator();
 
@@ -27,14 +28,14 @@ function MyStack() {
       }}
     >
       <Stack.Screen
-        name="Signup"
-        component={Signup}
-        options={{ title: "Signup" }}
-      />
-      <Stack.Screen
         name="Login"
         component={Login}
         options={({ title: "Login" }, { headerLeft: null })}
+      />
+      <Stack.Screen
+        name="Signup"
+        component={Signup}
+        options={{ title: "Signup" }}
       />
       <Stack.Screen
         name="Dashboard"
@@ -58,6 +59,11 @@ function MyStack() {
         name="Landing3"
         component={Landing3}
         options={{ title: "LaundroMatch" }}
+      />
+        <Stack.Screen
+        name="Feed"
+        component={Feed}
+        options={{ title: "Feed" }}
       />
     </Stack.Navigator>
   );

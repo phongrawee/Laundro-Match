@@ -1,9 +1,10 @@
 // components/dashboard.js
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text} from 'react-native';
 import firebase from '../database/firebase';
-
+//import FooterTabs from '../components/footer';
+import { Container, Footer, FooterTab, Button, Icon} from 'native-base';
 export default class Dashboard extends Component {
   constructor() {
     super();
@@ -18,6 +19,13 @@ export default class Dashboard extends Component {
     })
     .catch(error => this.setState({ errorMessage: error.message }))
   }  
+  GoHome = () => {
+      this.props.navigation.navigate('Dashboard');
+  }
+  GoFeed = () => {
+    this.props.navigation.navigate('Feed');
+}
+  
 
   render() {
     this.state = { 
@@ -25,17 +33,39 @@ export default class Dashboard extends Component {
       uid: firebase.auth().currentUser.uid
     }    
     return (
+     
+      
+   <Container> 
       <View style={styles.container}>
         <Text style = {styles.textStyle}>
           Hello, {this.state.displayName}
         </Text>
-
-        <Button
-          color="#3740FE"
-          title="Logout"
-          onPress={() => this.signOut()}
-        />
       </View>
+<Footer>
+          <FooterTab>
+            <Button vertical>
+              <Icon name="home"onPress={() => this.GoHome()} />
+              <Text>Home</Text>
+            </Button>
+            <Button vertical>
+              <Icon name="chatbubbles"onPress={() => this.GoFeed()} />
+              <Text>Feed</Text>
+            </Button>
+            <Button vertical active>
+              <Icon active name="navigate" />
+              <Text>Navigate</Text>
+            </Button>
+            <Button vertical>
+              <Icon name="person" />
+              <Text>Profile</Text>
+            </Button>
+            <Button vertical onPress={() => this.signOut()}>
+              <Icon name="log-out" />
+              <Text>Logout</Text>
+            </Button>
+          </FooterTab>
+       </Footer>
+</Container>
     );
   }
 }
