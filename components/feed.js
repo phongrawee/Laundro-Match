@@ -37,30 +37,30 @@ export default class Feed extends Component {
             Feed, {this.state.displayName}
           </Text>
         </View>
-  <Footer>
-            <FooterTab>
-              <Button vertical>
-                <Icon name="home"onPress={() => this.GoHome()} />
-                <Text>Home</Text>
-              </Button>
-              <Button vertical>
-                <Icon name="chatbubbles"onPress={() => this.GoFeed()} />
-                <Text>Feed</Text>
-              </Button>
-              <Button vertical active>
-                <Icon active name="navigate" />
-                <Text>Navigate</Text>
-              </Button>
-              <Button vertical>
-                <Icon name="person" />
-                <Text>Profile</Text>
-              </Button>
-              <Button vertical onPress={() => this.signOut()}>
-                <Icon name="log-out" />
-                <Text>Logout</Text>
-              </Button>
-            </FooterTab>
-         </Footer>
+        <Footer>
+      <FooterTab>
+        <Button vertical>
+          <Icon name="home"onPress={() => this.GoHome()} />
+          <Text>Home</Text>
+        </Button>
+        <Button vertical>
+          <Icon name="chatbubbles"onPress={() => this.GoFeed()} />
+          <Text>Feed</Text>
+        </Button>
+        <Button vertical active>
+          <Icon active name="navigate" />
+          <Text>Navigate</Text>
+        </Button>
+        <Button vertical>
+          <Icon name="person" />
+          <Text>Profile</Text>
+        </Button>
+        <Button vertical onPress={() => this.signOut()}>
+          <Icon name="log-out" />
+          <Text>Logout</Text>
+        </Button>
+      </FooterTab>
+      </Footer>  
   </Container>
       );
     }

@@ -9,6 +9,7 @@ import Landing1 from "./components/landing1";
 import Landing2 from "./components/landing2";
 import Landing3 from "./components/landing3";
 import Feed from "./components/feed";
+import Order from "./components/order";
 
 const Stack = createStackNavigator();
 
@@ -65,6 +66,13 @@ function MyStack() {
         component={Feed}
         options={{ title: "Feed" }}
       />
+        <Stack.Screen
+        name="Order"
+        component={Order}
+        options={{ title: "Ordering" }}
+      />
+      
+
     </Stack.Navigator>
   );
 }

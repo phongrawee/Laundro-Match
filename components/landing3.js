@@ -9,9 +9,8 @@ export default class Landing1 extends Component {
         <Image style={styles.images} source={require("../src/img/relax.jpg")} />
         <Text style={styles.Heading}>Relax !</Text>
         <Text style={styles.Content}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s,{" "}
+        Get more free relaxing time and by the next time, you can get easier
+          and comfortable way to washing your clothes,{" "}
         </Text>
         <Button
           color="#3740FE"

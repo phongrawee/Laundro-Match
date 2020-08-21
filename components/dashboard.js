@@ -1,10 +1,10 @@
 // components/dashboard.js
 
 import React, { Component } from 'react';
-import { StyleSheet, View, Text} from 'react-native';
+import { StyleSheet, View, Text,TouchableHighlight,Image} from 'react-native';
 import firebase from '../database/firebase';
-//import FooterTabs from '../components/footer';
 import { Container, Footer, FooterTab, Button, Icon} from 'native-base';
+
 export default class Dashboard extends Component {
   constructor() {
     super();
@@ -25,7 +25,9 @@ export default class Dashboard extends Component {
   GoFeed = () => {
     this.props.navigation.navigate('Feed');
 }
-  
+  GoOrder = () => {
+    this.props.navigation.navigate('Order');
+  }
 
   render() {
     this.state = { 
@@ -37,34 +39,34 @@ export default class Dashboard extends Component {
       
    <Container> 
       <View style={styles.container}>
-        <Text style = {styles.textStyle}>
-          Hello, {this.state.displayName}
-        </Text>
+              <TouchableHighlight onPress={() => this.GoOrder()}>
+                   <Image style={styles.imagestyle} source={require('../src/img/WashIron.png')} />
+              </TouchableHighlight>
       </View>
-<Footer>
-          <FooterTab>
-            <Button vertical>
-              <Icon name="home"onPress={() => this.GoHome()} />
-              <Text>Home</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="chatbubbles"onPress={() => this.GoFeed()} />
-              <Text>Feed</Text>
-            </Button>
-            <Button vertical active>
-              <Icon active name="navigate" />
-              <Text>Navigate</Text>
-            </Button>
-            <Button vertical>
-              <Icon name="person" />
-              <Text>Profile</Text>
-            </Button>
-            <Button vertical onPress={() => this.signOut()}>
-              <Icon name="log-out" />
-              <Text>Logout</Text>
-            </Button>
-          </FooterTab>
-       </Footer>
+      <Footer>
+      <FooterTab>
+        <Button vertical>
+          <Icon name="home"onPress={() => this.GoHome()} />
+          <Text>Home</Text>
+        </Button>
+        <Button vertical>
+          <Icon name="chatbubbles"onPress={() => this.GoFeed()} />
+          <Text>Feed</Text>
+        </Button>
+        <Button vertical active>
+          <Icon active name="navigate" />
+          <Text>Navigate</Text>
+        </Button>
+        <Button vertical>
+          <Icon name="person" />
+          <Text>Profile</Text>
+        </Button>
+        <Button vertical onPress={() => this.signOut()}>
+          <Icon name="log-out" />
+          <Text>Logout</Text>
+        </Button>
+      </FooterTab>
+      </Footer>
 </Container>
     );
   }
@@ -79,8 +81,9 @@ const styles = StyleSheet.create({
     padding: 35,
     backgroundColor: '#fff'
   },
-  textStyle: {
-    fontSize: 15,
-    marginBottom: 20
+  imagestyle: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain"
   }
 });

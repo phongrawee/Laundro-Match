@@ -12,9 +12,9 @@ export default class Landing1 extends Component {
         />
         <Text style={styles.Heading}>Using LaundroMatch</Text>
         <Text style={styles.Content}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s,{" "}
+        Our application allow you to get more comfortable to know which
+          laundry can wash the clothes for you at the moment and you can select
+          the laundry by decide with the cost which laundry offer for the order,{" "}
         </Text>
         <Button
           color="#3740FE"

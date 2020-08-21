@@ -12,9 +12,7 @@ export default class Landing1 extends Component {
         />
         <Text style={styles.Heading}>Go to laundry</Text>
         <Text style={styles.Content}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s,{" "}
+        Going to laundry that you select and drop your clothes off,{" "}
         </Text>
         <Button
           color="#3740FE"
