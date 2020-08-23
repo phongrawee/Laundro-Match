@@ -1,5 +1,3 @@
-// components/signup.js
-
 import React, { Component } from "react";
 import {
   StyleSheet,
@@ -11,8 +9,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import firebase from "../database/firebase";
-//import firebase from 'firebase';
-//firebase.initializeApp(firebaseConfig);
 
 export default class Signup extends Component {
   constructor() {
@@ -85,22 +81,9 @@ export default class Signup extends Component {
           this.setState({
             isLoading: false,
           });
-          //    console.error(error);
         });
     }
   };
-  /*
-    functionOne(){
-    this.registerUser()
-    }
-    functionTwo(){
-    this.writeuserdata(this.state.email,this.state.address)
-    }
-    functionCombined() {
-      this.functionOne();
-      this.functionTwo();
-  }  
-*/
 
   render() {
     if (this.state.isLoading) {
@@ -142,7 +125,6 @@ export default class Signup extends Component {
         <Button
           color="#3740FE"
           title="Signup"
-          // TouchableHighlight onPress={() => this.functionCombined()}
           onPress={() => this.registerUser()}
         />
         <Text

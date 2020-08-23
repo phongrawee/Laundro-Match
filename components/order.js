@@ -118,7 +118,7 @@ export default class Order extends Component {
           <View style={styles.NextButton}>
             <Button vertical>
               <Icon name="send" onPress={() => this.functionCombined()} />
-              <Text>NEXT</Text>
+              <Text>Order!</Text>
             </Button>
           </View>
         </ScrollView>
