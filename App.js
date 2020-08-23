@@ -10,6 +10,7 @@ import Landing2 from "./components/landing2";
 import Landing3 from "./components/landing3";
 import Feed from "./components/feed";
 import Order from "./components/order";
+import OrderDetail from "./components/orderdetail";
 
 const Stack = createStackNavigator();
 
@@ -61,18 +62,17 @@ function MyStack() {
         component={Landing3}
         options={{ title: "LaundroMatch" }}
       />
-        <Stack.Screen
-        name="Feed"
-        component={Feed}
-        options={{ title: "Feed" }}
-      />
-        <Stack.Screen
+      <Stack.Screen name="Feed" component={Feed} options={{ title: "Feed" }} />
+      <Stack.Screen
         name="Order"
         component={Order}
         options={{ title: "Ordering" }}
       />
-      
-
+      <Stack.Screen
+        name="OrderDetail"
+        component={OrderDetail}
+        options={{ title: "Order Detail" }}
+      />
     </Stack.Navigator>
   );
 }

@@ -1,11 +1,10 @@
-// components/dashboard.js
 
 import React, { Component } from 'react';
 import { StyleSheet, View, Text,TouchableHighlight,Image} from 'react-native';
 import firebase from '../database/firebase';
 import { Container, Footer, FooterTab, Button, Icon} from 'native-base';
 
-export default class Dashboard extends Component {
+export default class OrderDetail extends Component {
   constructor() {
     super();
     this.state = { 
@@ -30,15 +29,16 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    
+    this.state = { 
+      displayName: firebase.auth().currentUser.displayName,
+      uid: firebase.auth().currentUser.uid
+    }    
     return (
      
       
    <Container> 
       <View style={styles.container}>
-              <TouchableHighlight onPress={() => this.GoOrder()}>
-                   <Image style={styles.imagestyle} source={require('../src/img/WashIron.png')} />
-              </TouchableHighlight>
+              <Text>Order Detail</Text>
       </View>
       <Footer>
       <FooterTab>
