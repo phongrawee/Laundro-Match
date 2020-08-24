@@ -22,10 +22,9 @@ export default class Signup extends Component {
     };
   }
   writeuserdata(email, address) {
-    firebase
-      .database()
-      .ref("Address")
-      .push({
+    var dbA = firebase.database().ref("Address");
+    //var userid = Address.child(uid);
+    dbA.push({
         email,
         address,
       })
@@ -58,7 +57,10 @@ export default class Signup extends Component {
             displayName: this.state.displayName,
           });
           console.log("User registered successfully!");
-          this.writeuserdata(this.state.email, this.state.address);
+          this.writeuserdata(
+            this.state.email,
+            this.state.address
+          );
           this.setState({
             isLoading: false,
             displayName: "",

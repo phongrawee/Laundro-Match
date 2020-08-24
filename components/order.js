@@ -5,6 +5,20 @@ import InputSpinner from "react-native-input-spinner";
 import firebase from "../database/firebase";
 
 export default class Order extends Component {
+  componentDidMount() {
+    var that = this;
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    that.setState({
+      //Setting the value of the date time
+      date:
+        date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec,
+    });
+  }
   constructor() {
     super();
     this.state = {
@@ -12,7 +26,6 @@ export default class Order extends Component {
       valueReal: 1.5,
       colorLeft: this.getRandomColor(),
       colorRight: this.getRandomColor(),
-      uid: "",
       Tshirt: 0,
       Shorts: 0,
       Jacket: 0,
@@ -21,11 +34,12 @@ export default class Order extends Component {
       email: firebase.auth().currentUser.email,
     };
   }
-  inputuserorder(email, Tshirt, Shorts, Jacket) {
-    firebase
-      .database()
-      .ref("OrderDetail")
-      .push({
+  inputuserorder(date, uid, email, Tshirt, Shorts, Jacket) {
+    var Detail = firebase.database().ref("OrderDetail");
+    var userid = Detail.child(uid);
+    userid
+      .set({
+        date,
         email,
         Tshirt,
         Shorts,
@@ -76,6 +90,8 @@ export default class Order extends Component {
   }
   functionTwo() {
     this.inputuserorder(
+      this.state.date,
+      this.state.uid,
       this.state.email,
       this.state.Tshirt,
       this.state.Shorts,
