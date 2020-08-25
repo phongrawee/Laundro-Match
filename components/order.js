@@ -1,10 +1,35 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
 import { StyleSheet, View, ScrollView, Image, Text } from "react-native";
 import InputSpinner from "react-native-input-spinner";
 import firebase from "../database/firebase";
-
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 export default class Order extends Component {
+  state = {
+    visibility: false,
+    visibility2: false,
+    DropDateDisplay: "",
+    PickDateDisplay: "",
+  };
+  handleConfirm = (date) => {
+    this.setState({ DropDateDisplay: date.toString() });
+  };
+  onPressCancel = () => {
+    this.setState({ visibility: false });
+  };
+  onPressButton = () => {
+    this.setState({ visibility: true });
+  };
+  handleConfirm2 = (date) => {
+    this.setState({ PickDateDisplay: date.toString() });
+  };
+  onPressCancel2 = () => {
+    this.setState({ visibility2: false });
+  };
+  onPressButton2 = () => {
+    this.setState({ visibility2: true });
+  };
+
   componentDidMount() {
     var that = this;
     var date = new Date().getDate(); //Current Date
@@ -34,12 +59,14 @@ export default class Order extends Component {
       email: firebase.auth().currentUser.email,
     };
   }
-  inputuserorder(date, uid, email, Tshirt, Shorts, Jacket) {
+  inputuserorder(orderPickdatetime,orderDropdatetime,orderdate, uid, email, Tshirt, Shorts, Jacket) {
     var Detail = firebase.database().ref("OrderDetail");
     var userid = Detail.child(uid);
     userid
       .set({
-        date,
+        orderPickdatetime,
+        orderDropdatetime,
+        orderdate,
         email,
         Tshirt,
         Shorts,
@@ -90,6 +117,8 @@ export default class Order extends Component {
   }
   functionTwo() {
     this.inputuserorder(
+      this.state.DropDateDisplay,
+      this.state.PickDateDisplay,
       this.state.date,
       this.state.uid,
       this.state.email,
@@ -131,21 +160,49 @@ export default class Order extends Component {
               onChange={(val) => this.updateInputVal(val, "Jacket")}
             />
           </View>
+
+          <View style={styles.col}>
+          <Button vertical onPress={() => this.onPressButton()}>
+              <Icon name="home"  />
+              <Text>Set Drop Date/Time</Text>
+            </Button>
+            <Text>{this.state.DropDateDisplay}</Text>
+            <DateTimePickerModal
+              isVisible={this.state.visibility}
+              onConfirm={this.handleConfirm}
+              onCancel={this.onPressCancel}
+              mode="datetime"
+            />           
+          </View>
+          <View style={styles.col}>
+          <Button vertical onPress={() => this.onPressButton2()}>
+              <Icon name="home"  />
+              <Text>Set Pick Date/Time</Text>
+            </Button>
+            <Text>{this.state.PickDateDisplay}</Text>
+            <DateTimePickerModal
+              isVisible={this.state.visibility2}
+              onConfirm={this.handleConfirm2}
+              onCancel={this.onPressCancel2}
+              mode="datetime"
+            />           
+          </View>
+
           <View style={styles.NextButton}>
-            <Button vertical>
-              <Icon name="send" onPress={() => this.functionCombined()} />
+            <Button vertical onPress={() => this.functionCombined()}>
+              <Icon name="send" />
               <Text>Order!</Text>
             </Button>
           </View>
         </ScrollView>
         <Footer>
           <FooterTab>
-            <Button vertical>
-              <Icon name="home" onPress={() => this.GoHome()} />
+            <Button vertical onPress={() => this.GoHome()}>
+              <Icon name="home" />
               <Text>Home</Text>
             </Button>
-            <Button vertical>
-              <Icon name="chatbubbles" onPress={() => this.GoFeed()} />
+            <Button vertical onPress={() => this.GoFeed()}>
+              <Icon name="chatbubbles"  />
               <Text>Feed</Text>
             </Button>
             <Button vertical active>

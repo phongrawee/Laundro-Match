@@ -73,6 +73,7 @@ function MyStack() {
         component={OrderDetail}
         options={{ title: "Order Detail" }}
       />
+     
     </Stack.Navigator>
   );
 }

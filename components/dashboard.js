@@ -51,12 +51,12 @@ export default class Dashboard extends Component {
         </View>
         <Footer>
           <FooterTab>
-            <Button vertical>
-              <Icon name="home" onPress={() => this.GoHome()} />
+            <Button vertical onPress={() => this.GoHome()}>
+              <Icon name="home" />
               <Text>Home</Text>
             </Button>
-            <Button vertical>
-              <Icon name="chatbubbles" onPress={() => this.GoFeed()} />
+            <Button vertical onPress={() => this.GoFeed()}>
+              <Icon name="chatbubbles" />
               <Text>Feed</Text>
             </Button>
             <Button vertical active>
