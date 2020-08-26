@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
 import { StyleSheet, View, ScrollView, Image, Text } from "react-native";
 import InputSpinner from "react-native-input-spinner";

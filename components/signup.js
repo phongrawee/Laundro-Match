@@ -19,12 +19,14 @@ export default class Signup extends Component {
       password: "",
       address: "",
       isLoading: false,
+      uid:"",
     };
   }
-  writeuserdata(email, address) {
+  writeuserdata(uid,email, address) {
     var dbA = firebase.database().ref("Address");
-    //var userid = Address.child(uid);
-    dbA.push({
+    var userid = dbA.child(uid);
+    userid
+      .set({
         email,
         address,
       })
@@ -57,18 +59,22 @@ export default class Signup extends Component {
             displayName: this.state.displayName,
           });
           console.log("User registered successfully!");
-          this.writeuserdata(
-            this.state.email,
-            this.state.address
-          );
+
+           
+          this.props.navigation.navigate("Login");
+        })
+        .then(() => {
           this.setState({
+            uid: firebase.auth().currentUser.uid,
+          });
+          this.writeuserdata(this.state.uid,this.state.email, this.state.address);
+         this.setState({
             isLoading: false,
             displayName: "",
             email: "",
             password: "",
             address: "",
           });
-          this.props.navigation.navigate("Login");
         })
         .catch((error) => {
           if (error.code === "auth/email-already-in-use") {

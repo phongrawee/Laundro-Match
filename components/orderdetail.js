@@ -3,8 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight,
-  Image,
 } from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
@@ -13,8 +11,17 @@ export default class OrderDetail extends Component {
   constructor() {
     super();
     this.state = {
+      Dlist: {},
+      Tshirt: "",
+      Shorts: "",
+      Jacket: "",
+      displayName: firebase.auth().currentUser.displayName,
       uid: firebase.auth().currentUser.uid,
-      detail: "",
+      email: firebase.auth().currentUser.email,
+      orderDropdatetime: "",
+      orderPickdatetime: "",
+      orderdate: "",
+      address: "",     
     };
   }
 
@@ -54,27 +61,84 @@ export default class OrderDetail extends Component {
       .ref(`OrderDetail/${this.state.uid}`)
       .on("value", (snapshot) => {
         console.log("User data: ", snapshot.val());
+        this.state = {
+          detail: snapshot.val(),
+        };
       });
   }
- 
+  componentDidMount() {
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/Jacket`)
+      .once("value", (snapshot) => {
+        this.setState({ Jacket: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/Tshirt`)
+      .once("value", (snapshot) => {
+        this.setState({ Tshirt: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/Shorts`)
+      .on("value", (snapshot) => {
+        this.setState({ Shorts: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/orderDropdatetime`)
+      .on("value", (snapshot) => {
+        this.setState({ orderDropdatetime: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/orderPickdatetime`)
+      .on("value", (snapshot) => {
+        this.setState({ orderPickdatetime: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/orderdate`)
+      .on("value", (snapshot) => {
+        this.setState({ orderdate: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`Address/${this.state.uid}/address`)
+      .on("value", (snapshot) => {
+        this.setState({ address: snapshot.val() });
+      });
+  }
+
   render() {
     return (
       <Container>
+        <View>
+          <Text>User Name : {this.state.displayName}</Text>
+          <Text>Clothes</Text>
+          <Text>Jacket     x{this.state.Jacket}</Text>
+          <Text>T-Shirt      x{this.state.Tshirt}</Text>
+          <Text>Shorts     x{this.state.Shorts}</Text>
+          <Text>Drop Time : {this.state.orderDropdatetime}</Text>
+          <Text>Pick Time : {this.state.orderPickdatetime}</Text>
+          <Text>Address : {this.state.address}</Text>
+        </View>
         <View style={styles.NextButton}>
           <Button vertical onPress={this.onButtonPressed.bind(this)}>
-            <Icon name="send"  />
+            <Icon name="send" />
             <Text>Order!</Text>
           </Button>
         </View>
 
         <Footer>
           <FooterTab>
-            <Button vertical onPress={() => this.GoHome()} >
+            <Button vertical onPress={() => this.GoHome()}>
               <Icon name="home" />
               <Text>Home</Text>
             </Button>
             <Button vertical onPress={() => this.GoFeed()}>
-              <Icon name="chatbubbles"  />
+              <Icon name="chatbubbles" />
               <Text>Feed</Text>
             </Button>
             <Button vertical active>
