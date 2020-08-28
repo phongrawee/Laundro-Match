@@ -5,6 +5,21 @@ import InputSpinner from "react-native-input-spinner";
 import firebase from "../database/firebase";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 export default class Order extends Component {
+  constructor() {
+    super();
+    this.state = {
+      value: 0,
+      valueReal: 1.5,
+      colorLeft: this.getRandomColor(),
+      colorRight: this.getRandomColor(),
+      Tshirt: 0,
+      Shorts: 0,
+      Jacket: 0,
+      displayName: firebase.auth().currentUser.displayName,
+      uid: firebase.auth().currentUser.uid,
+      email: firebase.auth().currentUser.email,
+    };
+  }
   state = {
     visibility: false,
     visibility2: false,
@@ -43,23 +58,17 @@ export default class Order extends Component {
       date:
         date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec,
     });
+
+    firebase
+    .database()
+    .ref(`Users/${this.state.uid}/address`)
+    .on("value", (snapshot) => {
+      this.setState({ address: snapshot.val() });
+    });
+
   }
-  constructor() {
-    super();
-    this.state = {
-      value: 0,
-      valueReal: 1.5,
-      colorLeft: this.getRandomColor(),
-      colorRight: this.getRandomColor(),
-      Tshirt: 0,
-      Shorts: 0,
-      Jacket: 0,
-      displayName: firebase.auth().currentUser.displayName,
-      uid: firebase.auth().currentUser.uid,
-      email: firebase.auth().currentUser.email,
-    };
-  }
-  inputuserorder(orderPickdatetime,orderDropdatetime,orderdate, uid, email, Tshirt, Shorts, Jacket) {
+
+  inputuserorder(orderPickdatetime,orderDropdatetime,orderdate, uid, email, Tshirt, Shorts, Jacket,address,name) {
     var Detail = firebase.database().ref("OrderDetail");
     var userid = Detail.child(uid);
     userid
@@ -71,6 +80,9 @@ export default class Order extends Component {
         Tshirt,
         Shorts,
         Jacket,
+        address,
+        name
+
       })
       .then((data) => {
         console.log("data", data);
@@ -124,7 +136,9 @@ export default class Order extends Component {
       this.state.email,
       this.state.Tshirt,
       this.state.Shorts,
-      this.state.Jacket
+      this.state.Jacket,
+      this.state.address,
+      this.state.displayName,
     );
   }
   functionCombined() {

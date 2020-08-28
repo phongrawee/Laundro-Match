@@ -22,11 +22,12 @@ export default class Signup extends Component {
       uid:"",
     };
   }
-  writeuserdata(uid,email, address) {
-    var dbA = firebase.database().ref("Address");
+  writeuserdata(uid,email, address,name) {
+    var dbA = firebase.database().ref("Users");
     var userid = dbA.child(uid);
     userid
       .set({
+        name,
         email,
         address,
       })
@@ -67,7 +68,7 @@ export default class Signup extends Component {
           this.setState({
             uid: firebase.auth().currentUser.uid,
           });
-          this.writeuserdata(this.state.uid,this.state.email, this.state.address);
+          this.writeuserdata(this.state.uid,this.state.email, this.state.address,this.state.displayName);
          this.setState({
             isLoading: false,
             displayName: "",

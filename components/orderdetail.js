@@ -105,7 +105,7 @@ export default class OrderDetail extends Component {
       });
     firebase
       .database()
-      .ref(`Address/${this.state.uid}/address`)
+      .ref(`Users/${this.state.uid}/address`)
       .on("value", (snapshot) => {
         this.setState({ address: snapshot.val() });
       });
