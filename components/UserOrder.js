@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, FlatList ,TouchableOpacity} from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
 import Overlay from "react-native-modal-overlay";
@@ -17,6 +23,7 @@ export default class UserOrder extends Component {
       bid: "",
       Lname: "",
       Lkey: "",
+      selectstatus: "",
     };
   }
   signOut = () => {
@@ -53,11 +60,22 @@ export default class UserOrder extends Component {
         });
         this.setState({ list: li });
       });
+    firebase
+      .database()
+      .ref("SelectedOrder")
+      .child(this.state.uid)
+      .once("value")
+      .then((snapshot) => {
+        var status = snapshot.val();
+        console.log("Hello:", snapshot);
+        console.log("Testtttttttt:", status);
+        this.setState({ selectstatus: status });
+      });
   }
   onClose = () => this.setState({ modalVisible: false });
 
-  selectlaundry(Lname, bid,Lkey) {
-    this.setlaundry(Lname, bid,Lkey);
+  selectlaundry(Lname, bid, Lkey) {
+    this.setlaundry(Lname, bid, Lkey);
     this.bidpress();
   }
   bidpress = () => {
@@ -75,55 +93,66 @@ export default class UserOrder extends Component {
       User: username + "/" + userid,
       Laundry: Laundryname + "/" + Laundryid,
     });
+    this.setState({ selectstatus: true });
     this.setState({ modalVisible: false });
   }
+  //if (this.state.selectstatus == null) {
   render() {
     return (
       <Container>
         <View style={styles.container}>
-          <FlatList
-            style={{ width: "100%" }}
-            data={this.state.list}
-            keyExtractor={(item) => item.key}
-            renderItem={({ item }) => {
-              return (
-                <View>
-                  <TouchableOpacity
-                    style={styles.container}
-                    onPress={() =>
-                      this.selectlaundry(item.Laundry, item.Bidamount, item.key)
-                    }
-                  >
-                    <Text>Laundry Name : {item.Laundry}</Text>
-                    <Text>Bid amount : {item.Bidamount} baht</Text>
-                  </TouchableOpacity>
-                  <Overlay
-                    visible={this.state.modalVisible}
-                    onClose={this.onClose}
-                    closeOnTouchOutside
-                  >
-                    <Text>User : {this.state.ordername}</Text>
-                    <Text>Input Bid :</Text>
-
-                    <Button
-                      title="Select"
-                      style={styles.NextButton}
+          {this.state.selectstatus != null ? (
+            <Text>You already selected the laundry</Text>
+          ) : null}
+          {this.state.selectstatus == null ? (
+            <FlatList
+              style={{ width: "100%" }}
+              data={this.state.list}
+              keyExtractor={(item) => item.key}
+              renderItem={({ item }) => {
+                return (
+                  <View>
+                    <TouchableOpacity
+                      style={styles.container}
                       onPress={() =>
-                        this.selectorder(
-                          this.state.displayName,
-                          this.state.uid,
-                          this.state.Lname,
-                          this.state.Lkey
+                        this.selectlaundry(
+                          item.Laundry,
+                          item.Bidamount,
+                          item.key
                         )
                       }
                     >
-                      <Text>Select</Text>
-                    </Button>
-                  </Overlay>
-                </View>
-              );
-            }}
-          />
+                      <Text>Laundry Name : {item.Laundry}</Text>
+                      <Text>Bid amount : {item.Bidamount} baht</Text>
+                    </TouchableOpacity>
+                    <Overlay
+                      visible={this.state.modalVisible}
+                      onClose={this.onClose}
+                      closeOnTouchOutside
+                    >
+                      <Text>User : {this.state.ordername}</Text>
+                      <Text>Input Bid :</Text>
+
+                      <Button
+                        title="Select"
+                        style={styles.NextButton}
+                        onPress={() =>
+                          this.selectorder(
+                            this.state.displayName,
+                            this.state.uid,
+                            this.state.Lname,
+                            this.state.Lkey
+                          )
+                        }
+                      >
+                        <Text>Select</Text>
+                      </Button>
+                    </Overlay>
+                  </View>
+                );
+              }}
+            />
+          ) : null}
         </View>
         <Footer>
           <FooterTab>

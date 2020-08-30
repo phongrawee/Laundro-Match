@@ -128,6 +128,7 @@ export default class Feed extends Component {
                     <Text>Shorts x{item.Shorts}</Text>
                     <Text>Drop Time : {item.orderDropdatetime}</Text>
                     <Text>Pick Time : {item.orderPickdatetime}</Text>
+                    <Text>Order Date : {item.orderdate}</Text>
                     <Text>Address : {item.address}</Text>
                   </TouchableOpacity>
                   <Overlay
