@@ -4,6 +4,8 @@ import { StyleSheet, View, ScrollView, Image, Text } from "react-native";
 import InputSpinner from "react-native-input-spinner";
 import firebase from "../database/firebase";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { color } from "react-native-reanimated";
+
 export default class Order extends Component {
   constructor() {
     super();
@@ -160,67 +162,93 @@ export default class Order extends Component {
 
   render() {
     return (
-      <Container>
-        <ScrollView style={styles.container}>
-          <View style={styles.col}>
-            <Text style={styles.text}>T-shirt</Text>
-            <InputSpinner
-              value={this.state.value}
-              style={styles.spinner}
-              onChange={(val) => this.updateInputVal(val, "Tshirt")}
-            />
-          </View>
-          <View style={styles.col}>
-            <Text style={styles.text}>Shorts</Text>
-            <InputSpinner
-              value={this.state.value}
-              style={styles.spinner}
-              onChange={(val) => this.updateInputVal(val, "Shorts")}
-            />
-          </View>
-          <View style={styles.col}>
-            <Text style={styles.text}>Jacket</Text>
-            <InputSpinner
-              value={this.state.value}
-              style={styles.spinner}
-              onChange={(val) => this.updateInputVal(val, "Jacket")}
-            />
-          </View>
+      <View style={styles.container}>
+        <View style={styles.clothes}>
+          <Text style={styles.itemtext}>T-shirt</Text>
+          <InputSpinner
+            value={this.state.value}
+            onChange={(val) => this.updateInputVal(val, "Tshirt")}
+            colorLeft={"#62b1f6"}
+            colorRight={"#62b1f6"}
+            textColor={"#3f51b5"}
+            colorPress={"#3f51b5"}
+          />
+        </View>
+        <View style={styles.clothes}>
+          <Text style={styles.itemtext}>Shorts</Text>
+          <InputSpinner
+            value={this.state.value}
+            style={styles.spinner}
+            onChange={(val) => this.updateInputVal(val, "Shorts")}
+            colorLeft={"#62b1f6"}
+            colorRight={"#62b1f6"}
+            textColor={"#3f51b5"}
+            colorPress={"#3f51b5"}
+          />
+        </View>
+        <View style={styles.clothes}>
+          <Text style={styles.itemtext}>Jacket</Text>
+          <InputSpinner
+            value={this.state.value}
+            style={styles.spinner}
+            onChange={(val) => this.updateInputVal(val, "Jacket")}
+            colorLeft={"#62b1f6"}
+            colorRight={"#62b1f6"}
+            textColor={"#3f51b5"}
+            colorPress={"#3f51b5"}
+          />
+        </View>
+        <View style={styles.datetime}>
+          <Button
+            block
+            info
+            vertical
+            onPress={() => this.onPressButton()}
+            style={styles.Button}
+            title="Drop off"
+          >
+            <Text style={styles.buttonText}>DROP OFF</Text>
+          </Button>
+          <DateTimePickerModal
+            isVisible={this.state.visibility}
+            onConfirm={this.handleConfirm}
+            onCancel={this.onPressCancel}
+            mode="datetime"
+          />
+          <Text style={styles.itemtext}>{this.state.DropDateDisplay}</Text>
+        </View>
 
-          <View style={styles.col}>
-            <Button vertical onPress={() => this.onPressButton()}>
-              <Icon name="home" />
-              <Text>Set Drop Date/Time</Text>
-            </Button>
-            <Text>{this.state.DropDateDisplay}</Text>
-            <DateTimePickerModal
-              isVisible={this.state.visibility}
-              onConfirm={this.handleConfirm}
-              onCancel={this.onPressCancel}
-              mode="datetime"
-            />
-          </View>
-          <View style={styles.col}>
-            <Button vertical onPress={() => this.onPressButton2()}>
-              <Icon name="home" />
-              <Text>Set Pick Date/Time</Text>
-            </Button>
-            <Text>{this.state.PickDateDisplay}</Text>
-            <DateTimePickerModal
-              isVisible={this.state.visibility2}
-              onConfirm={this.handleConfirm2}
-              onCancel={this.onPressCancel2}
-              mode="datetime"
-            />
-          </View>
-
-          <View style={styles.NextButton}>
-            <Button vertical onPress={() => this.functionCombined()}>
-              <Icon name="send" />
-              <Text>Order!</Text>
-            </Button>
-          </View>
-        </ScrollView>
+        <View style={styles.datetime}>
+          <Button
+            block
+            info
+            vertical
+            onPress={() => this.onPressButton2()}
+            style={styles.Button}
+            title="Pick up"
+          >
+            <Text style={styles.buttonText}>PICK UP</Text>
+          </Button>
+          <DateTimePickerModal
+            isVisible={this.state.visibility2}
+            onConfirm={this.handleConfirm2}
+            onCancel={this.onPressCancel2}
+            mode="datetime"
+          />
+          <Text style={styles.itemtext}>{this.state.PickDateDisplay}</Text>
+        </View>
+        <View style={styles.orderButton}>
+          <Button
+            block
+            primary
+            style={styles.Button}
+            title="Drop off"
+            vertical
+            onPress={() => this.functionCombined()}
+          >
+            <Text style={styles.buttonText}>CONFIRM</Text>
+          </Button>
+        </View>
         <Footer>
           <FooterTab>
             <Button vertical onPress={() => this.GoHome()}>
@@ -245,7 +273,7 @@ export default class Order extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </Container>
+      </View>
     );
   }
 }
@@ -253,39 +281,47 @@ export default class Order extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-    paddingTop: 45,
+    marginTop: 10,
   },
-  col: {
-    flex: 1,
-    marginBottom: 20,
-    flexDirection: "row",
-  },
-  text: {
-    flex: 3,
-    marginTop: 12,
-    marginRight: 10,
+
+  itemtext: {
+    fontWeight: "bold",
     fontSize: 16,
+    marginTop: 12,
+    color: "#000",
+    textAlign: "center",
+    color: "#3f51b5",
   },
-  title: {
-    marginBottom: 40,
-    fontSize: 30,
+
+  buttonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+
+    color: "#fff",
   },
-  spinner: {
-    flex: 1,
-    width: "auto",
-    minWidth: 200,
+
+  orderButton: {
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    marginVertical: 38,
+    marginHorizontal: 28,
   },
-  imagestyle: {
-    width: 200,
-    height: 200,
-    resizeMode: "contain",
+
+  clothes: {
+    backgroundColor: "#fff",
+    padding: 6,
+    marginVertical: 6,
+    marginHorizontal: 18,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    borderRadius: 15,
   },
-  NextButton: {
-    flex: 1,
-    paddingTop: 100,
-    alignItems: "center",
-    marginLeft: 160,
+  datetime: {
+    backgroundColor: "#fff",
+    padding: 12,
+    marginVertical: 6,
+    marginHorizontal: 18,
+    flexDirection: "column",
+    borderRadius: 15,
   },
 });
