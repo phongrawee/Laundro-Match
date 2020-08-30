@@ -1,16 +1,10 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Text, FlatList ,TouchableOpacity} from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
 import Overlay from "react-native-modal-overlay";
-import { TextInput } from "react-native-gesture-handler";
-export default class Feed extends Component {
+
+export default class UserOrder extends Component {
   state = {
     modalVisible: false,
   };
@@ -20,18 +14,11 @@ export default class Feed extends Component {
       displayName: firebase.auth().currentUser.displayName,
       uid: firebase.auth().currentUser.uid,
       list: [],
-      ordername: "",
       bid: "",
-      orderkey: "",
+      Lname: "",
+      Lkey: "",
     };
   }
-  updateInputVal = (val, prop) => {
-    const state = this.state;
-    state[prop] = val;
-    this.setState(state);
-  };
-  onClose = () => this.setState({ modalVisible: false });
-
   signOut = () => {
     firebase
       .auth()
@@ -53,58 +40,42 @@ export default class Feed extends Component {
   componentDidMount() {
     firebase
       .database()
-      .ref("OrderDetail")
+      .ref("BidOrder")
+      .child(this.state.uid)
       .on("value", (snapshot) => {
         var li = [];
         snapshot.forEach((child) => {
           li.push({
             key: child.key,
-            name: child.val().name,
-            email: child.val().email,
-            Jacket: child.val().Jacket,
-            Shorts: child.val().Shorts,
-            Tshirt: child.val().Tshirt,
-            orderDropdatetime: child.val().orderDropdatetime,
-            orderPickdatetime: child.val().orderPickdatetime,
-            orderdate: child.val().orderdate,
-            address: child.val().address,
+            Laundry: child.val().Laundry,
+            Bidamount: child.val().Bidamount,
           });
         });
         this.setState({ list: li });
       });
   }
+  onClose = () => this.setState({ modalVisible: false });
+
+  selectlaundry(Lname, bid,Lkey) {
+    this.setlaundry(Lname, bid,Lkey);
+    this.bidpress();
+  }
   bidpress = () => {
     this.setState({ modalVisible: true });
   };
-  setname(input, key) {
-    this.setState({ ordername: input });
-    this.setState({ orderkey: key });
+  setlaundry(Lname, bid, Lkey) {
+    this.setState({ Lname: Lname });
+    this.setState({ bid: bid });
+    this.setState({ Lkey: Lkey });
   }
-  setbid(input, key) {
-    this.setname(input, key);
-    this.bidpress();
-  }
-  savebid(Lname, ordername, bid, key) {
-    //this.setbidinput(ordername,key)
-    this.setbidinput2(Lname, bid, key);
+  selectorder(username, userid, Laundryname, Laundryid) {
+    var db = firebase.database().ref("SelectedOrder");
+    var user = db.child(userid);
+    user.set({
+      User: username + "/" + userid,
+      Laundry: Laundryname + "/" + Laundryid,
+    });
     this.setState({ modalVisible: false });
-  }
-  setbidinput(ordername, key) {
-    var dbA = firebase.database().ref("BidOrder");
-    var userid = dbA.child(key);
-    userid.set({
-      customer: ordername,
-    });
-  }
-  setbidinput2(Lname, bid, key) {
-    var dbA = firebase.database().ref("BidOrder");
-    var userid = dbA.child(key);
-
-    var laundrybider = userid.child(this.state.uid);
-    laundrybider.set({
-      Laundry: Lname,
-      Bidamount: bid,
-    });
   }
   render() {
     return (
@@ -119,16 +90,12 @@ export default class Feed extends Component {
                 <View>
                   <TouchableOpacity
                     style={styles.container}
-                    onPress={() => this.setbid(item.name, item.key)}
+                    onPress={() =>
+                      this.selectlaundry(item.Laundry, item.Bidamount, item.key)
+                    }
                   >
-                    <Text>User : {item.name}</Text>
-                    <Text>Amount of clothes</Text>
-                    <Text>Jacket x{item.Jacket}</Text>
-                    <Text>T-Shirt x{item.Tshirt}</Text>
-                    <Text>Shorts x{item.Shorts}</Text>
-                    <Text>Drop Time : {item.orderDropdatetime}</Text>
-                    <Text>Pick Time : {item.orderPickdatetime}</Text>
-                    <Text>Address : {item.address}</Text>
+                    <Text>Laundry Name : {item.Laundry}</Text>
+                    <Text>Bid amount : {item.Bidamount} baht</Text>
                   </TouchableOpacity>
                   <Overlay
                     visible={this.state.modalVisible}
@@ -137,25 +104,20 @@ export default class Feed extends Component {
                   >
                     <Text>User : {this.state.ordername}</Text>
                     <Text>Input Bid :</Text>
-                    <TextInput
-                      style={{ backgroundColor: "#E0E0E0", width: 60 }}
-                      value={this.state.bid}
-                      onChangeText={(val) => this.updateInputVal(val, "bid")}
-                    ></TextInput>
-                    <Text>Baht</Text>
+
                     <Button
-                      title="Bid"
+                      title="Select"
                       style={styles.NextButton}
                       onPress={() =>
-                        this.savebid(
+                        this.selectorder(
                           this.state.displayName,
-                          this.state.ordername,
-                          this.state.bid,
-                          this.state.orderkey
+                          this.state.uid,
+                          this.state.Lname,
+                          this.state.Lkey
                         )
                       }
                     >
-                      <Text>OK</Text>
+                      <Text>Select</Text>
                     </Button>
                   </Overlay>
                 </View>
@@ -191,7 +153,7 @@ export default class Feed extends Component {
     );
   }
 }
-//{item.name} {item.email}{item.address} {item.Jacket}{item.Shorts}{item.TShirt}{item.orderdate}{item.orderDropdatetime}{item.orderPickdatetime}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -37,6 +37,9 @@ export default class Dashboard extends Component {
   GoOrder = () => {
     this.props.navigation.navigate("Order");
   };
+  GoUserOrder = () => {
+    this.props.navigation.navigate("UserOrder");
+  };
 
   render() {
     return (
@@ -59,9 +62,9 @@ export default class Dashboard extends Component {
               <Icon name="chatbubbles" />
               <Text>Feed</Text>
             </Button>
-            <Button vertical active>
-              <Icon active name="navigate" />
-              <Text>Navigate</Text>
+            <Button vertical  onPress={() => this.GoUserOrder()}>
+              <Icon name="navigate" />
+              <Text>Order</Text>
             </Button>
             <Button vertical>
               <Icon name="person" />

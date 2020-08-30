@@ -11,6 +11,7 @@ import Landing3 from "./components/landing3";
 import Feed from "./components/feed";
 import Order from "./components/order";
 import OrderDetail from "./components/orderdetail";
+import UserOrder from "./components/UserOrder";
 
 const Stack = createStackNavigator();
 
@@ -72,6 +73,11 @@ function MyStack() {
         name="OrderDetail"
         component={OrderDetail}
         options={{ title: "Order Detail" }}
+      />
+        <Stack.Screen
+        name="UserOrder"
+        component={UserOrder}
+        options={{ title: "Your Order" }}
       />
      
     </Stack.Navigator>

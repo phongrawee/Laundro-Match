@@ -60,15 +60,25 @@ export default class Order extends Component {
     });
 
     firebase
-    .database()
-    .ref(`Users/${this.state.uid}/address`)
-    .on("value", (snapshot) => {
-      this.setState({ address: snapshot.val() });
-    });
-
+      .database()
+      .ref(`Users/${this.state.uid}/address`)
+      .on("value", (snapshot) => {
+        this.setState({ address: snapshot.val() });
+      });
   }
 
-  inputuserorder(orderPickdatetime,orderDropdatetime,orderdate, uid, email, Tshirt, Shorts, Jacket,address,name) {
+  inputuserorder(
+    orderPickdatetime,
+    orderDropdatetime,
+    orderdate,
+    uid,
+    email,
+    Tshirt,
+    Shorts,
+    Jacket,
+    address,
+    name
+  ) {
     var Detail = firebase.database().ref("OrderDetail");
     var userid = Detail.child(uid);
     userid
@@ -81,8 +91,7 @@ export default class Order extends Component {
         Shorts,
         Jacket,
         address,
-        name
-
+        name,
       })
       .then((data) => {
         console.log("data", data);
@@ -123,6 +132,9 @@ export default class Order extends Component {
   GoOrder = () => {
     this.props.navigation.navigate("Order");
   };
+  GoUserOrder = () => {
+    this.props.navigation.navigate("UserOrder");
+  };
 
   functionOne() {
     this.props.navigation.navigate("OrderDetail");
@@ -138,7 +150,7 @@ export default class Order extends Component {
       this.state.Shorts,
       this.state.Jacket,
       this.state.address,
-      this.state.displayName,
+      this.state.displayName
     );
   }
   functionCombined() {
@@ -176,8 +188,8 @@ export default class Order extends Component {
           </View>
 
           <View style={styles.col}>
-          <Button vertical onPress={() => this.onPressButton()}>
-              <Icon name="home"  />
+            <Button vertical onPress={() => this.onPressButton()}>
+              <Icon name="home" />
               <Text>Set Drop Date/Time</Text>
             </Button>
             <Text>{this.state.DropDateDisplay}</Text>
@@ -186,11 +198,11 @@ export default class Order extends Component {
               onConfirm={this.handleConfirm}
               onCancel={this.onPressCancel}
               mode="datetime"
-            />           
+            />
           </View>
           <View style={styles.col}>
-          <Button vertical onPress={() => this.onPressButton2()}>
-              <Icon name="home"  />
+            <Button vertical onPress={() => this.onPressButton2()}>
+              <Icon name="home" />
               <Text>Set Pick Date/Time</Text>
             </Button>
             <Text>{this.state.PickDateDisplay}</Text>
@@ -199,7 +211,7 @@ export default class Order extends Component {
               onConfirm={this.handleConfirm2}
               onCancel={this.onPressCancel2}
               mode="datetime"
-            />           
+            />
           </View>
 
           <View style={styles.NextButton}>
@@ -216,12 +228,12 @@ export default class Order extends Component {
               <Text>Home</Text>
             </Button>
             <Button vertical onPress={() => this.GoFeed()}>
-              <Icon name="chatbubbles"  />
+              <Icon name="chatbubbles" />
               <Text>Feed</Text>
             </Button>
-            <Button vertical active>
-              <Icon active name="navigate" />
-              <Text>Navigate</Text>
+            <Button vertical onPress={() => this.GoUserOrder()}>
+              <Icon name="navigate" />
+              <Text>Order</Text>
             </Button>
             <Button vertical>
               <Icon name="person" />
