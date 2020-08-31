@@ -162,6 +162,7 @@ export default class Order extends Component {
 
   render() {
     return (
+      <Container>
       <View style={styles.container}>
         <View style={styles.clothes}>
           <Text style={styles.itemtext}>T-shirt</Text>
@@ -249,6 +250,7 @@ export default class Order extends Component {
             <Text style={styles.buttonText}>CONFIRM</Text>
           </Button>
         </View>
+        </View>
         <Footer>
           <FooterTab>
             <Button vertical onPress={() => this.GoHome()}>
@@ -273,7 +275,8 @@ export default class Order extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </View>
+      
+      </Container>
     );
   }
 }

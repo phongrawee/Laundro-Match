@@ -3,6 +3,7 @@ import {
   StyleSheet,
   View,
   Text,
+  Alert,
 } from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
@@ -68,6 +69,8 @@ export default class OrderDetail extends Component {
           detail: snapshot.val(),
         };
       });
+      this.Alertfunc();
+      
   }
   componentDidMount() {
     firebase
@@ -113,7 +116,16 @@ export default class OrderDetail extends Component {
         this.setState({ address: snapshot.val() });
       });
   }
-
+  Alertfunc(){
+    Alert.alert(
+      "Confirm",
+      "Success Ordering",
+      [
+        { text: "OK", onPress: () => this.GoFeed() }
+      ],
+      { cancelable: false }
+    );
+  }
   render() {
     return (
       <Container>

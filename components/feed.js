@@ -5,6 +5,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
@@ -84,10 +85,10 @@ export default class Feed extends Component {
     this.setname(input, key);
     this.bidpress();
   }
-  savebid(Lname, ordername, bid, key) {
+  savebid(Lname, bid, key) {
     //this.setbidinput(ordername,key)
     this.setbidinput2(Lname, bid, key);
-    this.setState({ modalVisible: false });
+    this.Alertfunc();
   }
   setbidinput(ordername, key) {
     var dbA = firebase.database().ref("BidOrder");
@@ -105,6 +106,14 @@ export default class Feed extends Component {
       Laundry: Lname,
       Bidamount: bid,
     });
+  }
+  Alertfunc() {
+    Alert.alert(
+      "Confirm",
+      "You have bid " + this.state.ordername + " " + this.state.bid + " baht",
+      [{ text: "OK", onPress: () => this.setState({ modalVisible: false }) }],
+      { cancelable: false }
+    );
   }
   render() {
     return (

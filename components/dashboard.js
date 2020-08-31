@@ -15,7 +15,9 @@ export default class Dashboard extends Component {
   constructor() {
     super();
     this.state = {
-      uid: "",
+      displayName: firebase.auth().currentUser.displayName,
+      uid: firebase.auth().currentUser.uid,
+      email: firebase.auth().currentUser.email,
     };
   }
 
@@ -45,6 +47,7 @@ export default class Dashboard extends Component {
     return (
       <Container>
         <View style={styles.container}>
+    <Text>Hello, {this.state.displayName}</Text>
           <TouchableHighlight onPress={() => this.GoOrder()}>
             <Image
               style={styles.imagestyle}
