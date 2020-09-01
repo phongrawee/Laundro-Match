@@ -25,6 +25,8 @@ export default class UserOrder extends Component {
       Lkey: "",
       selectstatus: "",
       Laddress: "",
+      bidstatus:"",
+      orderstatus:"",
     };
   }
   signOut = () => {
@@ -73,6 +75,25 @@ export default class UserOrder extends Component {
         var status = snapshot.val();
         this.setState({ selectstatus: status });
       });
+      firebase
+      .database()
+      .ref("BidOrder")
+      .child(this.state.uid)
+      .once("value")
+      .then((snapshot) => {
+        var bstatus = snapshot.val();
+        this.setState({ bidstatus: bstatus });
+      });
+      firebase
+      .database()
+      .ref("OrderDetail")
+      .child(this.state.uid)
+      .once("value")
+      .then((snapshot) => {
+        var order = snapshot.val();
+        this.setState({ orderstatus: order });
+        console.log("laundrystatus", order);
+      });
   }
   onClose = () => this.setState({ modalVisible: false });
 
@@ -109,10 +130,15 @@ export default class UserOrder extends Component {
         this.setState({ modalVisible: false });
       });
   }
+
   render() {
     return (
       <Container>
+        {this.state.orderstatus != null ? (
+          <View style={styles.container}>
+         {this.state.bidstatus != null ? (
         <View style={styles.container}>
+       
           {this.state.selectstatus != null ? (
             <Text>You already selected the laundry</Text>
           ) : null}
@@ -164,7 +190,9 @@ export default class UserOrder extends Component {
               }}
             />
           ) : null}
-        </View>
+        </View>) : null}
+        {this.state.bidstatus == null ? (<View style={styles.container}><Text>No Laundry Bid yet</Text></View>) : null}</View>) : null}
+        {this.state.orderstatus == null ? (<View style={styles.container}><Text>You don't order yet!</Text></View>) : null}
         <Footer>
           <FooterTab>
             <Button vertical onPress={() => this.GoHome()}>
