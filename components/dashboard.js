@@ -1,5 +1,3 @@
-// components/dashboard.js
-
 import React, { Component } from "react";
 import {
   StyleSheet,
@@ -10,7 +8,6 @@ import {
 } from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
-
 export default class Dashboard extends Component {
   constructor() {
     super();
@@ -73,7 +70,7 @@ export default class Dashboard extends Component {
             </Button>
             <Button vertical onPress={() => this.GoOrderDetail()} >
               <Icon name="person" />
-              <Text>Profile</Text>
+              <Text>OrderDetail</Text>
             </Button>
             <Button vertical onPress={() => this.signOut()}>
               <Icon name="log-out" />

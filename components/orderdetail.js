@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Alert,
-} from "react-native";
+import { StyleSheet, View, Text, Alert } from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
 
@@ -22,7 +17,11 @@ export default class OrderDetail extends Component {
       orderDropdatetime: "",
       orderPickdatetime: "",
       orderdate: "",
-      address: "",     
+      address: "",
+      selectstatus: "",
+      laundry: "",
+      laundryid: "",
+      Laddress: "",
     };
   }
 
@@ -71,10 +70,9 @@ export default class OrderDetail extends Component {
           detail: snapshot.val(),
         };
       });
-      this.Alertfunc();
-      
+    this.Alertfunc();
   }
-  componentDidMount() {
+  componentWillMount() {
     firebase
       .database()
       .ref(`OrderDetail/${this.state.uid}/Jacket`)
@@ -117,37 +115,77 @@ export default class OrderDetail extends Component {
       .on("value", (snapshot) => {
         this.setState({ address: snapshot.val() });
       });
+    firebase
+      .database()
+      .ref(`SelectedOrder/${this.state.uid}/Laundry`)
+      .on("value", (snapshot) => {
+        this.setState({ laundry: snapshot.val() });
+      });
+
+    firebase
+      .database()
+      .ref(`SelectedOrder/${this.state.uid}/Laundryid`)
+      .on("value", (snapshot) => {
+        this.setState({ laundryid: snapshot.val() });
+      });
+
+   
+    firebase
+      .database()
+      .ref("SelectedOrder")
+      .child(this.state.uid)
+      .once("value")
+      .then((snapshot) => {
+        var status = snapshot.val();
+        this.setState({ selectstatus: status });
+        console.log("laundrystatus", status);
+      });
   }
-  Alertfunc(){
+  componentDidMount(){
+    firebase
+    .database()
+    .ref(`Users/${this.state.laundryid}/address`)
+    .once("value", (snapshot) => {
+      this.setState({ Laddress: snapshot.val() });
+      console.log("a");
+    });
+  }
+  Alertfunc() {
     Alert.alert(
       "Confirm",
       "Success Ordering",
-      [
-        { text: "OK", onPress: () => this.GoFeed() }
-      ],
+      [{ text: "OK", onPress: () => this.GoFeed() }],
       { cancelable: false }
     );
   }
+
   render() {
     return (
       <Container>
-        <View>
+        <View style={styles.container}>
           <Text>User Name : {this.state.displayName}</Text>
           <Text>Clothes</Text>
-          <Text>Jacket     x{this.state.Jacket}</Text>
-          <Text>T-Shirt      x{this.state.Tshirt}</Text>
-          <Text>Shorts     x{this.state.Shorts}</Text>
+          <Text>Jacket x{this.state.Jacket}</Text>
+          <Text>T-Shirt x{this.state.Tshirt}</Text>
+          <Text>Shorts x{this.state.Shorts}</Text>
           <Text>Drop Time : {this.state.orderDropdatetime}</Text>
           <Text>Pick Time : {this.state.orderPickdatetime}</Text>
           <Text>Address : {this.state.address}</Text>
         </View>
-        <View style={styles.NextButton}>
-          <Button vertical onPress={this.onButtonPressed.bind(this)}>
-            <Icon name="send" />
-            <Text>Order!</Text>
-          </Button>
+        {this.state.selectstatus != null ? (
+          <View style={styles.container}>
+            <Text>
+              This order is matching with {this.state.laundry}
+              {"\n"}
+              send the clothes at {this.state.Laddress}
+            </Text>
+          </View>
+        ) : null}
+        <View style={styles.container}>
+          {this.state.selectstatus == null ? (
+            <Text>This order is not match</Text>
+          ) : null}
         </View>
-
         <Footer>
           <FooterTab>
             <Button vertical onPress={() => this.GoHome()}>
@@ -158,13 +196,13 @@ export default class OrderDetail extends Component {
               <Icon name="chatbubbles" />
               <Text>Feed</Text>
             </Button>
-            <Button vertical  onPress={() => this.GoUserOrder()}>
+            <Button vertical onPress={() => this.GoUserOrder()}>
               <Icon active name="navigate" />
               <Text>Order</Text>
             </Button>
-            <Button vertical onPress={() => this.GoOrderDetail()} >
-              <Icon name="person"  />
-              <Text>Profile</Text>
+            <Button vertical onPress={() => this.GoOrderDetail()}>
+              <Icon name="person" />
+              <Text>OrderDetail</Text>
             </Button>
             <Button vertical onPress={() => this.signOut()}>
               <Icon name="log-out" />
@@ -183,7 +221,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: 35,
+    padding: 10,
     backgroundColor: "#fff",
   },
   imagestyle: {
@@ -201,4 +239,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginLeft: 160,
   },
-});
+}); /*
+        <View style={styles.NextButton}>
+          <Button vertical onPress={this.onButtonPressed.bind(this)}>
+            <Icon name="send" />
+            <Text>Order!</Text>
+          </Button>
+        </View>*/

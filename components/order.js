@@ -274,7 +274,7 @@ export default class Order extends Component {
             </Button>
             <Button vertical>
               <Icon name="person" onPress={() => this.GoOrderDetail()} />
-              <Text>Profile</Text>
+              <Text>OrderDetail</Text>
             </Button>
             <Button vertical onPress={() => this.signOut()}>
               <Icon name="log-out" />

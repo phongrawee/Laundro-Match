@@ -161,7 +161,7 @@ export default class Feed extends Component {
                       style={styles.NextButton}
                       onPress={() =>
                         this.savebid(
-                          this.state.ordername,
+                          this.state.displayName,
                           this.state.bid,
                           this.state.orderkey
                         )
@@ -191,7 +191,7 @@ export default class Feed extends Component {
             </Button>
             <Button vertical onPress={() => this.GoOrderDetail()} >
               <Icon name="person" />
-              <Text>Profile</Text>
+              <Text>OrderDetail</Text>
             </Button>
             <Button vertical onPress={() => this.signOut()}>
               <Icon name="log-out" />

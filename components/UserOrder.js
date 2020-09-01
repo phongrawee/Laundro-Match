@@ -93,8 +93,8 @@ export default class UserOrder extends Component {
     var db = firebase.database().ref("SelectedOrder");
     var user = db.child(userid);
     user.set({
-      User: username + "/" + userid,
-      Laundry: Laundryname + "/" + Laundryid,
+      Laundry: Laundryname,
+      Laundryid : Laundryid,
     });
     this.setState({ selectstatus: true });
     this.setState({ modalVisible: false });
@@ -173,7 +173,7 @@ export default class UserOrder extends Component {
             </Button>
             <Button vertical onPress={() => this.GoOrderDetail()} >
               <Icon name="person" />
-              <Text>Profile</Text>
+              <Text>OrderDetail</Text>
             </Button>
             <Button vertical onPress={() => this.signOut()}>
               <Icon name="log-out" />
