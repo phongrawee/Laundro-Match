@@ -22,6 +22,7 @@ export default class OrderDetail extends Component {
       laundry: "",
       laundryid: "",
       Laddress: "",
+      orderstatus:"",
     };
   }
 
@@ -136,19 +137,35 @@ export default class OrderDetail extends Component {
         this.setState({ selectstatus: status });
         console.log("laundrystatus", status);
       });
+      firebase
+      .database()
+      .ref("OrderDetail")
+      .child(this.state.uid)
+      .once("value")
+      .then((snapshot) => {
+        var order = snapshot.val();
+        this.setState({ orderstatus: order });
+        console.log("laundrystatus", order);
+      });
   }
   Alertfunc() {
     Alert.alert(
-      "Confirm",
-      "Success Ordering",
-      [{ text: "OK", onPress: () => this.GoFeed() }],
+      "Cancel",
+      "The Order has been Cancelled!",
+      [{ text: "OK", onPress: () => this.GoHome() }],
       { cancelable: false }
     );
   }
-
+  removeOrder() {
+    firebase.database().ref("OrderDetail").child(this.state.uid).remove();
+    firebase.database().ref("BidOrder").child(this.state.uid).remove();
+    this.Alertfunc();
+  }
   render() {
     return (
       <Container>
+         {this.state.orderstatus != null ? (
+        <View style={styles.container}>
         <View style={styles.container}>
           <Text>User Name : {this.state.displayName}</Text>
           <Text>Clothes</Text>
@@ -172,7 +189,18 @@ export default class OrderDetail extends Component {
           {this.state.selectstatus == null ? (
             <Text>This order is not match</Text>
           ) : null}
+          {this.state.selectstatus == null ? (
+            <Button
+              vertical
+              onPress={() => this.removeOrder()}
+              style={styles.NextButton}
+            >
+              <Text style={styles.buttonText}>Cancel Order</Text>
+            </Button>
+          ) : null}
         </View>
+        </View>) : null}
+        {this.state.orderstatus == null ? (<View style={styles.container}><Text>No Order Yet!</Text></View>) : null}
         <Footer>
           <FooterTab>
             <Button vertical onPress={() => this.GoHome()}>
@@ -221,10 +249,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   NextButton: {
-    flex: 1,
-    paddingTop: 100,
+    marginTop: 20,
+    width: 100,
+    height: 35,
     alignItems: "center",
-    marginLeft: 160,
+    marginLeft: 30,
+  },
+  buttonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+
+    color: "#fff",
   },
 }); /*
         <View style={styles.NextButton}>
