@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
-import { StyleSheet, View, ScrollView, Image, Text,Alert } from "react-native";
+import { StyleSheet, View, ScrollView, Image, Text, Alert } from "react-native";
 import InputSpinner from "react-native-input-spinner";
 import firebase from "../database/firebase";
 import DateTimePickerModal from "react-native-modal-datetime-picker";

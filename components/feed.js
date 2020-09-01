@@ -242,6 +242,7 @@ const styles = StyleSheet.create({
   containerFlatlist: {
     flex: 1,
     padding: 8,
+    marginHorizontal: 16,
   },
 
   containerItem: {

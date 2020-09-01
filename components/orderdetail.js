@@ -22,7 +22,7 @@ export default class OrderDetail extends Component {
       laundry: "",
       laundryid: "",
       Laddress: "",
-      orderstatus:"",
+      orderstatus: "",
     };
   }
 
@@ -137,7 +137,7 @@ export default class OrderDetail extends Component {
         this.setState({ selectstatus: status });
         console.log("laundrystatus", status);
       });
-      firebase
+    firebase
       .database()
       .ref("OrderDetail")
       .child(this.state.uid)
@@ -164,43 +164,85 @@ export default class OrderDetail extends Component {
   render() {
     return (
       <Container>
-         {this.state.orderstatus != null ? (
-        <View style={styles.container}>
-        <View style={styles.container}>
-          <Text>User Name : {this.state.displayName}</Text>
-          <Text>Clothes</Text>
-          <Text>Jacket x{this.state.Jacket}</Text>
-          <Text>T-Shirt x{this.state.Tshirt}</Text>
-          <Text>Shorts x{this.state.Shorts}</Text>
-          <Text>Drop Time : {this.state.orderDropdatetime}</Text>
-          <Text>Pick Time : {this.state.orderPickdatetime}</Text>
-          <Text>Address : {this.state.address}</Text>
-        </View>
-        {this.state.selectstatus != null ? (
+        {this.state.orderstatus != null ? (
           <View style={styles.container}>
-            <Text>
-              This order is matching with {this.state.laundry}
-              {"\n  "}
-               Send the clothes at {this.state.Laddress}
-            </Text>
+            <View style={styles.container}>
+              <View style={styles.detail}>
+                <Text style={styles.textTitle}>
+                  User Name: {"  "}{" "}
+                  <Text style={styles.textContent}>
+                    {this.state.displayName}
+                  </Text>
+                </Text>
+                <Text style={styles.textTitle}>Clothes</Text>
+                <Text style={styles.textContent}>
+                  Jacket x{this.state.Jacket}
+                </Text>
+                <Text style={styles.textContent}>
+                  T-Shirt x{this.state.Tshirt}
+                </Text>
+                <Text style={styles.textContent}>
+                  Shorts x{this.state.Shorts}
+                </Text>
+                <Text style={styles.textTitle}>Drop Time: </Text>
+                <Text style={styles.textContent}>
+                  {this.state.orderDropdatetime}
+                </Text>
+                <Text style={styles.textTitle}>Pick Time: </Text>
+                <Text style={styles.textContent}>
+                  {this.state.orderPickdatetime}
+                </Text>
+                <Text style={styles.textTitle}>
+                  Address :{" "}
+                  <Text style={styles.textContent}>{this.state.address}</Text>
+                </Text>
+
+                {/* this order not already match */}
+              </View>
+            </View>
+            <View style={styles.container}>
+              {this.state.selectstatus != null ? (
+                <View style={styles.statusSuccessPos}>
+                  <Text style={styles.statusSuccessText}>
+                    This order is matching with {this.state.laundry}
+                    {"\n  "}
+                    Send the clothes at {this.state.Laddress}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+
+            <View style={styles.container}>
+              {this.state.selectstatus == null ? (
+                <View style={styles.statusAlertPos}>
+                  <Text style={styles.statusAlertText}>
+                    This order is not match
+                  </Text>
+                </View>
+              ) : null}
+            </View>
+
+            <View style={styles.container}>
+              {this.state.selectstatus == null ? (
+                <Button
+                  primary
+                  vertical
+                  style={{ marginTop: 150, padding: 10, alignSelf: "center" }}
+                  onPress={() => this.removeOrder()}
+                >
+                  <Text style={styles.buttonText}>Cancel Order</Text>
+                </Button>
+              ) : null}
+            </View>
           </View>
         ) : null}
         <View style={styles.container}>
-          {this.state.selectstatus == null ? (
-            <Text>This order is not match</Text>
-          ) : null}
-          {this.state.selectstatus == null ? (
-            <Button
-              vertical
-              onPress={() => this.removeOrder()}
-              style={styles.NextButton}
-            >
-              <Text style={styles.buttonText}>Cancel Order</Text>
-            </Button>
+          {this.state.orderstatus == null ? (
+            <View style={styles.statusAlertPos}>
+              <Text style={styles.statusAlertText}>No Order Yet!</Text>
+            </View>
           ) : null}
         </View>
-        </View>) : null}
-        {this.state.orderstatus == null ? (<View style={styles.container}><Text>No Order Yet!</Text></View>) : null}
         <Footer>
           <FooterTab>
             <Button vertical onPress={() => this.GoHome()}>
@@ -233,33 +275,61 @@ export default class OrderDetail extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "#fff",
+    marginTop: 10,
+    flexDirection: "column",
   },
-  imagestyle: {
-    width: 200,
-    height: 200,
-    resizeMode: "contain",
+
+  textTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
   },
-  textStyle: {
-    fontSize: 15,
-    marginBottom: 20,
+
+  textContent: {
+    fontSize: 14,
+    fontWeight: "normal",
   },
-  NextButton: {
-    marginTop: 20,
-    width: 100,
-    height: 35,
-    alignItems: "center",
-    marginLeft: 30,
-  },
+
   buttonText: {
     fontWeight: "bold",
     fontSize: 16,
-
     color: "#fff",
+  },
+
+  statusAlertText: {
+    fontSize: 14,
+    fontWeight: "normal",
+    color: "#a91e0f",
+  },
+
+  statusSuccessText: {
+    fontSize: 14,
+    fontWeight: "normal",
+    color: "#8da835",
+  },
+
+  detail: {
+    backgroundColor: "#EFEFEF",
+    padding: 12,
+    marginVertical: 6,
+    marginHorizontal: 16,
+    flexDirection: "column",
+    borderRadius: 15,
+  },
+
+  statusAlertPos: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 140,
+    padding: 10,
+    backgroundColor: "#ffe3e1",
+  },
+
+  statusSuccessPos: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 200,
+    padding: 10,
+    backgroundColor: "#eaffd7",
   },
 }); /*
         <View style={styles.NextButton}>
