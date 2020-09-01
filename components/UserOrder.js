@@ -24,6 +24,7 @@ export default class UserOrder extends Component {
       Lname: "",
       Lkey: "",
       selectstatus: "",
+      Laddress: "",
     };
   }
   signOut = () => {
@@ -70,8 +71,6 @@ export default class UserOrder extends Component {
       .once("value")
       .then((snapshot) => {
         var status = snapshot.val();
-        console.log("Hello:", snapshot);
-        console.log("Testtttttttt:", status);
         this.setState({ selectstatus: status });
       });
   }
@@ -81,6 +80,7 @@ export default class UserOrder extends Component {
     this.setlaundry(Lname, bid, Lkey);
     this.bidpress();
   }
+
   bidpress = () => {
     this.setState({ modalVisible: true });
   };
@@ -89,17 +89,26 @@ export default class UserOrder extends Component {
     this.setState({ bid: bid });
     this.setState({ Lkey: Lkey });
   }
-  selectorder(username, userid, Laundryname, Laundryid) {
-    var db = firebase.database().ref("SelectedOrder");
-    var user = db.child(userid);
-    user.set({
-      Laundry: Laundryname,
-      Laundryid : Laundryid,
-    });
-    this.setState({ selectstatus: true });
-    this.setState({ modalVisible: false });
+  setorder(userid, Laundryname, Laundryid) {
+    var add;
+    console.log("kkk", this.state.Lkey);
+    firebase
+      .database()
+      .ref(`Users/${this.state.Lkey}/address`)
+      .on("value", (snapshot) => {
+        add = snapshot.val();
+        console.log("aaa", add);
+        var db = firebase.database().ref("SelectedOrder");
+        var user = db.child(userid);
+        user.set({
+          Laundry: Laundryname,
+          Laundryid: Laundryid,
+          LaundryAddress: add,
+        });
+        this.setState({ selectstatus: true });
+        this.setState({ modalVisible: false });
+      });
   }
-
   render() {
     return (
       <Container>
@@ -140,8 +149,7 @@ export default class UserOrder extends Component {
                         title="Select"
                         style={styles.NextButton}
                         onPress={() =>
-                          this.selectorder(
-                            this.state.displayName,
+                          this.setorder(
                             this.state.uid,
                             this.state.Lname,
                             this.state.Lkey
@@ -171,7 +179,7 @@ export default class UserOrder extends Component {
               <Icon name="navigate" />
               <Text>Order</Text>
             </Button>
-            <Button vertical onPress={() => this.GoOrderDetail()} >
+            <Button vertical onPress={() => this.GoOrderDetail()}>
               <Icon name="person" />
               <Text>OrderDetail</Text>
             </Button>

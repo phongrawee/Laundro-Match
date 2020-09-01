@@ -49,15 +49,6 @@ export default class OrderDetail extends Component {
   GoOrderDetail() {
     this.props.navigation.navigate("OrderDetail");
   }
-  /*readUserData = () => {
-    firebase
-      .database()
-      .ref("OrderDetail/ + ${userId} + Jacket/")
-      .once("value")
-      .then((snapshot) => {
-        console.log(snapshot.val());
-      });
-  };*/
   onButtonPressed() {
     this.database = firebase.database();
     const userId = firebase.auth().currentUser.uid;
@@ -128,8 +119,13 @@ export default class OrderDetail extends Component {
       .on("value", (snapshot) => {
         this.setState({ laundryid: snapshot.val() });
       });
+    firebase
+      .database()
+      .ref(`SelectedOrder/${this.state.uid}/LaundryAddress`)
+      .on("value", (snapshot) => {
+        this.setState({ Laddress: snapshot.val() });
+      });
 
-   
     firebase
       .database()
       .ref("SelectedOrder")
@@ -140,15 +136,6 @@ export default class OrderDetail extends Component {
         this.setState({ selectstatus: status });
         console.log("laundrystatus", status);
       });
-  }
-  componentDidMount(){
-    firebase
-    .database()
-    .ref(`Users/${this.state.laundryid}/address`)
-    .once("value", (snapshot) => {
-      this.setState({ Laddress: snapshot.val() });
-      console.log("a");
-    });
   }
   Alertfunc() {
     Alert.alert(
