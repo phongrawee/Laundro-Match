@@ -125,6 +125,7 @@ export default class UserOrder extends Component {
           Laundry: Laundryname,
           Laundryid: Laundryid,
           LaundryAddress: add,
+          BidAmount: this.state.bid,
         });
         this.setState({ selectstatus: true });
         this.setState({ modalVisible: false });

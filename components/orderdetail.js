@@ -23,6 +23,7 @@ export default class OrderDetail extends Component {
       laundryid: "",
       Laddress: "",
       orderstatus: "",
+      bid:"",
     };
   }
 
@@ -126,7 +127,12 @@ export default class OrderDetail extends Component {
       .on("value", (snapshot) => {
         this.setState({ Laddress: snapshot.val() });
       });
-
+      firebase
+      .database()
+      .ref(`SelectedOrder/${this.state.uid}/BidAmount`)
+      .on("value", (snapshot) => {
+        this.setState({ bid: snapshot.val() });
+      });
     firebase
       .database()
       .ref("SelectedOrder")
@@ -205,8 +211,10 @@ export default class OrderDetail extends Component {
                 <View style={styles.statusSuccessPos}>
                   <Text style={styles.statusSuccessText}>
                     This order is matching with {this.state.laundry}
-                    {"\n  "}
+                    {"\n    "}
                     Send the clothes at {this.state.Laddress}
+                    {"\n           "}
+                    Amount {this.state.bid} baht
                   </Text>
                 </View>
               ) : null}
