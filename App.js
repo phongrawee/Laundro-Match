@@ -12,7 +12,7 @@ import Feed from "./components/feed";
 import Order from "./components/order";
 import OrderDetail from "./components/orderdetail";
 import UserOrder from "./components/UserOrder";
-
+console.disableYellowBox = true;
 const Stack = createStackNavigator();
 
 function MyStack() {

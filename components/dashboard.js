@@ -42,7 +42,9 @@ export default class Dashboard extends Component {
   GoUserOrder = () => {
     this.props.navigation.navigate("UserOrder");
   };
-
+  GoOrderDetail() {
+    this.props.navigation.navigate("OrderDetail");
+  }
   render() {
     return (
       <Container>
@@ -69,7 +71,7 @@ export default class Dashboard extends Component {
               <Icon name="navigate" />
               <Text>Order</Text>
             </Button>
-            <Button vertical>
+            <Button vertical onPress={() => this.GoOrderDetail()} >
               <Icon name="person" />
               <Text>Profile</Text>
             </Button>

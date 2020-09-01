@@ -47,7 +47,9 @@ export default class OrderDetail extends Component {
   GoUserOrder = () => {
     this.props.navigation.navigate("UserOrder");
   };
-
+  GoOrderDetail() {
+    this.props.navigation.navigate("OrderDetail");
+  }
   /*readUserData = () => {
     firebase
       .database()
@@ -160,8 +162,8 @@ export default class OrderDetail extends Component {
               <Icon active name="navigate" />
               <Text>Order</Text>
             </Button>
-            <Button vertical>
-              <Icon name="person" />
+            <Button vertical onPress={() => this.GoOrderDetail()} >
+              <Icon name="person"  />
               <Text>Profile</Text>
             </Button>
             <Button vertical onPress={() => this.signOut()}>

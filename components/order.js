@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
-import { StyleSheet, View, ScrollView, Image, Text } from "react-native";
+import { StyleSheet, View, ScrollView, Image, Text,Alert } from "react-native";
 import InputSpinner from "react-native-input-spinner";
 import firebase from "../database/firebase";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -138,7 +138,7 @@ export default class Order extends Component {
     this.props.navigation.navigate("UserOrder");
   };
 
-  functionOne() {
+  GoOrderDetail() {
     this.props.navigation.navigate("OrderDetail");
   }
   functionTwo() {
@@ -156,100 +156,107 @@ export default class Order extends Component {
     );
   }
   functionCombined() {
-    this.functionOne();
     this.functionTwo();
+    this.Alertfunc();
   }
-
+  Alertfunc() {
+    Alert.alert(
+      "Confirm",
+      "Success Ordering",
+      [{ text: "OK", onPress: () => this.GoOrderDetail() }],
+      { cancelable: false }
+    );
+  }
   render() {
     return (
       <Container>
-      <View style={styles.container}>
-        <View style={styles.clothes}>
-          <Text style={styles.itemtext}>T-shirt</Text>
-          <InputSpinner
-            value={this.state.value}
-            onChange={(val) => this.updateInputVal(val, "Tshirt")}
-            colorLeft={"#62b1f6"}
-            colorRight={"#62b1f6"}
-            textColor={"#3f51b5"}
-            colorPress={"#3f51b5"}
-          />
-        </View>
-        <View style={styles.clothes}>
-          <Text style={styles.itemtext}>Shorts</Text>
-          <InputSpinner
-            value={this.state.value}
-            style={styles.spinner}
-            onChange={(val) => this.updateInputVal(val, "Shorts")}
-            colorLeft={"#62b1f6"}
-            colorRight={"#62b1f6"}
-            textColor={"#3f51b5"}
-            colorPress={"#3f51b5"}
-          />
-        </View>
-        <View style={styles.clothes}>
-          <Text style={styles.itemtext}>Jacket</Text>
-          <InputSpinner
-            value={this.state.value}
-            style={styles.spinner}
-            onChange={(val) => this.updateInputVal(val, "Jacket")}
-            colorLeft={"#62b1f6"}
-            colorRight={"#62b1f6"}
-            textColor={"#3f51b5"}
-            colorPress={"#3f51b5"}
-          />
-        </View>
-        <View style={styles.datetime}>
-          <Button
-            block
-            info
-            vertical
-            onPress={() => this.onPressButton()}
-            style={styles.Button}
-            title="Drop off"
-          >
-            <Text style={styles.buttonText}>DROP OFF</Text>
-          </Button>
-          <DateTimePickerModal
-            isVisible={this.state.visibility}
-            onConfirm={this.handleConfirm}
-            onCancel={this.onPressCancel}
-            mode="datetime"
-          />
-          <Text style={styles.itemtext}>{this.state.DropDateDisplay}</Text>
-        </View>
+        <View style={styles.container}>
+          <View style={styles.clothes}>
+            <Text style={styles.itemtext}>T-shirt</Text>
+            <InputSpinner
+              value={this.state.value}
+              onChange={(val) => this.updateInputVal(val, "Tshirt")}
+              colorLeft={"#62b1f6"}
+              colorRight={"#62b1f6"}
+              textColor={"#3f51b5"}
+              colorPress={"#3f51b5"}
+            />
+          </View>
+          <View style={styles.clothes}>
+            <Text style={styles.itemtext}>Shorts</Text>
+            <InputSpinner
+              value={this.state.value}
+              style={styles.spinner}
+              onChange={(val) => this.updateInputVal(val, "Shorts")}
+              colorLeft={"#62b1f6"}
+              colorRight={"#62b1f6"}
+              textColor={"#3f51b5"}
+              colorPress={"#3f51b5"}
+            />
+          </View>
+          <View style={styles.clothes}>
+            <Text style={styles.itemtext}>Jacket</Text>
+            <InputSpinner
+              value={this.state.value}
+              style={styles.spinner}
+              onChange={(val) => this.updateInputVal(val, "Jacket")}
+              colorLeft={"#62b1f6"}
+              colorRight={"#62b1f6"}
+              textColor={"#3f51b5"}
+              colorPress={"#3f51b5"}
+            />
+          </View>
+          <View style={styles.datetime}>
+            <Button
+              block
+              info
+              vertical
+              onPress={() => this.onPressButton()}
+              style={styles.Button}
+              title="Drop off"
+            >
+              <Text style={styles.buttonText}>DROP OFF</Text>
+            </Button>
+            <DateTimePickerModal
+              isVisible={this.state.visibility}
+              onConfirm={this.handleConfirm}
+              onCancel={this.onPressCancel}
+              mode="datetime"
+            />
+            <Text style={styles.itemtext}>{this.state.DropDateDisplay}</Text>
+          </View>
 
-        <View style={styles.datetime}>
-          <Button
-            block
-            info
-            vertical
-            onPress={() => this.onPressButton2()}
-            style={styles.Button}
-            title="Pick up"
-          >
-            <Text style={styles.buttonText}>PICK UP</Text>
-          </Button>
-          <DateTimePickerModal
-            isVisible={this.state.visibility2}
-            onConfirm={this.handleConfirm2}
-            onCancel={this.onPressCancel2}
-            mode="datetime"
-          />
-          <Text style={styles.itemtext}>{this.state.PickDateDisplay}</Text>
-        </View>
-        <View style={styles.orderButton}>
-          <Button
-            block
-            primary
-            style={styles.Button}
-            title="Drop off"
-            vertical
-            onPress={() => this.functionCombined()}
-          >
-            <Text style={styles.buttonText}>CONFIRM</Text>
-          </Button>
-        </View>
+          <View style={styles.datetime}>
+            <Button
+              block
+              info
+              vertical
+              onPress={() => this.onPressButton2()}
+              style={styles.Button}
+              title="Pick up"
+            >
+              <Text style={styles.buttonText}>PICK UP</Text>
+            </Button>
+            <DateTimePickerModal
+              isVisible={this.state.visibility2}
+              onConfirm={this.handleConfirm2}
+              onCancel={this.onPressCancel2}
+              mode="datetime"
+            />
+            <Text style={styles.itemtext}>{this.state.PickDateDisplay}</Text>
+          </View>
+          <View style={styles.orderButton}>
+            <Button
+              block
+              primary
+              style={styles.Button}
+              title="Drop off"
+              vertical
+              onPress={() => this.functionCombined()}
+            >
+              <Text style={styles.buttonText}>CONFIRM</Text>
+            </Button>
+          </View>
         </View>
         <Footer>
           <FooterTab>
@@ -266,7 +273,7 @@ export default class Order extends Component {
               <Text>Order</Text>
             </Button>
             <Button vertical>
-              <Icon name="person" />
+              <Icon name="person" onPress={() => this.GoOrderDetail()} />
               <Text>Profile</Text>
             </Button>
             <Button vertical onPress={() => this.signOut()}>
@@ -275,7 +282,6 @@ export default class Order extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      
       </Container>
     );
   }
