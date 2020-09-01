@@ -121,7 +121,7 @@ export default class Feed extends Component {
   render() {
     return (
       <Container>
-        <View style={styles.container}>
+        <View style={styles.containerFlatlist}>
           <FlatList
             style={{ width: "100%" }}
             data={this.state.list}
@@ -130,35 +130,69 @@ export default class Feed extends Component {
               return (
                 <View>
                   <TouchableOpacity
-                    style={styles.container}
+                    style={styles.containerItem}
                     onPress={() => this.setbid(item.name, item.key)}
                   >
-                    <Text>User : {item.name}</Text>
-                    <Text>Amount of clothes</Text>
-                    <Text>Jacket x{item.Jacket}</Text>
-                    <Text>T-Shirt x{item.Tshirt}</Text>
-                    <Text>Shorts x{item.Shorts}</Text>
-                    <Text>Drop Time : {item.orderDropdatetime}</Text>
-                    <Text>Pick Time : {item.orderPickdatetime}</Text>
-                    <Text>Order Date : {item.orderdate}</Text>
-                    <Text>Address : {item.address}</Text>
+                    <View style={styles.alignDetail}>
+                      <Text style={styles.textTitle}>
+                        Username:{"  "}
+                        <Text style={styles.textContent}>{item.name}</Text>
+                      </Text>
+
+                      <Text style={styles.textTitle}>Amount of clothes</Text>
+                      <Text style={styles.textContent}>
+                        Jacket x{item.Jacket}
+                      </Text>
+                      <Text style={styles.textContent}>
+                        T-Shirt x{item.Tshirt}
+                      </Text>
+                      <Text style={styles.textContent}>
+                        Shorts x{item.Shorts}
+                      </Text>
+                      <Text style={styles.textTitle}>Drop Time</Text>
+                      <Text style={styles.textContent}>
+                        {item.orderDropdatetime}
+                      </Text>
+                      <Text style={styles.textTitle}>Pick Time</Text>
+                      <Text style={styles.textContent}>
+                        {item.orderPickdatetime}
+                      </Text>
+                      <Text style={styles.textTitle}>
+                        Address: {"  "}
+                        <Text style={styles.textContent}>{item.address}</Text>
+                      </Text>
+                    </View>
                   </TouchableOpacity>
+
                   <Overlay
                     visible={this.state.modalVisible}
                     onClose={this.onClose}
                     closeOnTouchOutside
+                    containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.30)" }}
                   >
-                    <Text>User : {this.state.ordername}</Text>
-                    <Text>Input Bid :</Text>
+                    <Text style={styles.textTitle}>
+                      Customer Name:{"  "}
+                      <Text style={styles.textContent}>
+                        {this.state.ordername}
+                      </Text>
+                    </Text>
+                    <Text style={styles.textTitle}>Input Bid :</Text>
                     <TextInput
-                      style={{ backgroundColor: "#E0E0E0", width: 60 }}
+                      style={{
+                        backgroundColor: "#E0E0E0",
+                        width: 50,
+                        height: 40,
+                        margin: 10,
+                      }}
                       value={this.state.bid}
                       onChangeText={(val) => this.updateInputVal(val, "bid")}
                     ></TextInput>
-                    <Text>Baht</Text>
+                    <Text style={styles.textTitle}>Baht</Text>
                     <Button
                       title="Bid"
-                      style={styles.NextButton}
+                      block
+                      primary
+                      style={{ marginTop: 10 }}
                       onPress={() =>
                         this.savebid(
                           this.state.displayName,
@@ -167,7 +201,7 @@ export default class Feed extends Component {
                         )
                       }
                     >
-                      <Text>OK</Text>
+                      <Text style={styles.buttonText}>Place a Bid</Text>
                     </Button>
                   </Overlay>
                 </View>
@@ -189,7 +223,7 @@ export default class Feed extends Component {
               <Icon name="navigate" />
               <Text>Order</Text>
             </Button>
-            <Button vertical onPress={() => this.GoOrderDetail()} >
+            <Button vertical onPress={() => this.GoOrderDetail()}>
               <Icon name="person" />
               <Text>OrderDetail</Text>
             </Button>
@@ -205,22 +239,34 @@ export default class Feed extends Component {
 }
 //{item.name} {item.email}{item.address} {item.Jacket}{item.Shorts}{item.TShirt}{item.orderdate}{item.orderDropdatetime}{item.orderPickdatetime}
 const styles = StyleSheet.create({
-  container: {
+  containerFlatlist: {
     flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "#fff",
+    padding: 8,
   },
-  textStyle: {
-    fontSize: 15,
-    marginBottom: 20,
+
+  containerItem: {
+    marginTop: 10,
+    elevation: 5,
+    backgroundColor: "white",
   },
-  NextButton: {
-    width: 30,
-    paddingTop: 10,
-    alignItems: "center",
-    marginLeft: 150,
+
+  alignDetail: {
+    flex: 1,
+    flexDirection: "column",
+  },
+
+  textTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  textContent: {
+    fontSize: 14,
+    fontWeight: "normal",
+  },
+  buttonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+
+    color: "#fff",
   },
 });
