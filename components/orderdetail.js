@@ -180,8 +180,8 @@ export default class OrderDetail extends Component {
           <View style={styles.container}>
             <Text>
               This order is matching with {this.state.laundry}
-              {"\n"}
-              send the clothes at {this.state.Laddress}
+              {"\n  "}
+               Send the clothes at {this.state.Laddress}
             </Text>
           </View>
         ) : null}
