@@ -96,7 +96,7 @@ export default class UserOrder extends Component {
     this.setState({ selectstatus: true });
     this.setState({ modalVisible: false });
   }
-  //if (this.state.selectstatus == null) {
+
   render() {
     return (
       <Container>

@@ -158,7 +158,6 @@ export default class Feed extends Component {
                       style={styles.NextButton}
                       onPress={() =>
                         this.savebid(
-                          this.state.displayName,
                           this.state.ordername,
                           this.state.bid,
                           this.state.orderkey
