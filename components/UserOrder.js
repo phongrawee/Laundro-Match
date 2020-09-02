@@ -25,8 +25,8 @@ export default class UserOrder extends Component {
       Lkey: "",
       selectstatus: "",
       Laddress: "",
-      bidstatus:"",
-      orderstatus:"",
+      bidstatus: "",
+      orderstatus: "",
     };
   }
   signOut = () => {
@@ -75,7 +75,7 @@ export default class UserOrder extends Component {
         var status = snapshot.val();
         this.setState({ selectstatus: status });
       });
-      firebase
+    firebase
       .database()
       .ref("BidOrder")
       .child(this.state.uid)
@@ -84,7 +84,7 @@ export default class UserOrder extends Component {
         var bstatus = snapshot.val();
         this.setState({ bidstatus: bstatus });
       });
-      firebase
+    firebase
       .database()
       .ref("OrderDetail")
       .child(this.state.uid)
@@ -137,63 +137,107 @@ export default class UserOrder extends Component {
       <Container>
         {this.state.orderstatus != null ? (
           <View style={styles.container}>
-         {this.state.bidstatus != null ? (
-        <View style={styles.container}>
-       
-          {this.state.selectstatus != null ? (
-            <Text>You already selected the laundry</Text>
-          ) : null}
-          {this.state.selectstatus == null ? (
-            <FlatList
-              style={{ width: "100%" }}
-              data={this.state.list}
-              keyExtractor={(item) => item.key}
-              renderItem={({ item }) => {
-                return (
-                  <View>
-                    <TouchableOpacity
-                      style={styles.container}
-                      onPress={() =>
-                        this.selectlaundry(
-                          item.Laundry,
-                          item.Bidamount,
-                          item.key
-                        )
-                      }
-                    >
-                      <Text>Laundry Name : {item.Laundry}</Text>
-                      <Text>Bid amount : {item.Bidamount} baht</Text>
-                    </TouchableOpacity>
-                    <Overlay
-                      visible={this.state.modalVisible}
-                      onClose={this.onClose}
-                      closeOnTouchOutside
-                    >
-                      <Text>User : {this.state.ordername}</Text>
-                      <Text>Input Bid :</Text>
-
-                      <Button
-                        title="Select"
-                        style={styles.NextButton}
-                        onPress={() =>
-                          this.setorder(
-                            this.state.uid,
-                            this.state.Lname,
-                            this.state.Lkey
-                          )
-                        }
-                      >
-                        <Text>Select</Text>
-                      </Button>
-                    </Overlay>
+            {this.state.bidstatus != null ? (
+              <View style={styles.container}>
+                {this.state.selectstatus != null ? (
+                  <View style={styles.textStatusContainer}>
+                    <Text>You already selected the laundry</Text>
                   </View>
-                );
-              }}
-            />
-          ) : null}
-        </View>) : null}
-        {this.state.bidstatus == null ? (<View style={styles.container}><Text>No Laundry Bid yet</Text></View>) : null}</View>) : null}
-        {this.state.orderstatus == null ? (<View style={styles.container}><Text>You don't order yet!</Text></View>) : null}
+                ) : null}
+                {this.state.selectstatus == null ? (
+                  <FlatList
+                    data={this.state.list}
+                    keyExtractor={(item) => item.key}
+                    style={styles.containerFlatlist}
+                    renderItem={({ item }) => {
+                      return (
+                        <View>
+                          <TouchableOpacity
+                            style={styles.containerItem}
+                            onPress={() =>
+                              this.selectlaundry(
+                                item.Laundry,
+                                item.Bidamount,
+                                item.key
+                              )
+                            }
+                          >
+                            <View style={{ alignSelf: "center" }}>
+                              <Text style={styles.textTitle}>
+                                Laundry Name:{"  "}{" "}
+                                <Text style={styles.textContent}>
+                                  {item.Laundry}
+                                </Text>
+                              </Text>
+                              <Text style={styles.textTitle}>
+                                Bid Amount:{" "}
+                                <Text style={styles.textContent}>
+                                  {item.Bidamount} baht
+                                </Text>
+                              </Text>
+                            </View>
+                          </TouchableOpacity>
+                          <Overlay
+                            visible={this.state.modalVisible}
+                            onClose={this.onClose}
+                            closeOnTouchOutside
+                            containerStyle={{
+                              backgroundColor: "rgba(0, 0, 0, 0.60)",
+                            }}
+                          >
+                            <Text style={styles.textTitle}>
+                              Laundry Name:{" "}
+                              <Text style={styles.textContent}>
+                                {this.state.Lname}
+                              </Text>
+                            </Text>
+                            <Text style={styles.textTitle}>
+                              Bid Amount:{" "}
+                              <Text style={styles.textContent}>
+                                {this.state.bid}
+                              </Text>
+                            </Text>
+
+                            <Button
+                              title="Select"
+                              primary
+                              style={{
+                                marginTop: 10,
+                                padding: 5,
+                                alignSelf: "center",
+                              }}
+                              onPress={() =>
+                                this.setorder(
+                                  this.state.uid,
+                                  this.state.Lname,
+                                  this.state.Lkey
+                                )
+                              }
+                            >
+                              <Text style={styles.buttonText}>Select</Text>
+                            </Button>
+                          </Overlay>
+                        </View>
+                      );
+                    }}
+                  />
+                ) : null}
+              </View>
+            ) : null}
+            {this.state.bidstatus == null ? (
+              <View style={styles.textStatusContainer}>
+                <Text>No Laundry Bid yet</Text>
+              </View>
+            ) : null}
+          </View>
+        ) : null}
+
+        {this.state.orderstatus == null ? (
+          <View style={styles.textStatusContainer}>
+            <Text>You don't order yet!</Text>
+          </View>
+        ) : null}
+
         <Footer>
           <FooterTab>
             <Button vertical onPress={() => this.GoHome()}>
@@ -226,20 +270,45 @@ export default class UserOrder extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
+    marginTop: 16,
+    flexDirection: "column",
+  },
+
+  textTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
+  textContent: {
+    fontSize: 14,
+    fontWeight: "normal",
+  },
+
+  buttonText: {
+    fontWeight: "bold",
+    fontSize: 16,
+    color: "#fff",
+  },
+
+  containerItem: {
+    marginTop: 10,
+    elevation: 5,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#efefef",
+    borderRadius: 8,
+  },
+
+  containerFlatlist: {
+    flex: 1,
+    padding: 16,
+    marginHorizontal: 16,
+  },
+
+  textStatusContainer: {
+    flex: 1,
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
-    backgroundColor: "#fff",
-  },
-  textStyle: {
-    fontSize: 15,
-    marginBottom: 20,
-  },
-  NextButton: {
-    width: 30,
-    paddingTop: 10,
-    alignItems: "center",
-    marginLeft: 150,
   },
 });

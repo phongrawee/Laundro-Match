@@ -168,7 +168,7 @@ export default class Feed extends Component {
                     visible={this.state.modalVisible}
                     onClose={this.onClose}
                     closeOnTouchOutside
-                    containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.30)" }}
+                    containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.60)" }}
                   >
                     <Text style={styles.textTitle}>
                       Customer Name:{"  "}
@@ -192,7 +192,7 @@ export default class Feed extends Component {
                       title="Bid"
                       block
                       primary
-                      style={{ marginTop: 10 }}
+                      style={{ marginTop: 10, padding: 5, alignSelf: "center" }}
                       onPress={() =>
                         this.savebid(
                           this.state.displayName,
@@ -247,13 +247,18 @@ const styles = StyleSheet.create({
 
   containerItem: {
     marginTop: 10,
+    padding: 10,
     elevation: 5,
     backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#efefef",
+    borderRadius: 8,
   },
 
   alignDetail: {
     flex: 1,
     flexDirection: "column",
+    alignSelf: "center",
   },
 
   textTitle: {

@@ -46,7 +46,11 @@ export default class Dashboard extends Component {
     return (
       <Container>
         <View style={styles.container}>
-    <Text>Hello, {this.state.displayName}</Text>
+          <Text style={styles.textTitle}>
+            Hello,{" "}
+            <Text style={styles.textContent}>{this.state.displayName}</Text>
+          </Text>
+
           <TouchableHighlight onPress={() => this.GoOrder()}>
             <Image
               style={styles.imagestyle}
@@ -64,11 +68,11 @@ export default class Dashboard extends Component {
               <Icon name="chatbubbles" />
               <Text>Feed</Text>
             </Button>
-            <Button vertical  onPress={() => this.GoUserOrder()}>
+            <Button vertical onPress={() => this.GoUserOrder()}>
               <Icon name="navigate" />
               <Text>Order</Text>
             </Button>
-            <Button vertical onPress={() => this.GoOrderDetail()} >
+            <Button vertical onPress={() => this.GoOrderDetail()}>
               <Icon name="person" />
               <Text>OrderDetail</Text>
             </Button>
@@ -87,14 +91,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
     padding: 35,
     backgroundColor: "#fff",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   imagestyle: {
     width: 200,
     height: 200,
     resizeMode: "contain",
+    elevation: 5,
+  },
+  textTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    alignSelf: "center",
+    marginBottom: 50,
+  },
+
+  textContent: {
+    fontSize: 14,
+    fontWeight: "normal",
   },
 });
