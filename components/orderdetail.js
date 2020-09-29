@@ -162,10 +162,25 @@ export default class OrderDetail extends Component {
       { cancelable: false }
     );
   }
+  Alertfunc2() {
+    Alert.alert(
+      "Finished",
+      "You have finished the process!",
+      [{ text: "OK", onPress: () => this.GoHome() }],
+      { cancelable: false }
+    );
+  }
   removeOrder() {
     firebase.database().ref("OrderDetail").child(this.state.uid).remove();
     firebase.database().ref("BidOrder").child(this.state.uid).remove();
     this.Alertfunc();
+  }
+  finishOrder() {
+    firebase.database().ref("OrderDetail").child(this.state.uid).remove();
+    firebase.database().ref("BidOrder").child(this.state.uid).remove();
+    firebase.database().ref("SelectedOrder").child(this.state.uid).remove();
+
+    this.Alertfunc2();
   }
   render() {
     return (
@@ -216,19 +231,21 @@ export default class OrderDetail extends Component {
                     {"\n           "}
                     Amount {this.state.bid} baht
                   </Text>
-                  <Button
-                  primary
-                  vertical
-                  style={{ marginTop: 150, padding: 10, alignSelf: "center" }}
-                  onPress={() => this.removeOrder()}
-                >
-                  <Text style={styles.buttonText}>Finish</Text>
-                </Button>
-                <Text>Click the button after you get the clothes for finish the process</Text>
                 </View>
               ) : null}
             </View>
-
+            <View style={styles.container}>
+              {this.state.selectstatus != null ? (
+                <Button
+                  primary
+                  vertical
+                  style={{ marginTop: 250, padding: 10, alignSelf: "center" }}
+                  onPress={() => this.finishOrder()}
+                >
+                  <Text style={styles.buttonText}>Click for Finish</Text>
+                </Button>
+              ) : null}
+            </View>
             <View style={styles.container}>
               {this.state.selectstatus == null ? (
                 <View style={styles.statusAlertPos}>

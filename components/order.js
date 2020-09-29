@@ -48,6 +48,7 @@ export default class Order extends Component {
   };
 
   componentDidMount() {
+    var timestamp = Date.now();
     var that = this;
     var date = new Date().getDate(); //Current Date
     var month = new Date().getMonth() + 1; //Current Month
@@ -59,6 +60,7 @@ export default class Order extends Component {
       //Setting the value of the date time
       date:
         date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec,
+        time:timestamp,
     });
 
     firebase
@@ -73,6 +75,7 @@ export default class Order extends Component {
     orderPickdatetime,
     orderDropdatetime,
     orderdate,
+    timestamp,
     uid,
     email,
     Tshirt,
@@ -88,6 +91,7 @@ export default class Order extends Component {
         orderPickdatetime,
         orderDropdatetime,
         orderdate,
+        timestamp,
         email,
         Tshirt,
         Shorts,
@@ -180,6 +184,7 @@ export default class Order extends Component {
       this.state.DropDateDisplay,
       this.state.PickDateDisplay,
       this.state.date,
+      this.state.time,
       this.state.uid,
       this.state.email,
       this.state.Tshirt,
