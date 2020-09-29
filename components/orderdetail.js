@@ -216,6 +216,15 @@ export default class OrderDetail extends Component {
                     {"\n           "}
                     Amount {this.state.bid} baht
                   </Text>
+                  <Button
+                  primary
+                  vertical
+                  style={{ marginTop: 150, padding: 10, alignSelf: "center" }}
+                  onPress={() => this.removeOrder()}
+                >
+                  <Text style={styles.buttonText}>Finish</Text>
+                </Button>
+                <Text>Click the button after you get the clothes for finish the process</Text>
                 </View>
               ) : null}
             </View>
