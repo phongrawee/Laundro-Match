@@ -5,6 +5,7 @@ import {
   Text,
   TouchableHighlight,
   Image,
+  Alert,
 } from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
@@ -15,6 +16,7 @@ export default class Dashboard extends Component {
       displayName: firebase.auth().currentUser.displayName,
       uid: firebase.auth().currentUser.uid,
       email: firebase.auth().currentUser.email,
+      status: "",
     };
   }
 
@@ -51,7 +53,27 @@ export default class Dashboard extends Component {
             <Text style={styles.textContent}>{this.state.displayName}</Text>
           </Text>
 
-          <TouchableHighlight onPress={() => this.GoOrder()}>
+          <TouchableHighlight
+            onPress={() => {
+              firebase
+                .database()
+                .ref(`OrderDetail/${this.state.uid}/status`)
+                .once("value")
+                .then((snapshot) => {
+                  var order = snapshot.val();
+                  this.setState({ status: order });
+                  console.log("laundrystatus", this.state.status);
+                  if (this.state.status == null) {
+                    this.GoOrder();
+                  } else if (this.state.status != null) {
+                    Alert.alert(
+                      "Could not Ordering",
+                      "Your order is in Progress"
+                    );
+                  }
+                });
+            }}
+          >
             <Image
               style={styles.imagestyle}
               source={require("../src/img/WashIron.png")}

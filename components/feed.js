@@ -58,6 +58,7 @@ export default class Feed extends Component {
     firebase
       .database()
       .ref("OrderDetail")
+      .orderByChild("orderDropdatetime")
       .on("value", (snapshot) => {
         var li = [];
         snapshot.forEach((child) => {

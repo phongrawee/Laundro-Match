@@ -94,6 +94,40 @@ export default class Order extends Component {
         Jacket,
         address,
         name,
+        status:'In Progress'
+      })
+      .then((data) => {
+        console.log("data", data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  Historyuserorder(
+    orderPickdatetime,
+    orderDropdatetime,
+    orderdate,
+    uid,
+    email,
+    Tshirt,
+    Shorts,
+    Jacket,
+    address,
+    name
+  ) {
+    var Detail = firebase.database().ref("History");
+    var userid = Detail.child(uid);
+    userid
+      .push({
+        orderPickdatetime,
+        orderDropdatetime,
+        orderdate,
+        email,
+        Tshirt,
+        Shorts,
+        Jacket,
+        address,
+        name,
       })
       .then((data) => {
         console.log("data", data);
@@ -143,6 +177,18 @@ export default class Order extends Component {
   }
   functionTwo() {
     this.inputuserorder(
+      this.state.DropDateDisplay,
+      this.state.PickDateDisplay,
+      this.state.date,
+      this.state.uid,
+      this.state.email,
+      this.state.Tshirt,
+      this.state.Shorts,
+      this.state.Jacket,
+      this.state.address,
+      this.state.displayName
+    );
+    this.Historyuserorder(
       this.state.DropDateDisplay,
       this.state.PickDateDisplay,
       this.state.date,
