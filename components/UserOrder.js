@@ -27,6 +27,14 @@ export default class UserOrder extends Component {
       Laddress: "",
       bidstatus: "",
       orderstatus: "",
+      Tshirt: "",
+      Shorts: "",
+      Jacket: "",
+      email: firebase.auth().currentUser.email,
+      orderDropdatetime: "",
+      orderPickdatetime: "",
+      orderdate: "",
+      address: "",
     };
   }
   signOut = () => {
@@ -94,6 +102,48 @@ export default class UserOrder extends Component {
         this.setState({ orderstatus: order });
         console.log("laundrystatus", order);
       });
+      firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/Jacket`)
+      .once("value", (snapshot) => {
+        this.setState({ Jacket: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/Tshirt`)
+      .once("value", (snapshot) => {
+        this.setState({ Tshirt: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/Shorts`)
+      .on("value", (snapshot) => {
+        this.setState({ Shorts: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/orderDropdatetime`)
+      .on("value", (snapshot) => {
+        this.setState({ orderDropdatetime: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/orderPickdatetime`)
+      .on("value", (snapshot) => {
+        this.setState({ orderPickdatetime: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/orderdate`)
+      .on("value", (snapshot) => {
+        this.setState({ orderdate: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`Users/${this.state.uid}/address`)
+      .on("value", (snapshot) => {
+        this.setState({ address: snapshot.val() });
+      });
   }
   onClose = () => this.setState({ modalVisible: false });
 
@@ -129,7 +179,24 @@ export default class UserOrder extends Component {
         });
         this.setState({ selectstatus: true });
         this.setState({ modalVisible: false });
+        firebase.database().ref("OrderDetail").child(this.state.uid).remove();
+
       });
+      var MatchDetail = firebase.database().ref("MatchOrderDetail");
+      var userid = MatchDetail.child(userid);
+      userid
+        .set({
+          orderPickdatetime:this.state.orderPickdatetime,
+          orderDropdatetime:this.state.orderDropdatetime,
+          orderdate:this.state.orderdate,
+          email:this.state.email,
+          Tshirt:this.state.Tshirt,
+          Shorts:this.state.Shorts,
+          Jacket:this.state.Jacket,
+          address:this.state.address,
+          name:this.state.displayName,
+        })
+
   }
 
   render() {

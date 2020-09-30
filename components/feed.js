@@ -73,6 +73,7 @@ export default class Feed extends Component {
             orderPickdatetime: child.val().orderPickdatetime,
             orderdate: child.val().orderdate,
             address: child.val().address,
+            expire: child.val().expire,
           });
         });
         this.setState({ list: li });
@@ -161,6 +162,10 @@ export default class Feed extends Component {
                       <Text style={styles.textTitle}>
                         Address: {"  "}
                         <Text style={styles.textContent}>{item.address}</Text>
+                      </Text>
+                      <Text style={styles.textTitle}>
+                        Expire Time: {"  "}
+                        <Text style={styles.textContent}>{item.expire}</Text>
                       </Text>
                     </View>
                   </TouchableOpacity>

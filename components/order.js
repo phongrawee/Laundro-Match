@@ -60,7 +60,7 @@ export default class Order extends Component {
       //Setting the value of the date time
       date:
         date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec,
-        time:timestamp,
+      time: timestamp,
     });
 
     firebase
@@ -86,6 +86,16 @@ export default class Order extends Component {
   ) {
     var Detail = firebase.database().ref("OrderDetail");
     var userid = Detail.child(uid);
+    var exp = timestamp + 10800000;
+    var expdate = new Date(exp);
+    
+    var date = expdate.getDate(); //Current Date
+    var month = expdate.getMonth() + 1; //Current Month
+    var year = expdate.getFullYear(); //Current Year
+    var hours = expdate.getHours(); //Current Hours
+    var min = expdate.getMinutes(); //Current Minutes
+    var sec = expdate.getSeconds(); //Current Seconds
+    var expdatetime = date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec;
     userid
       .set({
         orderPickdatetime,
@@ -98,7 +108,8 @@ export default class Order extends Component {
         Jacket,
         address,
         name,
-        status:'In Progress'
+        status: "In Progress",
+        expire: expdatetime,
       })
       .then((data) => {
         console.log("data", data);

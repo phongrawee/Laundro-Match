@@ -11,18 +11,25 @@ export default class OrderDetail extends Component {
       Tshirt: "",
       Shorts: "",
       Jacket: "",
+      Tshirt2: "",
+      Shorts2: "",
+      Jacket2: "",
       displayName: firebase.auth().currentUser.displayName,
       uid: firebase.auth().currentUser.uid,
       email: firebase.auth().currentUser.email,
       orderDropdatetime: "",
       orderPickdatetime: "",
       orderdate: "",
+      orderDropdatetime2: "",
+      orderPickdatetime2: "",
+      orderdate2: "",
       address: "",
       selectstatus: "",
       laundry: "",
       laundryid: "",
       Laddress: "",
       orderstatus: "",
+      orderstatus2: "",
       bid:"",
     };
   }
@@ -67,38 +74,74 @@ export default class OrderDetail extends Component {
   }
   componentWillMount() {
     firebase
+    .database()
+    .ref(`OrderDetail/${this.state.uid}/Jacket`)
+    .once("value", (snapshot) => {
+      this.setState({ Jacket2: snapshot.val() });
+    });
+  firebase
+    .database()
+    .ref(`OrderDetail/${this.state.uid}/Tshirt`)
+    .once("value", (snapshot) => {
+      this.setState({ Tshirt2: snapshot.val() });
+    });
+  firebase
+    .database()
+    .ref(`OrderDetail/${this.state.uid}/Shorts`)
+    .on("value", (snapshot) => {
+      this.setState({ Shorts2: snapshot.val() });
+    });
+  firebase
+    .database()
+    .ref(`OrderDetail/${this.state.uid}/orderDropdatetime`)
+    .on("value", (snapshot) => {
+      this.setState({ orderDropdatetime2: snapshot.val() });
+    });
+  firebase
+    .database()
+    .ref(`OrderDetail/${this.state.uid}/orderPickdatetime`)
+    .on("value", (snapshot) => {
+      this.setState({ orderPickdatetime2: snapshot.val() });
+    });
+  firebase
+    .database()
+    .ref(`OrderDetail/${this.state.uid}/orderdate`)
+    .on("value", (snapshot) => {
+      this.setState({ orderdate2: snapshot.val() });
+    });
+    firebase
       .database()
-      .ref(`OrderDetail/${this.state.uid}/Jacket`)
+      .ref(`MatchOrderDetail/${this.state.uid}/Jacket`)
       .once("value", (snapshot) => {
         this.setState({ Jacket: snapshot.val() });
       });
     firebase
       .database()
-      .ref(`OrderDetail/${this.state.uid}/Tshirt`)
+      .ref(`MatchOrderDetail/${this.state.uid}/Tshirt`)
       .once("value", (snapshot) => {
         this.setState({ Tshirt: snapshot.val() });
       });
     firebase
       .database()
-      .ref(`OrderDetail/${this.state.uid}/Shorts`)
+      .ref(`MatchOrderDetail/${this.state.uid}/Shorts`)
       .on("value", (snapshot) => {
         this.setState({ Shorts: snapshot.val() });
       });
     firebase
       .database()
-      .ref(`OrderDetail/${this.state.uid}/orderDropdatetime`)
+      .ref(`MatchOrderDetail/${this.state.uid}/orderDropdatetime`)
       .on("value", (snapshot) => {
         this.setState({ orderDropdatetime: snapshot.val() });
       });
     firebase
       .database()
-      .ref(`OrderDetail/${this.state.uid}/orderPickdatetime`)
+      .ref(`MatchOrderDetail/${this.state.uid}/orderPickdatetime`)
       .on("value", (snapshot) => {
         this.setState({ orderPickdatetime: snapshot.val() });
       });
     firebase
       .database()
-      .ref(`OrderDetail/${this.state.uid}/orderdate`)
+      .ref(`MatchOrderDetail/${this.state.uid}/orderdate`)
       .on("value", (snapshot) => {
         this.setState({ orderdate: snapshot.val() });
       });
@@ -152,6 +195,18 @@ export default class OrderDetail extends Component {
         var order = snapshot.val();
         this.setState({ orderstatus: order });
         console.log("laundrystatus", order);
+        firebase
+      .database()
+      .ref("MatchOrderDetail")
+      .child(this.state.uid)
+      .once("value")
+      .then((snapshot) => {
+        var order2 = snapshot.val();
+        this.setState({ orderstatus2: order2+order });
+        console.log("laundrystatus", order2);
+        console.log("HHHH",this.state.orderstatus2)
+
+      });
       });
   }
   Alertfunc() {
@@ -176,6 +231,7 @@ export default class OrderDetail extends Component {
     this.Alertfunc();
   }
   finishOrder() {
+    firebase.database().ref("MatchOrderDetail").child(this.state.uid).remove();
     firebase.database().ref("OrderDetail").child(this.state.uid).remove();
     firebase.database().ref("BidOrder").child(this.state.uid).remove();
     firebase.database().ref("SelectedOrder").child(this.state.uid).remove();
@@ -185,8 +241,9 @@ export default class OrderDetail extends Component {
   render() {
     return (
       <Container>
-        {this.state.orderstatus != null ? (
+        {this.state.orderstatus2 != 0 ? (
           <View style={styles.container}>
+            {this.state.selectstatus != null ? (
             <View style={styles.container}>
               <View style={styles.detail}>
                 <Text style={styles.textTitle}>
@@ -220,7 +277,42 @@ export default class OrderDetail extends Component {
 
                 {/* this order not already match */}
               </View>
-            </View>
+            </View>) : null}
+            {this.state.selectstatus == null ? (
+            <View style={styles.container}>
+              <View style={styles.detail}>
+                <Text style={styles.textTitle}>
+                  User Name: {"  "}{" "}
+                  <Text style={styles.textContent}>
+                    {this.state.displayName}
+                  </Text>
+                </Text>
+                <Text style={styles.textTitle}>Clothes</Text>
+                <Text style={styles.textContent}>
+                  Jacket x{this.state.Jacket2}
+                </Text>
+                <Text style={styles.textContent}>
+                  T-Shirt x{this.state.Tshirt2}
+                </Text>
+                <Text style={styles.textContent}>
+                  Shorts x{this.state.Shorts2}
+                </Text>
+                <Text style={styles.textTitle}>Drop Time: </Text>
+                <Text style={styles.textContent}>
+                  {this.state.orderDropdatetime2}
+                </Text>
+                <Text style={styles.textTitle}>Pick Time: </Text>
+                <Text style={styles.textContent}>
+                  {this.state.orderPickdatetime2}
+                </Text>
+                <Text style={styles.textTitle}>
+                  Address :{" "}
+                  <Text style={styles.textContent}>{this.state.address}</Text>
+                </Text>
+
+                {/* this order not already match */}
+              </View>
+            </View>) : null}
             <View style={styles.container}>
               {this.state.selectstatus != null ? (
                 <View style={styles.statusSuccessPos}>
@@ -271,7 +363,7 @@ export default class OrderDetail extends Component {
           </View>
         ) : null}
         <View style={styles.container}>
-          {this.state.orderstatus == null ? (
+          {this.state.orderstatus2 == 0 ? (
             <View style={styles.statusAlertPos}>
               <Text style={styles.statusAlertText}>No Order Yet!</Text>
             </View>
