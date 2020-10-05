@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Alert } from "react-native";
+import { StyleSheet, View, Text, Alert, TextInput } from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
+import { Rating, AirbnbRating } from "react-native-ratings";
+import Overlay from "react-native-modal-overlay";
 
 export default class OrderDetail extends Component {
+  state = {
+    modalVisible: false,
+  };
   constructor() {
     super();
     this.state = {
@@ -30,10 +35,15 @@ export default class OrderDetail extends Component {
       Laddress: "",
       orderstatus: "",
       orderstatus2: "",
-      bid:"",
+      bid: "",
+      Lrate: "",
+      comment: "",
     };
   }
-
+  ratingCompleted = (rating) => {
+    this.setState({ Lrate: rating });
+    console.log("Rating is: " + rating);
+  };
   signOut = () => {
     firebase
       .auth()
@@ -72,43 +82,48 @@ export default class OrderDetail extends Component {
       });
     this.Alertfunc();
   }
+  updateInputVal = (val, prop) => {
+    const state = this.state;
+    state[prop] = val;
+    this.setState(state);
+  };
   componentWillMount() {
     firebase
-    .database()
-    .ref(`OrderDetail/${this.state.uid}/Jacket`)
-    .once("value", (snapshot) => {
-      this.setState({ Jacket2: snapshot.val() });
-    });
-  firebase
-    .database()
-    .ref(`OrderDetail/${this.state.uid}/Tshirt`)
-    .once("value", (snapshot) => {
-      this.setState({ Tshirt2: snapshot.val() });
-    });
-  firebase
-    .database()
-    .ref(`OrderDetail/${this.state.uid}/Shorts`)
-    .on("value", (snapshot) => {
-      this.setState({ Shorts2: snapshot.val() });
-    });
-  firebase
-    .database()
-    .ref(`OrderDetail/${this.state.uid}/orderDropdatetime`)
-    .on("value", (snapshot) => {
-      this.setState({ orderDropdatetime2: snapshot.val() });
-    });
-  firebase
-    .database()
-    .ref(`OrderDetail/${this.state.uid}/orderPickdatetime`)
-    .on("value", (snapshot) => {
-      this.setState({ orderPickdatetime2: snapshot.val() });
-    });
-  firebase
-    .database()
-    .ref(`OrderDetail/${this.state.uid}/orderdate`)
-    .on("value", (snapshot) => {
-      this.setState({ orderdate2: snapshot.val() });
-    });
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/Jacket`)
+      .once("value", (snapshot) => {
+        this.setState({ Jacket2: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/Tshirt`)
+      .once("value", (snapshot) => {
+        this.setState({ Tshirt2: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/Shorts`)
+      .on("value", (snapshot) => {
+        this.setState({ Shorts2: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/orderDropdatetime`)
+      .on("value", (snapshot) => {
+        this.setState({ orderDropdatetime2: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/orderPickdatetime`)
+      .on("value", (snapshot) => {
+        this.setState({ orderPickdatetime2: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/orderdate`)
+      .on("value", (snapshot) => {
+        this.setState({ orderdate2: snapshot.val() });
+      });
     firebase
       .database()
       .ref(`MatchOrderDetail/${this.state.uid}/Jacket`)
@@ -163,6 +178,7 @@ export default class OrderDetail extends Component {
       .ref(`SelectedOrder/${this.state.uid}/Laundryid`)
       .on("value", (snapshot) => {
         this.setState({ laundryid: snapshot.val() });
+        console.log("Lid", this.laundryid);
       });
     firebase
       .database()
@@ -170,7 +186,7 @@ export default class OrderDetail extends Component {
       .on("value", (snapshot) => {
         this.setState({ Laddress: snapshot.val() });
       });
-      firebase
+    firebase
       .database()
       .ref(`SelectedOrder/${this.state.uid}/BidAmount`)
       .on("value", (snapshot) => {
@@ -196,17 +212,16 @@ export default class OrderDetail extends Component {
         this.setState({ orderstatus: order });
         console.log("laundrystatus", order);
         firebase
-      .database()
-      .ref("MatchOrderDetail")
-      .child(this.state.uid)
-      .once("value")
-      .then((snapshot) => {
-        var order2 = snapshot.val();
-        this.setState({ orderstatus2: order2+order });
-        console.log("laundrystatus", order2);
-        console.log("HHHH",this.state.orderstatus2)
-
-      });
+          .database()
+          .ref("MatchOrderDetail")
+          .child(this.state.uid)
+          .once("value")
+          .then((snapshot) => {
+            var order2 = snapshot.val();
+            this.setState({ orderstatus2: order2 + order });
+            console.log("laundrystatus", order2);
+            console.log("HHHH", this.state.orderstatus2);
+          });
       });
   }
   Alertfunc() {
@@ -217,26 +232,32 @@ export default class OrderDetail extends Component {
       { cancelable: false }
     );
   }
-  Alertfunc2() {
-    Alert.alert(
-      "Finished",
-      "You have finished the process!",
-      [{ text: "OK", onPress: () => this.GoHome() }],
-      { cancelable: false }
-    );
-  }
+  onClose = () => this.setState({ modalVisible: false });
+
   removeOrder() {
     firebase.database().ref("OrderDetail").child(this.state.uid).remove();
     firebase.database().ref("BidOrder").child(this.state.uid).remove();
     this.Alertfunc();
   }
   finishOrder() {
+    this.setState({ modalVisible: true });
+  }
+  FinFunc(rate, name, comment) {
+    console.log("RRR", this.ratingCompleted);
+    var dbA = firebase
+      .database()
+      .ref(`Rating/${this.state.laundryid}/${this.state.uid}`);
+    dbA.set({
+      Name: name,
+      Rating: rate,
+      Comment: comment,
+    });
+    this.setState({ modalVisible: false });
     firebase.database().ref("MatchOrderDetail").child(this.state.uid).remove();
     firebase.database().ref("OrderDetail").child(this.state.uid).remove();
     firebase.database().ref("BidOrder").child(this.state.uid).remove();
     firebase.database().ref("SelectedOrder").child(this.state.uid).remove();
-
-    this.Alertfunc2();
+    this.GoHome();
   }
   render() {
     return (
@@ -244,75 +265,77 @@ export default class OrderDetail extends Component {
         {this.state.orderstatus2 != 0 ? (
           <View style={styles.container}>
             {this.state.selectstatus != null ? (
-            <View style={styles.container}>
-              <View style={styles.detail}>
-                <Text style={styles.textTitle}>
-                  User Name: {"  "}{" "}
-                  <Text style={styles.textContent}>
-                    {this.state.displayName}
+              <View style={styles.container}>
+                <View style={styles.detail}>
+                  <Text style={styles.textTitle}>
+                    User Name: {"  "}{" "}
+                    <Text style={styles.textContent}>
+                      {this.state.displayName}
+                    </Text>
                   </Text>
-                </Text>
-                <Text style={styles.textTitle}>Clothes</Text>
-                <Text style={styles.textContent}>
-                  Jacket x{this.state.Jacket}
-                </Text>
-                <Text style={styles.textContent}>
-                  T-Shirt x{this.state.Tshirt}
-                </Text>
-                <Text style={styles.textContent}>
-                  Shorts x{this.state.Shorts}
-                </Text>
-                <Text style={styles.textTitle}>Drop Time: </Text>
-                <Text style={styles.textContent}>
-                  {this.state.orderDropdatetime}
-                </Text>
-                <Text style={styles.textTitle}>Pick Time: </Text>
-                <Text style={styles.textContent}>
-                  {this.state.orderPickdatetime}
-                </Text>
-                <Text style={styles.textTitle}>
-                  Address :{" "}
-                  <Text style={styles.textContent}>{this.state.address}</Text>
-                </Text>
+                  <Text style={styles.textTitle}>Clothes</Text>
+                  <Text style={styles.textContent}>
+                    Jacket x{this.state.Jacket}
+                  </Text>
+                  <Text style={styles.textContent}>
+                    T-Shirt x{this.state.Tshirt}
+                  </Text>
+                  <Text style={styles.textContent}>
+                    Shorts x{this.state.Shorts}
+                  </Text>
+                  <Text style={styles.textTitle}>Drop Time: </Text>
+                  <Text style={styles.textContent}>
+                    {this.state.orderDropdatetime}
+                  </Text>
+                  <Text style={styles.textTitle}>Pick Time: </Text>
+                  <Text style={styles.textContent}>
+                    {this.state.orderPickdatetime}
+                  </Text>
+                  <Text style={styles.textTitle}>
+                    Address :{" "}
+                    <Text style={styles.textContent}>{this.state.address}</Text>
+                  </Text>
 
-                {/* this order not already match */}
+                  {/* this order not already match */}
+                </View>
               </View>
-            </View>) : null}
+            ) : null}
             {this.state.selectstatus == null ? (
-            <View style={styles.container}>
-              <View style={styles.detail}>
-                <Text style={styles.textTitle}>
-                  User Name: {"  "}{" "}
-                  <Text style={styles.textContent}>
-                    {this.state.displayName}
+              <View style={styles.container}>
+                <View style={styles.detail}>
+                  <Text style={styles.textTitle}>
+                    User Name: {"  "}{" "}
+                    <Text style={styles.textContent}>
+                      {this.state.displayName}
+                    </Text>
                   </Text>
-                </Text>
-                <Text style={styles.textTitle}>Clothes</Text>
-                <Text style={styles.textContent}>
-                  Jacket x{this.state.Jacket2}
-                </Text>
-                <Text style={styles.textContent}>
-                  T-Shirt x{this.state.Tshirt2}
-                </Text>
-                <Text style={styles.textContent}>
-                  Shorts x{this.state.Shorts2}
-                </Text>
-                <Text style={styles.textTitle}>Drop Time: </Text>
-                <Text style={styles.textContent}>
-                  {this.state.orderDropdatetime2}
-                </Text>
-                <Text style={styles.textTitle}>Pick Time: </Text>
-                <Text style={styles.textContent}>
-                  {this.state.orderPickdatetime2}
-                </Text>
-                <Text style={styles.textTitle}>
-                  Address :{" "}
-                  <Text style={styles.textContent}>{this.state.address}</Text>
-                </Text>
+                  <Text style={styles.textTitle}>Clothes</Text>
+                  <Text style={styles.textContent}>
+                    Jacket x{this.state.Jacket2}
+                  </Text>
+                  <Text style={styles.textContent}>
+                    T-Shirt x{this.state.Tshirt2}
+                  </Text>
+                  <Text style={styles.textContent}>
+                    Shorts x{this.state.Shorts2}
+                  </Text>
+                  <Text style={styles.textTitle}>Drop Time: </Text>
+                  <Text style={styles.textContent}>
+                    {this.state.orderDropdatetime2}
+                  </Text>
+                  <Text style={styles.textTitle}>Pick Time: </Text>
+                  <Text style={styles.textContent}>
+                    {this.state.orderPickdatetime2}
+                  </Text>
+                  <Text style={styles.textTitle}>
+                    Address :{" "}
+                    <Text style={styles.textContent}>{this.state.address}</Text>
+                  </Text>
 
-                {/* this order not already match */}
+                  {/* this order not already match */}
+                </View>
               </View>
-            </View>) : null}
+            ) : null}
             <View style={styles.container}>
               {this.state.selectstatus != null ? (
                 <View style={styles.statusSuccessPos}>
@@ -369,6 +392,45 @@ export default class OrderDetail extends Component {
             </View>
           ) : null}
         </View>
+        <Overlay
+          visible={this.state.modalVisible}
+          onClose={this.onClose}
+          closeOnTouchOutside
+          containerStyle={{
+            backgroundColor: "rgba(0, 0, 0, 0.60)",
+          }}
+        >
+          <View>
+          <Text>
+            You have finished the order! Plz rating for {this.state.laundry}
+          </Text>
+        
+          <AirbnbRating
+            showRating
+            onFinishRating={this.ratingCompleted}
+            style={{ paddingVertical: 10 }}
+          />
+          <TextInput
+            style={styles.inputStyle}
+            placeholder="Comment"
+            value={this.state.comment}
+            onChangeText={(val) => this.updateInputVal(val, "comment")}
+            maxLength={50}
+          />
+          <Button
+            vertical
+            onPress={() =>
+              this.FinFunc(
+                this.state.Lrate,
+                this.state.displayName,
+                this.state.comment
+              )
+            }
+          >
+            <Text>OK</Text>
+          </Button>
+          </View>
+        </Overlay>
         <Footer>
           <FooterTab>
             <Button vertical onPress={() => this.GoHome()}>

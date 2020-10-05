@@ -5,7 +5,7 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 // Cut off time. Child nodes older than this will be deleted.
-const CUT_OFF_TIME = 60*1000; // 2 Hours in milliseconds.
+const CUT_OFF_TIME = 3*60*60*1000; // 3 Hours in milliseconds.
 
 /**
  * This database triggered function will check for child nodes that are older than the
