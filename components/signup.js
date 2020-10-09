@@ -19,10 +19,10 @@ export default class Signup extends Component {
       password: "",
       address: "",
       isLoading: false,
-      uid:"",
+      uid: "",
     };
   }
-  writeuserdata(uid,email, address,name) {
+  writeuserdata(uid, email, address, name) {
     var dbA = firebase.database().ref("Users");
     var userid = dbA.child(uid);
     userid
@@ -61,15 +61,19 @@ export default class Signup extends Component {
           });
           console.log("User registered successfully!");
 
-           
           this.props.navigation.navigate("Login");
         })
         .then(() => {
           this.setState({
             uid: firebase.auth().currentUser.uid,
           });
-          this.writeuserdata(this.state.uid,this.state.email, this.state.address,this.state.displayName);
-         this.setState({
+          this.writeuserdata(
+            this.state.uid,
+            this.state.email,
+            this.state.address,
+            this.state.displayName
+          );
+          this.setState({
             isLoading: false,
             displayName: "",
             email: "",
@@ -132,7 +136,7 @@ export default class Signup extends Component {
           maxLength={50}
         />
         <Button
-          color="#3740FE"
+          color="#3f51b5"
           title="Signup"
           onPress={() => this.registerUser()}
         />
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   loginText: {
-    color: "#3740FE",
+    color: "#3f51b5",
     marginTop: 25,
     textAlign: "center",
   },

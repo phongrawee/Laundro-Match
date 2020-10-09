@@ -3,12 +3,19 @@ import {
   StyleSheet,
   View,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   Image,
   Alert,
 } from "react-native";
 import firebase from "../database/firebase";
-import { Container, Footer, FooterTab, Button, Icon } from "native-base";
+import {
+  Container,
+  Footer,
+  FooterTab,
+  Button,
+  Icon,
+  Content,
+} from "native-base";
 export default class Dashboard extends Component {
   constructor() {
     super();
@@ -47,13 +54,16 @@ export default class Dashboard extends Component {
   render() {
     return (
       <Container>
-        <View style={styles.container}>
-          <Text style={styles.textTitle}>
-            Hello,{" "}
-            <Text style={styles.textContent}>{this.state.displayName}</Text>
-          </Text>
-
-          <TouchableHighlight
+        <Content>
+          <View style={styles.namedisplay}>
+            <Text style={styles.textHeading}>
+              Hello, {this.state.displayName}
+              {"\n"}
+              <Text style={styles.textContent}>Welcome Back!</Text>
+            </Text>
+            <Text style={styles.textContent2}>Choose Service</Text>
+          </View>
+          <TouchableOpacity
             onPress={() => {
               firebase
                 .database()
@@ -76,26 +86,33 @@ export default class Dashboard extends Component {
           >
             <Image
               style={styles.imagestyle}
-              source={require("../src/img/WashIron.png")}
+              source={require("../src/img/customer.png")}
             />
-          </TouchableHighlight>
-        </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.GoFeed();
+            }}
+          >
+            <Image
+              style={styles.imagestyle}
+              source={require("../src/img/laundry.png")}
+            />
+          </TouchableOpacity>
+        </Content>
         <Footer>
           <FooterTab>
-            <Button vertical onPress={() => this.GoHome()}>
+            <Button vertical onPress={() => this.GoHome()} active>
               <Icon name="home" />
               <Text>Home</Text>
             </Button>
-            <Button vertical onPress={() => this.GoFeed()}>
-              <Icon name="chatbubbles" />
-              <Text>Feed</Text>
-            </Button>
+
             <Button vertical onPress={() => this.GoUserOrder()}>
-              <Icon name="navigate" />
-              <Text>Order</Text>
+              <Icon name="cart" />
+              <Text>Match</Text>
             </Button>
             <Button vertical onPress={() => this.GoOrderDetail()}>
-              <Icon name="person" />
+              <Icon name="paper" />
               <Text>OrderDetail</Text>
             </Button>
             <Button vertical onPress={() => this.signOut()}>
@@ -120,20 +137,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   imagestyle: {
-    width: 200,
-    height: 200,
     resizeMode: "contain",
     elevation: 5,
-  },
-  textTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
     alignSelf: "center",
-    marginBottom: 50,
+    marginTop: 8,
   },
 
+  textHeading: {
+    fontSize: 32,
+    color: "#000000",
+    fontWeight: "bold",
+  },
   textContent: {
-    fontSize: 14,
+    fontSize: 32,
     fontWeight: "normal",
   },
+  textContent2: {
+    paddingTop: 30,
+    fontSize: 20,
+    fontWeight: "normal",
+  },
+
+  namedisplay: { marginLeft: 30, marginTop: 30 },
 });
