@@ -141,7 +141,7 @@ export default class UserOrder extends Component {
       });
       firebase
       .database()
-      .ref(`OrderDetail/${this.state.uid}/serivce`)
+      .ref(`OrderDetail/${this.state.uid}/service`)
       .on("value", (snapshot) => {
         this.setState({ Service: snapshot.val() });
       });

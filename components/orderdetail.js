@@ -40,6 +40,8 @@ export default class OrderDetail extends Component {
       comment: "",
       Service: "",
       Service2: "",
+      date: "",
+      time:"",
     };
   }
   ratingCompleted = (rating) => {
@@ -254,9 +256,25 @@ export default class OrderDetail extends Component {
     this.Alertfunc();
   }
   finishOrder() {
+    var timestamp = Date.now();
+    var that = this;
+    var date = new Date().getDate(); //Current Date
+    var month = new Date().getMonth() + 1; //Current Month
+    var year = new Date().getFullYear(); //Current Year
+    var hours = new Date().getHours(); //Current Hours
+    var min = new Date().getMinutes(); //Current Minutes
+    var sec = new Date().getSeconds(); //Current Seconds
+    that.setState({
+      date:
+        date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec,
+      time: timestamp,
+    });
     this.setState({ modalVisible: true });
+    console.log("Date", this.state.date);
   }
   FinFunc(rate, name, comment) {
+    console.log("Date2", this.state.date);
+
     console.log("RRR", this.ratingCompleted);
     var dbA = firebase
       .database()
@@ -265,6 +283,8 @@ export default class OrderDetail extends Component {
       Name: name,
       Rating: rate,
       Comment: comment,
+      time: this.state.date,
+      timestamp: this.state.time,
     });
     this.setState({ modalVisible: false });
     firebase.database().ref("MatchOrderDetail").child(this.state.uid).remove();

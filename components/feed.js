@@ -14,6 +14,7 @@ import { TextInput } from "react-native-gesture-handler";
 export default class Feed extends Component {
   state = {
     modalVisible: false,
+    shopVisible: false,
   };
   constructor() {
     super();
@@ -21,9 +22,12 @@ export default class Feed extends Component {
       displayName: firebase.auth().currentUser.displayName,
       uid: firebase.auth().currentUser.uid,
       list: [],
+      ratelist: [],
       ordername: "",
       bid: "",
       orderkey: "",
+      average: "",
+      num: "",
     };
   }
   updateInputVal = (val, prop) => {
@@ -32,6 +36,7 @@ export default class Feed extends Component {
     this.setState(state);
   };
   onClose = () => this.setState({ modalVisible: false });
+  onClose2 = () => this.setState({ shopVisible: false });
 
   signOut = () => {
     firebase
@@ -54,7 +59,7 @@ export default class Feed extends Component {
   GoOrderDetail() {
     this.props.navigation.navigate("OrderDetail");
   }
-  componentDidMount() {
+  componentWillMount() {
     firebase
       .database()
       .ref("OrderDetail")
@@ -78,9 +83,51 @@ export default class Feed extends Component {
         });
         this.setState({ list: li });
       });
+    var count = 0;
+    var total = 0;
+    firebase
+      .database()
+      .ref("Rating")
+      .child(this.state.uid)
+      .orderByChild("timestamp")
+      .on("value", (snapshot) => {
+        var rateli = [];
+        snapshot.forEach((child) => {
+          total = total + parseInt(child.val().Rating);
+          rateli.push({
+            key: child.key,
+            Name: child.val().Name,
+            Rating: child.val().Rating,
+            Comment: child.val().Comment,
+            time: child.val().time,
+            timestamp: child.val().timestamp,
+          });
+          count++;
+        });
+        var avg = total / count;
+        this.setState({ average: avg.toFixed(2) });
+        this.setState({ num: count });
+        this.setState({ ratelist: rateli });
+
+        console.log("avg", avg.toFixed(2));
+        console.log("total", total);
+        console.log("count", count);
+      });
+  }
+  componentDidMount() {
+    var dbavg = firebase.database().ref("ShopAvg");
+    var userid = dbavg.child(this.state.uid);
+    userid.set({
+      Laundry: this.state.displayName,
+      Rating: this.state.average,
+      CusNum: this.state.num,
+    });
   }
   bidpress = () => {
     this.setState({ modalVisible: true });
+  };
+  shoppress = () => {
+    this.setState({ shopVisible: true });
   };
   setname(input, key) {
     this.setState({ ordername: input });
@@ -123,6 +170,58 @@ export default class Feed extends Component {
   render() {
     return (
       <Container>
+        <TouchableOpacity
+          style={styles.containerItem}
+          onPress={() => this.shoppress()}
+        >
+          <Text style={styles.textTitle}>Your Shop Infomation</Text>
+        </TouchableOpacity>
+        <Overlay
+          visible={this.state.shopVisible}
+          onClose={this.onClose2}
+          closeOnTouchOutside
+          containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.60)" }}
+        >
+          <View>
+            <Text style={styles.textTitle}>
+              {this.state.displayName}'s Laundry Shop
+            </Text>
+            <Text style={styles.textTitle}>
+              Average Rating : {this.state.average}
+            </Text>
+            <View style={styles.containerFlatlist}>
+              <FlatList
+                style={{ width: "100%" }}
+                data={this.state.ratelist}
+                keyExtractor={(item) => item.key}
+                renderItem={({ item }) => {
+                  return (
+                    <View>
+                      <View style={styles.alignDetail}>
+                        <Text style={styles.textTitle}>
+                          Username:{"  "}
+                          <Text style={styles.textContent}>{item.Name}</Text>
+                        </Text>
+                        <Text style={styles.textTitle}>
+                          Rating : {item.Rating}
+                        </Text>
+                        <Text style={styles.textTitle}>
+                          Comment :
+                          <Text style={styles.textContent}>{item.Comment}</Text>
+                        </Text>
+                        <Text style={styles.textTitle}>
+                          Date/Time :
+                          <Text style={styles.textContent}>{item.time}</Text>
+                        </Text>
+                      </View>
+                    </View>
+                  );
+                }}
+              />
+            </View>
+          </View>
+        </Overlay>
+
         <View style={styles.containerFlatlist}>
           <FlatList
             style={{ width: "100%" }}

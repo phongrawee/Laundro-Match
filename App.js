@@ -22,9 +22,9 @@ function MyStack() {
       screenOptions={{
         headerTitleAlign: "center",
         headerStyle: {
-          backgroundColor: "#3f51b5",
+          backgroundColor: "#3740FE",
         },
-        headerTintColor: "#f1f1f1",
+        headerTintColor: "#fff",
         headerTitleStyle: {
           fontWeight: "bold",
         },
@@ -74,11 +74,12 @@ function MyStack() {
         component={OrderDetail}
         options={{ title: "Order Detail" }}
       />
-      <Stack.Screen
+        <Stack.Screen
         name="UserOrder"
         component={UserOrder}
         options={{ title: "Your Order" }}
       />
+     
     </Stack.Navigator>
   );
 }
