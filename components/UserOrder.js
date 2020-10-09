@@ -35,6 +35,7 @@ export default class UserOrder extends Component {
       orderPickdatetime: "",
       orderdate: "",
       address: "",
+      Service:"",
     };
   }
   signOut = () => {
@@ -138,6 +139,12 @@ export default class UserOrder extends Component {
       .on("value", (snapshot) => {
         this.setState({ orderdate: snapshot.val() });
       });
+      firebase
+      .database()
+      .ref(`OrderDetail/${this.state.uid}/serivce`)
+      .on("value", (snapshot) => {
+        this.setState({ Service: snapshot.val() });
+      });
     firebase
       .database()
       .ref(`Users/${this.state.uid}/address`)
@@ -195,6 +202,7 @@ export default class UserOrder extends Component {
           Jacket:this.state.Jacket,
           address:this.state.address,
           name:this.state.displayName,
+          service:this.state.Service,
         })
 
   }

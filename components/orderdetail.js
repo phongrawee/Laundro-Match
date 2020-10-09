@@ -36,8 +36,10 @@ export default class OrderDetail extends Component {
       orderstatus: "",
       orderstatus2: "",
       bid: "",
-      Lrate: "",
+      Lrate: "3",
       comment: "",
+      Service: "",
+      Service2: "",
     };
   }
   ratingCompleted = (rating) => {
@@ -126,6 +128,12 @@ export default class OrderDetail extends Component {
       });
     firebase
       .database()
+      .ref(`OrderDetail/${this.state.uid}/service`)
+      .on("value", (snapshot) => {
+        this.setState({ Service2: snapshot.val() });
+      });
+    firebase
+      .database()
       .ref(`MatchOrderDetail/${this.state.uid}/Jacket`)
       .once("value", (snapshot) => {
         this.setState({ Jacket: snapshot.val() });
@@ -159,6 +167,12 @@ export default class OrderDetail extends Component {
       .ref(`MatchOrderDetail/${this.state.uid}/orderdate`)
       .on("value", (snapshot) => {
         this.setState({ orderdate: snapshot.val() });
+      });
+    firebase
+      .database()
+      .ref(`MatchOrderDetail/${this.state.uid}/service`)
+      .on("value", (snapshot) => {
+        this.setState({ Service: snapshot.val() });
       });
     firebase
       .database()
@@ -262,6 +276,7 @@ export default class OrderDetail extends Component {
   render() {
     return (
       <Container>
+        {/*Detail After Matching*/}
         {this.state.orderstatus2 != 0 ? (
           <View style={styles.container}>
             {this.state.selectstatus != null ? (
@@ -283,6 +298,8 @@ export default class OrderDetail extends Component {
                   <Text style={styles.textContent}>
                     Shorts x{this.state.Shorts}
                   </Text>
+                  <Text style={styles.textTitle}>Service Type</Text>
+                  <Text style={styles.textContent}>{this.state.Service}</Text>
                   <Text style={styles.textTitle}>Drop Time: </Text>
                   <Text style={styles.textContent}>
                     {this.state.orderDropdatetime}
@@ -300,6 +317,7 @@ export default class OrderDetail extends Component {
                 </View>
               </View>
             ) : null}
+            {/*Detail before Matching*/}
             {this.state.selectstatus == null ? (
               <View style={styles.container}>
                 <View style={styles.detail}>
@@ -319,6 +337,8 @@ export default class OrderDetail extends Component {
                   <Text style={styles.textContent}>
                     Shorts x{this.state.Shorts2}
                   </Text>
+                  <Text style={styles.textTitle}>Service Type</Text>
+                  <Text style={styles.textContent}>{this.state.Service2}</Text>
                   <Text style={styles.textTitle}>Drop Time: </Text>
                   <Text style={styles.textContent}>
                     {this.state.orderDropdatetime2}
@@ -401,34 +421,34 @@ export default class OrderDetail extends Component {
           }}
         >
           <View>
-          <Text>
-            You have finished the order! Plz rating for {this.state.laundry}
-          </Text>
-        
-          <AirbnbRating
-            showRating
-            onFinishRating={this.ratingCompleted}
-            style={{ paddingVertical: 10 }}
-          />
-          <TextInput
-            style={styles.inputStyle}
-            placeholder="Comment"
-            value={this.state.comment}
-            onChangeText={(val) => this.updateInputVal(val, "comment")}
-            maxLength={50}
-          />
-          <Button
-            vertical
-            onPress={() =>
-              this.FinFunc(
-                this.state.Lrate,
-                this.state.displayName,
-                this.state.comment
-              )
-            }
-          >
-            <Text>OK</Text>
-          </Button>
+            <Text>
+              You have finished the order! Plz rating for {this.state.laundry}
+            </Text>
+
+            <AirbnbRating
+              showRating
+              onFinishRating={this.ratingCompleted}
+              style={{ paddingVertical: 10 }}
+            />
+            <TextInput
+              style={styles.inputStyle}
+              placeholder="Comment"
+              value={this.state.comment}
+              onChangeText={(val) => this.updateInputVal(val, "comment")}
+              maxLength={50}
+            />
+            <Button
+              vertical
+              onPress={() =>
+                this.FinFunc(
+                  this.state.Lrate,
+                  this.state.displayName,
+                  this.state.comment
+                )
+              }
+            >
+              <Text>OK</Text>
+            </Button>
           </View>
         </Overlay>
         <Footer>

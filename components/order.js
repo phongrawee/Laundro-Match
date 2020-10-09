@@ -4,7 +4,7 @@ import { StyleSheet, View, ScrollView, Image, Text, Alert } from "react-native";
 import InputSpinner from "react-native-input-spinner";
 import firebase from "../database/firebase";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { color } from "react-native-reanimated";
+import { Picker } from "react-native";
 
 export default class Order extends Component {
   constructor() {
@@ -20,6 +20,7 @@ export default class Order extends Component {
       displayName: firebase.auth().currentUser.displayName,
       uid: firebase.auth().currentUser.uid,
       email: firebase.auth().currentUser.email,
+      Service: "Wash only",
     };
   }
   state = {
@@ -82,20 +83,22 @@ export default class Order extends Component {
     Shorts,
     Jacket,
     address,
-    name
+    name,
+    service
   ) {
     var Detail = firebase.database().ref("OrderDetail");
     var userid = Detail.child(uid);
     var exp = timestamp + 10800000;
     var expdate = new Date(exp);
-    
+
     var date = expdate.getDate(); //Current Date
     var month = expdate.getMonth() + 1; //Current Month
     var year = expdate.getFullYear(); //Current Year
     var hours = expdate.getHours(); //Current Hours
     var min = expdate.getMinutes(); //Current Minutes
     var sec = expdate.getSeconds(); //Current Seconds
-    var expdatetime = date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec;
+    var expdatetime =
+      date + "/" + month + "/" + year + " " + hours + ":" + min + ":" + sec;
     userid
       .set({
         orderPickdatetime,
@@ -110,6 +113,7 @@ export default class Order extends Component {
         name,
         status: "In Progress",
         expire: expdatetime,
+        service,
       })
       .then((data) => {
         console.log("data", data);
@@ -128,7 +132,8 @@ export default class Order extends Component {
     Shorts,
     Jacket,
     address,
-    name
+    name,
+    service
   ) {
     var Detail = firebase.database().ref("History");
     var userid = Detail.child(uid);
@@ -143,6 +148,7 @@ export default class Order extends Component {
         Jacket,
         address,
         name,
+        service,
       })
       .then((data) => {
         console.log("data", data);
@@ -202,7 +208,8 @@ export default class Order extends Component {
       this.state.Shorts,
       this.state.Jacket,
       this.state.address,
-      this.state.displayName
+      this.state.displayName,
+      this.state.Service
     );
     this.Historyuserorder(
       this.state.DropDateDisplay,
@@ -214,7 +221,8 @@ export default class Order extends Component {
       this.state.Shorts,
       this.state.Jacket,
       this.state.address,
-      this.state.displayName
+      this.state.displayName,
+      this.state.Service,
     );
   }
   functionCombined() {
@@ -268,6 +276,20 @@ export default class Order extends Component {
               colorPress={"#3f51b5"}
             />
           </View>
+          <View>
+            <Picker
+              placeholder={"Selcet a service..."}
+              selectedValue={this.state.Service}
+              style={{ height: 50, width: 150, left: 100 }}
+              onValueChange={(itemValue, itemIndex) =>
+                this.setState({ Service: itemValue })
+              }
+            >
+              <Picker.Item label="Wash only" value="Wash only" />
+              <Picker.Item label="Iron only" value="Iron only" />
+              <Picker.Item label="Wash&Iron" value="Wash&Iron" />
+            </Picker>
+          </View>
           <View style={styles.datetime}>
             <Button
               block
@@ -287,7 +309,6 @@ export default class Order extends Component {
             />
             <Text style={styles.itemtext}>{this.state.DropDateDisplay}</Text>
           </View>
-
           <View style={styles.datetime}>
             <Button
               block
@@ -374,7 +395,7 @@ const styles = StyleSheet.create({
   orderButton: {
     flexDirection: "column",
     justifyContent: "flex-end",
-    marginVertical: 38,
+    marginVertical: 25,
     marginHorizontal: 28,
   },
 
