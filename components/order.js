@@ -222,12 +222,24 @@ export default class Order extends Component {
       this.state.Jacket,
       this.state.address,
       this.state.displayName,
-      this.state.Service,
+      this.state.Service
     );
   }
   functionCombined() {
-    this.functionTwo();
-    this.Alertfunc();
+    if (
+      (this.state.Tshirt == 0 &&
+        this.state.Shorts == 0 &&
+        this.state.Jacket == 0) ||
+      this.state.DropDateDisplay == "" ||
+      this.state.PickDateDisplay == ""
+    ) {
+      Alert.alert("Notification","Please Enter details to order!");
+      console.log("Error");
+    } else {
+      console.log("Pass");
+      this.functionTwo();
+      this.Alertfunc();
+    }
   }
   Alertfunc() {
     Alert.alert(
@@ -237,6 +249,7 @@ export default class Order extends Component {
       { cancelable: false }
     );
   }
+
   render() {
     return (
       <Container>

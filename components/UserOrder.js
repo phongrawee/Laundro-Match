@@ -64,6 +64,7 @@ export default class UserOrder extends Component {
       .database()
       .ref("BidOrder")
       .child(this.state.uid)
+      .orderByChild("Rating")
       .on("value", (snapshot) => {
         var li = [];
         snapshot.forEach((child) => {
@@ -71,8 +72,12 @@ export default class UserOrder extends Component {
             key: child.key,
             Laundry: child.val().Laundry,
             Bidamount: child.val().Bidamount,
+            Rating: child.val().Rating,
+            CusNum:child.val().CusNum,
+            Location:child.val().Location,
           });
         });
+        li.reverse();
         this.setState({ list: li });
       });
     firebase
@@ -183,6 +188,7 @@ export default class UserOrder extends Component {
           Laundryid: Laundryid,
           LaundryAddress: add,
           BidAmount: this.state.bid,
+          address: this.state.Laddress
         });
         this.setState({ selectstatus: true });
         this.setState({ modalVisible: false });
@@ -190,8 +196,8 @@ export default class UserOrder extends Component {
 
       });
       var MatchDetail = firebase.database().ref("MatchOrderDetail");
-      var userid = MatchDetail.child(userid);
-      userid
+      var userid2 = MatchDetail.child(userid);
+      userid2
         .set({
           orderPickdatetime:this.state.orderPickdatetime,
           orderDropdatetime:this.state.orderDropdatetime,
@@ -204,7 +210,6 @@ export default class UserOrder extends Component {
           name:this.state.displayName,
           service:this.state.Service,
         })
-
   }
 
   render() {
@@ -250,6 +255,12 @@ export default class UserOrder extends Component {
                                   {item.Bidamount} baht
                                 </Text>
                               </Text>
+                              <Text style={styles.textTitle}>Rating :<Text style={styles.textContent}>
+                                  {item.Rating} ({item.CusNum})
+                                </Text></Text>
+                                <Text style={styles.textTitle}>Location :<Text style={styles.textContent}>
+                                  {item.Location}
+                                </Text></Text>
                             </View>
                           </TouchableOpacity>
                           <Overlay

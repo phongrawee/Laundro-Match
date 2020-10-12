@@ -555,7 +555,7 @@ const styles = StyleSheet.create({
   statusSuccessPos: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 200,
+    marginTop: 240,
     padding: 10,
     backgroundColor: "#eaffd7",
   },

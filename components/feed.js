@@ -28,6 +28,7 @@ export default class Feed extends Component {
       orderkey: "",
       average: "",
       num: "",
+      address:"",
     };
   }
   updateInputVal = (val, prop) => {
@@ -113,16 +114,14 @@ export default class Feed extends Component {
         console.log("total", total);
         console.log("count", count);
       });
+      firebase
+      .database()
+      .ref(`Users/${this.state.uid}/address`)
+      .on("value", (snapshot) => {
+        this.setState({ address: snapshot.val() });
+      });
   }
-  componentDidMount() {
-    var dbavg = firebase.database().ref("ShopAvg");
-    var userid = dbavg.child(this.state.uid);
-    userid.set({
-      Laundry: this.state.displayName,
-      Rating: this.state.average,
-      CusNum: this.state.num,
-    });
-  }
+
   bidpress = () => {
     this.setState({ modalVisible: true });
   };
@@ -138,9 +137,14 @@ export default class Feed extends Component {
     this.bidpress();
   }
   savebid(Lname, bid, key) {
-    //this.setbidinput(ordername,key)
-    this.setbidinput2(Lname, bid, key);
-    this.Alertfunc();
+    if (this.state.bid == "") {
+      Alert.alert("Notification", "Please bid at least 1 baht!");
+      console.log("Error");
+    } else {
+      console.log("Pass");
+      this.setbidinput2(Lname, bid, key);
+      this.Alertfunc();
+    }
   }
   setbidinput(ordername, key) {
     var dbA = firebase.database().ref("BidOrder");
@@ -157,6 +161,9 @@ export default class Feed extends Component {
     laundrybider.set({
       Laundry: Lname,
       Bidamount: bid,
+      Rating: this.state.average,
+      CusNum: this.state.num,
+      Location: this.state.address,
     });
   }
   Alertfunc() {
