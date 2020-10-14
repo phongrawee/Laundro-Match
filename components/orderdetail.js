@@ -472,21 +472,17 @@ export default class OrderDetail extends Component {
           </View>
         </Overlay>
         <Footer>
-          <FooterTab>
+          <FooterTab style={{ backgroundColor: "#145c9e" }}>
             <Button vertical onPress={() => this.GoHome()}>
               <Icon name="home" />
               <Text>Home</Text>
             </Button>
-            <Button vertical onPress={() => this.GoFeed()}>
-              <Icon name="chatbubbles" />
-              <Text>Feed</Text>
-            </Button>
             <Button vertical onPress={() => this.GoUserOrder()}>
-              <Icon active name="navigate" />
-              <Text>Order</Text>
+              <Icon name="cart" />
+              <Text>Match</Text>
             </Button>
-            <Button vertical onPress={() => this.GoOrderDetail()}>
-              <Icon name="person" />
+            <Button vertical>
+              <Icon name="person" onPress={() => this.GoOrderDetail()} />
               <Text>OrderDetail</Text>
             </Button>
             <Button vertical onPress={() => this.signOut()}>

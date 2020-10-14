@@ -53,7 +53,7 @@ export default class Dashboard extends Component {
   }
   render() {
     return (
-      <Container>
+      <View style={styles.container}>
         <Content>
           <View style={styles.namedisplay}>
             <Text style={styles.textHeading}>
@@ -121,7 +121,7 @@ export default class Dashboard extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </Container>
+        </View>
     );
   }
 }
@@ -129,12 +129,8 @@ export default class Dashboard extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
-    padding: 30,
-    backgroundColor: "#fff",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor:"#ebf0f7",  
+    justifyContent: "center"  
   },
   imagestyle: {
     resizeMode: "contain",

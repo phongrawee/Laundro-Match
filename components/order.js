@@ -357,15 +357,11 @@ export default class Order extends Component {
         
 
 
-        <Footer style={styles.footer}>
+        <Footer>
           <FooterTab style={{ backgroundColor: "#145c9e" }}>
             <Button vertical onPress={() => this.GoHome()}>
               <Icon name="home" />
               <Text>Home</Text>
-            </Button>
-            <Button vertical onPress={() => this.GoFeed()}>
-              <Icon name="chatbubbles" />
-              <Text>Feed</Text>
             </Button>
             <Button vertical onPress={() => this.GoUserOrder()}>
               <Icon name="navigate" />

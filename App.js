@@ -77,7 +77,7 @@ function MyStack() {
         <Stack.Screen
         name="UserOrder"
         component={UserOrder}
-        options={{ title: "Your Order" }}
+        options={{ title: "Match Your Order" }}
       />
      
     </Stack.Navigator>

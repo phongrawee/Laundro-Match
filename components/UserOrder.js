@@ -5,10 +5,13 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  Image
 } from "react-native";
 import firebase from "../database/firebase";
-import { Container, Footer, FooterTab, Button, Icon } from "native-base";
+import { Container, Footer, FooterTab, Button, Icon, Card } from "native-base";
 import Overlay from "react-native-modal-overlay";
+import { ceil } from "react-native-reanimated";
+
 
 export default class UserOrder extends Component {
   state = {
@@ -214,7 +217,7 @@ export default class UserOrder extends Component {
 
   render() {
     return (
-      <Container>
+      <View style={styles.container}>
         {this.state.orderstatus != null ? (
           <View style={styles.container}>
             {this.state.bidstatus != null ? (
@@ -231,46 +234,43 @@ export default class UserOrder extends Component {
                     style={styles.containerFlatlist}
                     renderItem={({ item }) => {
                       return (
-                        <View>
-                          <TouchableOpacity
-                            style={styles.containerItem}
-                            onPress={() =>
-                              this.selectlaundry(
-                                item.Laundry,
-                                item.Bidamount,
-                                item.key
-                              )
-                            }
-                          >
-                            <View style={{ alignSelf: "center" }}>
-                              <Text style={styles.textTitle}>
-                                Laundry Name:{"  "}{" "}
-                                <Text style={styles.textContent}>
-                                  {item.Laundry}
-                                </Text>
-                              </Text>
-                              <Text style={styles.textTitle}>
-                                Bid Amount:{" "}
-                                <Text style={styles.textContent}>
-                                  {item.Bidamount} baht
-                                </Text>
-                              </Text>
-                              <Text style={styles.textTitle}>Rating :<Text style={styles.textContent}>
-                                  {item.Rating} ({item.CusNum})
-                                </Text></Text>
-                                <Text style={styles.textTitle}>Location :<Text style={styles.textContent}>
-                                  {item.Location}
-                                </Text></Text>
-                            </View>
+                        <View style={styles.container}>
+                         
+                          <View style={styles.card}  >
+                          <View style={styles.cardContent}>
+                          <Text style={styles.textHeading}>{item.Laundry}</Text>
+                          <View style={styles.alignsameline}>
+                          <Image style={styles.image} source={require("../src/img/cash.png")}/><Text style={styles.textContent}>{item.Bidamount} Baht</Text>
+                          </View>
+                          <View style={styles.alignsameline}>
+                          <Image style={styles.image} source={require("../src/img/star.png")}/><Text style={styles.textContent}>{item.Rating} ({item.CusNum})</Text>
+                          </View>  
+                          <View style={styles.alignsameline}>
+                          <Image style={styles.image} source={require("../src/img/location.png")}/><Text style={styles.textContent}>{item.Location} </Text>  
+                          </View>                                               
+                          <TouchableOpacity 
+                          style={styles.followButton} 
+                          onPress={() =>
+                            this.selectlaundry(
+                              item.Laundry,
+                              item.Bidamount,
+                              item.key
+                            )
+                          }>
+                              <Text style={styles.followButtonText}>Select</Text>  
                           </TouchableOpacity>
+                          </View>
+                          </View>
+                     
                           <Overlay
                             visible={this.state.modalVisible}
                             onClose={this.onClose}
                             closeOnTouchOutside
                             containerStyle={{
-                              backgroundColor: "rgba(0, 0, 0, 0.60)",
+                              backgroundColor: "rgba(0, 0, 0, 0.80)",
                             }}
                           >
+
                             <Text style={styles.textTitle}>
                               Laundry Name:{" "}
                               <Text style={styles.textContent}>
@@ -311,32 +311,32 @@ export default class UserOrder extends Component {
               </View>
             ) : null}
             {this.state.bidstatus == null ? (
+              <View style={styles.container}>
               <View style={styles.textStatusContainer}>
                 <Text>No Laundry Bid yet</Text>
+              </View>
               </View>
             ) : null}
           </View>
         ) : null}
 
         {this.state.orderstatus == null ? (
+          <View style={styles.container}>
           <View style={styles.textStatusContainer}>
-            <Text>You don't order yet!</Text>
+            <Text>You are not have an order</Text>
+          </View>
           </View>
         ) : null}
 
         <Footer>
-          <FooterTab>
+          <FooterTab style={{ backgroundColor: "#145c9e" }}>
             <Button vertical onPress={() => this.GoHome()}>
               <Icon name="home" />
               <Text>Home</Text>
             </Button>
-            <Button vertical onPress={() => this.GoFeed()}>
-              <Icon name="chatbubbles" />
-              <Text>Feed</Text>
-            </Button>
             <Button vertical onPress={() => this.GoUserOrder()}>
-              <Icon name="navigate" />
-              <Text>Order</Text>
+              <Icon name="cart" />
+              <Text>Match</Text>
             </Button>
             <Button vertical onPress={() => this.GoOrderDetail()}>
               <Icon name="person" />
@@ -348,7 +348,7 @@ export default class UserOrder extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </Container>
+      </View>
     );
   }
 }
@@ -356,45 +356,83 @@ export default class UserOrder extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 16,
-    flexDirection: "column",
+    backgroundColor:"#ebf0f7",  
+    justifyContent: "center"
   },
-
-  textTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-
-  textContent: {
-    fontSize: 14,
-    fontWeight: "normal",
-  },
-
-  buttonText: {
-    fontWeight: "bold",
-    fontSize: 16,
-    color: "#fff",
-  },
-
-  containerItem: {
-    marginTop: 10,
+  card:{
+    shadowColor: '#00000021',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
     elevation: 5,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop:20,
+    backgroundColor:"white",
+    padding: 8,
+    flexDirection:'row',
+    borderRadius:30,
+  },
+  cardContent: {
+    marginLeft:30,
+    marginTop:10
+  },
+  followButton: {
+    marginTop:10,
+    marginLeft:95,
+    marginBottom: 8,
+    height:35,
+    width:100,
+    padding:10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius:30,
     backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "#efefef",
-    borderRadius: 8,
+    borderWidth:2,
+    borderColor:"#145c9e",
+  },
+  followButtonText:{
+    color: "#145c9e",
+    fontSize:12,
+    fontWeight: "bold"
+  },
+  textHeading:{
+    fontSize:20,
+    flex:1,
+    marginLeft: 30,
+    color:"#145c9e",
+    fontWeight:'bold'
   },
 
-  containerFlatlist: {
-    flex: 1,
-    padding: 16,
-    marginHorizontal: 16,
+  textContent:{
+    fontSize:16,
+    flex:1,
+    marginTop: 5,
+    color:"#122c34",
+    fontWeight:'bold'
   },
-
-  textStatusContainer: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+  
+  image:{
+    marginLeft: 50,
+    marginRight: 10,
+    width:20,
+    height:20,
+    
+  },
+  alignsameline:{
+    margin: 5,
+   flexDirection:'row', 
+   alignItems:'center',
+   alignSelf: "center"
+  },
+  textStatusContainer:{
+    color: "#dcdcdc",
+    fontSize:12,
+    alignSelf: "center",
+    
   },
 });

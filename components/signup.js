@@ -136,7 +136,7 @@ export default class Signup extends Component {
           maxLength={50}
         />
         <Button
-          color="#3f51b5"
+          color="#145c9e"
           title="Signup"
           onPress={() => this.registerUser()}
         />
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   loginText: {
-    color: "#3f51b5",
+    color: "#145c9e",
     marginTop: 25,
     textAlign: "center",
   },

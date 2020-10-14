@@ -89,7 +89,7 @@ export default class Login extends Component {
           secureTextEntry={true}
         />
         <Button
-          color="#3f51b5"
+          color="#145c9e"
           title="Sign in"
           onPress={() => this.userLogin()}
         />
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   loginText: {
-    color: "#3f51b5",
+    color: "#145c9e",
     marginTop: 25,
     textAlign: "center",
   },
