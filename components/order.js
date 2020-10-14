@@ -252,48 +252,15 @@ export default class Order extends Component {
 
   render() {
     return (
-      <Container>
-        <View style={styles.container}>
-          <View style={styles.clothes}>
-            <Text style={styles.itemtext}>T-shirt</Text>
-            <InputSpinner
-              value={this.state.value}
-              onChange={(val) => this.updateInputVal(val, "Tshirt")}
-              colorLeft={"#62b1f6"}
-              colorRight={"#62b1f6"}
-              textColor={"#3f51b5"}
-              colorPress={"#3f51b5"}
-            />
-          </View>
-          <View style={styles.clothes}>
-            <Text style={styles.itemtext}>Shorts</Text>
-            <InputSpinner
-              value={this.state.value}
-              style={styles.spinner}
-              onChange={(val) => this.updateInputVal(val, "Shorts")}
-              colorLeft={"#62b1f6"}
-              colorRight={"#62b1f6"}
-              textColor={"#3f51b5"}
-              colorPress={"#3f51b5"}
-            />
-          </View>
-          <View style={styles.clothes}>
-            <Text style={styles.itemtext}>Jacket</Text>
-            <InputSpinner
-              value={this.state.value}
-              style={styles.spinner}
-              onChange={(val) => this.updateInputVal(val, "Jacket")}
-              colorLeft={"#62b1f6"}
-              colorRight={"#62b1f6"}
-              textColor={"#3f51b5"}
-              colorPress={"#3f51b5"}
-            />
-          </View>
-          <View>
+      <View style={styles.container}>
+        
+        <View style={styles.sertype}>
+          <Text style={styles.heading}>Select a Service Type</Text>         
+          <View style={styles.backgroundtype}>
             <Picker
               placeholder={"Selcet a service..."}
               selectedValue={this.state.Service}
-              style={{ height: 50, width: 150, left: 100 }}
+              style={styles.serpicker}
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({ Service: itemValue })
               }
@@ -302,60 +269,96 @@ export default class Order extends Component {
               <Picker.Item label="Iron only" value="Iron only" />
               <Picker.Item label="Wash&Iron" value="Wash&Iron" />
             </Picker>
-          </View>
-          <View style={styles.datetime}>
-            <Button
-              block
-              info
-              vertical
+         </View>
+        </View>
+        <View style={styles.clothes}>
+          
+          <Text style={styles.heading}>Select Your Clothes</Text>    
+          <View style={styles.backgroundclothes}>
+            <View style={styles.alignsameline}>
+            <Text style={styles.content}>T-Shirt          </Text>
+            <InputSpinner
+              value={this.state.value}    
+              onChange={(val) => this.updateInputVal(val, "Tshirt")}
+              colorLeft={"#4ea5d9"}
+              colorRight={"#4ea5d9"}
+              textColor={"#122c34"}
+              colorPress={"#44cfcb"}
+            /> 
+            </View>
+            
+            <View style={styles.alignsameline}>
+            <Text style={styles.content}>Shorts          </Text>
+            <InputSpinner
+              value={this.state.value}
+              
+              onChange={(val) => this.updateInputVal(val, "Shorts")}
+              colorLeft={"#4ea5d9"}
+              colorRight={"#4ea5d9"}
+              textColor={"#122c34"}
+              colorPress={"#44cfcb"}
+            />
+            </View>
+            <View style={styles.alignsameline}>
+            <Text style={styles.content}>Jacket          </Text>
+            <InputSpinner
+              value={this.state.value}
+              
+              onChange={(val) => this.updateInputVal(val, "Jacket")}
+              colorLeft={"#4ea5d9"}
+              colorRight={"#4ea5d9"}
+              textColor={"#122c34"}
+              colorPress={"#44cfcb"}
+            />
+            </View>
+            </View>
+        </View>
+
+
+        <View style={styles.datetime}>
+          <Text style={styles.heading}>Select Date/Time</Text>
+          
+          <TouchableHighlight
+              style={styles.submit}
               onPress={() => this.onPressButton()}
-              style={styles.Button}
-              title="Drop off"
-            >
-              <Text style={styles.buttonText}>DROP OFF</Text>
-            </Button>
-            <DateTimePickerModal
+              underlayColor='#145c9e'>
+              <Text style={styles.datetimeText}>Drop Off</Text>
+          </TouchableHighlight>
+               <DateTimePickerModal
               isVisible={this.state.visibility}
               onConfirm={this.handleConfirm}
               onCancel={this.onPressCancel}
               mode="datetime"
             />
-            <Text style={styles.itemtext}>{this.state.DropDateDisplay}</Text>
-          </View>
-          <View style={styles.datetime}>
-            <Button
-              block
-              info
-              vertical
+            <Text style={styles.alignsameline}>{this.state.DropDateDisplay}</Text>
+          
+            <TouchableHighlight
+              style={styles.submit}
               onPress={() => this.onPressButton2()}
-              style={styles.Button}
-              title="Pick up"
-            >
-              <Text style={styles.buttonText}>PICK UP</Text>
-            </Button>
-            <DateTimePickerModal
+              underlayColor='#145c9e'>
+              <Text style={styles.datetimeText}>Pick Up</Text>
+          </TouchableHighlight>
+          <DateTimePickerModal
               isVisible={this.state.visibility2}
               onConfirm={this.handleConfirm2}
               onCancel={this.onPressCancel2}
               mode="datetime"
             />
-            <Text style={styles.itemtext}>{this.state.PickDateDisplay}</Text>
-          </View>
-          <View style={styles.orderButton}>
-            <Button
-              block
-              primary
-              style={styles.Button}
-              title="Drop off"
-              vertical
+            <Text style={styles.alignsameline}>{this.state.PickDateDisplay}</Text>
+
+            <TouchableHighlight
+              style={styles.submitcolor}
               onPress={() => this.functionCombined()}
-            >
-              <Text style={styles.buttonText}>CONFIRM</Text>
-            </Button>
-          </View>
+              underlayColor='#054a91'>
+              <Text style={styles.submitText}>Submit</Text>
+          </TouchableHighlight>
         </View>
-        <Footer>
-          <FooterTab>
+
+        
+
+
+        <Footer style={styles.footer}>
+          <FooterTab style={{ backgroundColor: "#145c9e" }}>
             <Button vertical onPress={() => this.GoHome()}>
               <Icon name="home" />
               <Text>Home</Text>
@@ -378,55 +381,111 @@ export default class Order extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </Container>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 10,
+    flex: 1,   
   },
-
-  itemtext: {
-    fontWeight: "bold",
-    fontSize: 16,
-    marginTop: 12,
-    color: "#000",
-    textAlign: "center",
-    color: "#3f51b5",
-  },
-
-  buttonText: {
-    fontWeight: "bold",
-    fontSize: 16,
-
-    color: "#fff",
-  },
-
-  orderButton: {
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    marginVertical: 25,
-    marginHorizontal: 28,
-  },
-
+ sertype: {
+    backgroundColor:"#ffffff",
+    flex: 0.8, 
+   
+ },
   clothes: {
-    backgroundColor: "#fff",
-    padding: 6,
-    marginVertical: 6,
-    marginHorizontal: 18,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    borderRadius: 15,
+    backgroundColor: "#ffffff",
+    flex: 2,   
   },
   datetime: {
-    backgroundColor: "#fff",
-    padding: 12,
-    marginVertical: 6,
-    marginHorizontal: 18,
-    flexDirection: "column",
-    borderRadius: 15,
+    backgroundColor: "#ffffff",
+    flex: 2,
+   
   },
+  heading: {
+    fontSize: 17,
+    marginBottom: 10,
+    marginTop: 10,
+    marginLeft: 42,
+    color: "#122c34",
+    fontWeight: "bold"
+  },
+  content:{
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#122c34"
+  },
+   serpicker: {
+    marginTop: 3,
+    height: 25, width: 150,
+    alignSelf: "center",
+    
+   },
+   
+   alignsameline:{
+     margin: 5,
+    flexDirection:'row', 
+    alignItems:'center',
+    alignSelf: "center"
+   },
+   backgroundclothes: {
+      backgroundColor:'#c2ebff',
+      width:"80%",
+      alignSelf: "center",
+      borderRadius: 10,
+      
+   },
+   backgroundtype: {
+    backgroundColor:'#c2ebff',
+    width:"40%",
+    alignSelf: "center",
+    borderRadius: 10,
+    marginTop:10,
+   
+ },
+ submit:{
+  marginRight:40,
+  marginLeft:40,
+  marginTop:10,
+  marginBottom: 3,
+  paddingTop:4,
+  paddingBottom:4,
+  backgroundColor:'#4ea5d9',
+  borderRadius:5,
+  width: "40%",
+  alignSelf: "center",
+  
+
+},
+datetimeText:{
+  color:'#fff',
+  textAlign:'center',
+  overflow: 'hidden',
+  fontSize: 12,
+  
+},
+
+submitText:{
+    color:'#fff',
+    textAlign:'center',
+    overflow: 'hidden',
+    fontSize: 14,
+    fontWeight: "bold"
+},
+
+submitcolor: {
+  marginRight:40,
+  marginLeft:40,
+  marginTop:10,
+  marginBottom: 3,
+  paddingTop:5,
+  paddingBottom:5,
+  backgroundColor:'#145c9e',
+  borderRadius:5,
+  width: "40%",
+  alignSelf: "center"
+}
+
 });
