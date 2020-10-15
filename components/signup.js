@@ -154,14 +154,12 @@ export default class Signup extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
-    flexDirection: "column",
+    backgroundColor:"#ffffff",  
     justifyContent: "center",
-    padding: 35,
-    backgroundColor: "#fff",
+    alignItems: "center"
   },
   inputStyle: {
-    width: "100%",
+    width: "80%",
     marginBottom: 15,
     paddingBottom: 15,
     alignSelf: "center",

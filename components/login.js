@@ -7,6 +7,7 @@ import {
   Button,
   Alert,
   ActivityIndicator,
+  Image
 } from "react-native";
 import firebase from "../database/firebase";
 
@@ -74,6 +75,7 @@ export default class Login extends Component {
     }
     return (
       <View style={styles.container}>
+        <Image style={styles.image} source={require("../src/img/logo.png")}/>
         <TextInput
           style={styles.inputStyle}
           placeholder="Email"
@@ -108,14 +110,12 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: "flex",
-    flexDirection: "column",
+    backgroundColor:"#ffffff",  
     justifyContent: "center",
-    padding: 35,
-    backgroundColor: "#fff",
+    alignItems: "center"
   },
   inputStyle: {
-    width: "100%",
+    width: "80  %",
     marginBottom: 15,
     paddingBottom: 15,
     alignSelf: "center",
@@ -136,5 +136,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#fff",
+  },
+
+  image:{
+    marginBottom: 20,
+    resizeMode: "contain",
+    width: 200,
+    height: 200,
+    alignSelf: "center"
+    
   },
 });

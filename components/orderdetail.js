@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Alert, TextInput } from "react-native";
+import { StyleSheet, View, Text, Alert, TextInput, Card, TouchableOpacity } from "react-native";
 import firebase from "../database/firebase";
-import { Container, Footer, FooterTab, Button, Icon } from "native-base";
+import {Footer, FooterTab, Button, Icon, Container } from "native-base";
 import { Rating, AirbnbRating } from "react-native-ratings";
 import Overlay from "react-native-modal-overlay";
 
@@ -295,155 +295,99 @@ export default class OrderDetail extends Component {
   }
   render() {
     return (
-      <Container>
-        {/*Detail After Matching*/}
+
+      <Container style={{backgroundColor:"#ebf0f7"}}>
         {this.state.orderstatus2 != 0 ? (
           <View style={styles.container}>
             {this.state.selectstatus != null ? (
-              <View style={styles.container}>
-                <View style={styles.detail}>
-                  <Text style={styles.textTitle}>
-                    User Name: {"  "}{" "}
-                    <Text style={styles.textContent}>
-                      {this.state.displayName}
-                    </Text>
-                  </Text>
-                  <Text style={styles.textTitle}>Clothes</Text>
-                  <Text style={styles.textContent}>
-                    Jacket x{this.state.Jacket}
-                  </Text>
-                  <Text style={styles.textContent}>
-                    T-Shirt x{this.state.Tshirt}
-                  </Text>
-                  <Text style={styles.textContent}>
-                    Shorts x{this.state.Shorts}
-                  </Text>
-                  <Text style={styles.textTitle}>Service Type</Text>
-                  <Text style={styles.textContent}>{this.state.Service}</Text>
-                  <Text style={styles.textTitle}>Drop Time: </Text>
-                  <Text style={styles.textContent}>
-                    {this.state.orderDropdatetime}
-                  </Text>
-                  <Text style={styles.textTitle}>Pick Time: </Text>
-                  <Text style={styles.textContent}>
-                    {this.state.orderPickdatetime}
-                  </Text>
-                  <Text style={styles.textTitle}>
-                    Address :{" "}
-                    <Text style={styles.textContent}>{this.state.address}</Text>
-                  </Text>
-
-                  {/* this order not already match */}
+            <View style={styles.card}  >
+              <View style={styles.cardContent}>
+              <View style={styles.statusSuccessPos}>
+                  <Text style={styles.statusSuccessText}>This order is matching with {this.state.laundry} </Text>
+                  <Text style={styles.statusSuccessText}>Send the clothes at {this.state.Laddress}</Text>
+                  <Text style={styles.statusSuccessText}>Amount {this.state.bid} baht</Text>                  
                 </View>
+              <Text>User Name</Text>  
+              <Text style={styles.textContent}>{this.state.displayName}</Text>  
+              <Text>Your Clothes</Text>                        
+              <Text style={styles.textContent}>Jacket x{this.state.Jacket}</Text>                                                                     
+              <Text style={styles.textContent}>T-Shirt x{this.state.Tshirt}</Text>                                                                            
+              <Text style={styles.textContent}>Shorts x{this.state.Shorts}</Text>
+              <Text>Service Type</Text> 
+              <Text style={styles.textContent}>{this.state.Service}</Text>
+              <Text>Drop Time</Text> 
+              <Text style={styles.textContent}>{this.state.orderDropdatetime}</Text>
+              <Text>Pick Time</Text> 
+              <Text style={styles.textContent}>{this.state.orderPickdatetime}</Text>
+              <Text>Address</Text> 
+              <Text style={styles.textContent}>{this.state.address}</Text>  
+              <TouchableOpacity                          
+                          style={styles.followButton} 
+                          onPress={() => this.finishOrder()}>
+                              <Text style={styles.followButtonText}>Finished Order</Text>  
+              </TouchableOpacity>                                                           
               </View>
+            </View>
             ) : null}
+            
+            
+            
             {/*Detail before Matching*/}
             {this.state.selectstatus == null ? (
-              <View style={styles.container}>
-                <View style={styles.detail}>
-                  <Text style={styles.textTitle}>
-                    User Name: {"  "}{" "}
-                    <Text style={styles.textContent}>
-                      {this.state.displayName}
-                    </Text>
-                  </Text>
-                  <Text style={styles.textTitle}>Clothes</Text>
-                  <Text style={styles.textContent}>
-                    Jacket x{this.state.Jacket2}
-                  </Text>
-                  <Text style={styles.textContent}>
-                    T-Shirt x{this.state.Tshirt2}
-                  </Text>
-                  <Text style={styles.textContent}>
-                    Shorts x{this.state.Shorts2}
-                  </Text>
-                  <Text style={styles.textTitle}>Service Type</Text>
-                  <Text style={styles.textContent}>{this.state.Service2}</Text>
-                  <Text style={styles.textTitle}>Drop Time: </Text>
-                  <Text style={styles.textContent}>
-                    {this.state.orderDropdatetime2}
-                  </Text>
-                  <Text style={styles.textTitle}>Pick Time: </Text>
-                  <Text style={styles.textContent}>
-                    {this.state.orderPickdatetime2}
-                  </Text>
-                  <Text style={styles.textTitle}>
-                    Address :{" "}
-                    <Text style={styles.textContent}>{this.state.address}</Text>
-                  </Text>
-
-                  {/* this order not already match */}
-                </View>
+            <View style={styles.card}>
+            
+              <View style={styles.cardContent}>
+              <Text>This order is not match</Text>
+              <Text>User Name</Text>  
+              <Text style={styles.textContent}>{this.state.displayName}</Text>  
+              <Text>Your Clothes</Text>                        
+              <Text style={styles.textContent}>Jacket x{this.state.Jacket2}</Text>                                                                     
+              <Text style={styles.textContent}>T-Shirt x{this.state.Tshirt2}</Text>                                                                            
+              <Text style={styles.textContent}>Shorts x{this.state.Shorts2}</Text>
+              <Text>Service Type</Text> 
+              <Text style={styles.textContent}>{this.state.Service2}</Text>
+              <Text>Drop Time</Text> 
+              <Text style={styles.textContent}>{this.state.orderDropdatetime2}</Text>
+              <Text>Pick Time</Text> 
+              <Text style={styles.textContent}>{this.state.orderPickdatetime2}</Text>
+              <Text>Address</Text> 
+              <Text style={styles.textContent}>{this.state.address}</Text>                                                                          
+               <View>
+              <TouchableOpacity 
+                          style={styles.followButton} 
+                          onPress={() => this.removeOrder()}>
+                              <Text style={styles.followButtonText}>Cancle Order</Text>  
+              </TouchableOpacity>
               </View>
+              </View>
+             
+            </View>
+            
+            
             ) : null}
-            <View style={styles.container}>
-              {this.state.selectstatus != null ? (
-                <View style={styles.statusSuccessPos}>
-                  <Text style={styles.statusSuccessText}>
-                    This order is matching with {this.state.laundry}
-                    {"\n    "}
-                    Send the clothes at {this.state.Laddress}
-                    {"\n           "}
-                    Amount {this.state.bid} baht
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-            <View style={styles.container}>
-              {this.state.selectstatus != null ? (
-                <Button
-                  primary
-                  vertical
-                  style={{ marginTop: 250, padding: 10, alignSelf: "center" }}
-                  onPress={() => this.finishOrder()}
-                >
-                  <Text style={styles.buttonText}>Click for Finish</Text>
-                </Button>
-              ) : null}
-            </View>
-            <View style={styles.container}>
-              {this.state.selectstatus == null ? (
-                <View style={styles.statusAlertPos}>
-                  <Text style={styles.statusAlertText}>
-                    This order is not match
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-
-            <View style={styles.container}>
-              {this.state.selectstatus == null ? (
-                <Button
-                  primary
-                  vertical
-                  style={{ marginTop: 150, padding: 10, alignSelf: "center" }}
-                  onPress={() => this.removeOrder()}
-                >
-                  <Text style={styles.buttonText}>Cancel Order</Text>
-                </Button>
-              ) : null}
-            </View>
+                  
           </View>
+
         ) : null}
+        
         <View style={styles.container}>
-          {this.state.orderstatus2 == 0 ? (
-            <View style={styles.statusAlertPos}>
-              <Text style={styles.statusAlertText}>No Order Yet!</Text>
-            </View>
+          {this.state.orderstatus2 == 0 ? (          
+              <Text style={styles.statusAlertText}>No Order Yet!</Text>           
           ) : null}
         </View>
+        
         <Overlay
           visible={this.state.modalVisible}
           onClose={this.onClose}
           closeOnTouchOutside
           containerStyle={{
-            backgroundColor: "rgba(0, 0, 0, 0.60)",
+            backgroundColor: "rgba(0, 0, 0, 0.80)",
           }}
         >
           <View>
-            <Text>
-              You have finished the order! Plz rating for {this.state.laundry}
-            </Text>
+            <Text>You have finished the order! </Text>
+            <Text>Please rating for {this.state.laundry} </Text>
+           
 
             <AirbnbRating
               showRating
@@ -457,20 +401,27 @@ export default class OrderDetail extends Component {
               onChangeText={(val) => this.updateInputVal(val, "comment")}
               maxLength={50}
             />
-            <Button
-              vertical
-              onPress={() =>
-                this.FinFunc(
-                  this.state.Lrate,
-                  this.state.displayName,
-                  this.state.comment
-                )
-              }
-            >
-              <Text>OK</Text>
-            </Button>
+            <TouchableOpacity 
+                          style={styles.followButton} 
+                          onPress={() =>
+                            this.FinFunc(
+                              this.state.Lrate,
+                              this.state.displayName,
+                              this.state.comment
+                            )
+                          }>
+                              <Text style={styles.followButtonText}>Confirm</Text>  
+              </TouchableOpacity>
+            
+            
           </View>
         </Overlay>
+        
+
+
+
+
+
         <Footer>
           <FooterTab style={{ backgroundColor: "#145c9e" }}>
             <Button vertical onPress={() => this.GoHome()}>
@@ -491,16 +442,77 @@ export default class OrderDetail extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </Container>
+
+
+
+
+        
+        </Container>
+        
+      
     );
   }
 }
 
 const styles = StyleSheet.create({
+ 
   container: {
     flex: 1,
     marginTop: 10,
     flexDirection: "column",
+    
+    
+  },
+
+  card:{
+    shadowColor: '#00000021',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+    elevation: 5,
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop:20,
+    backgroundColor:"white",
+    padding: 8,
+    flexDirection:'row',
+    borderRadius:30,
+  },
+  cardContent: {
+    marginLeft:30,
+    marginTop:10
+  },
+
+  textContent:{
+    fontSize:14,
+    marginTop: 5,
+    color:"#122c34",
+    fontWeight:'bold'
+  },
+
+  followButton: {
+    marginTop:10,
+    marginLeft:95,
+    marginBottom: 8,
+    height:35,
+    width:100,
+    padding:10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius:30,
+    backgroundColor: "#ffffff",
+    borderWidth:1,
+    borderColor:  "#145c9e",
+
+  },
+  followButtonText:{
+    color: "#145c9e",
+    fontSize:12,
+    fontWeight: "bold"
   },
 
   textTitle: {
@@ -508,10 +520,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  textContent: {
-    fontSize: 14,
-    fontWeight: "normal",
-  },
+  
 
   buttonText: {
     fontWeight: "bold",
@@ -520,9 +529,10 @@ const styles = StyleSheet.create({
   },
 
   statusAlertText: {
+    alignSelf: "center",
+    marginTop: 275,
     fontSize: 14,
     fontWeight: "normal",
-    color: "#a91e0f",
   },
 
   statusSuccessText: {
@@ -548,17 +558,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffe3e1",
   },
 
-  statusSuccessPos: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 240,
-    padding: 10,
-    backgroundColor: "#eaffd7",
-  },
-}); /*
-        <View style={styles.NextButton}>
-          <Button vertical onPress={this.onButtonPressed.bind(this)}>
-            <Icon name="send" />
-            <Text>Order!</Text>
-          </Button>
-        </View>*/
+  
+}); 

@@ -238,6 +238,7 @@ export default class UserOrder extends Component {
                          
                           <View style={styles.card}  >
                           <View style={styles.cardContent}>
+                          
                           <Text style={styles.textHeading}>{item.Laundry}</Text>
                           <View style={styles.alignsameline}>
                           <Image style={styles.image} source={require("../src/img/cash.png")}/><Text style={styles.textContent}>{item.Bidamount} Baht</Text>
@@ -271,37 +272,30 @@ export default class UserOrder extends Component {
                             }}
                           >
 
-                            <Text style={styles.textTitle}>
+                            <Text>
                               Laundry Name:{" "}
-                              <Text style={styles.textContent}>
+                              <Text>
                                 {this.state.Lname}
                               </Text>
                             </Text>
-                            <Text style={styles.textTitle}>
+                            <Text>
                               Bid Amount:{" "}
-                              <Text style={styles.textContent}>
+                              <Text>
                                 {this.state.bid}
                               </Text>
                             </Text>
 
-                            <Button
-                              title="Select"
-                              primary
-                              style={{
-                                marginTop: 10,
-                                padding: 5,
-                                alignSelf: "center",
-                              }}
-                              onPress={() =>
-                                this.setorder(
-                                  this.state.uid,
-                                  this.state.Lname,
-                                  this.state.Lkey
-                                )
-                              }
-                            >
-                              <Text style={styles.buttonText}>Select</Text>
-                            </Button>
+                            <TouchableOpacity 
+                          style={styles.followButton} 
+                          onPress={() =>
+                            this.setorder(
+                              this.state.uid,
+                              this.state.Lname,
+                              this.state.Lkey
+                            )
+                          }>
+                              <Text style={styles.followButtonText}>Select</Text>  
+              </TouchableOpacity>
                           </Overlay>
                         </View>
                       );
@@ -391,12 +385,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius:30,
-    backgroundColor: "white",
-    borderWidth:2,
-    borderColor:"#145c9e",
+    backgroundColor: "#145c9e",
+
   },
   followButtonText:{
-    color: "#145c9e",
+    color: "#ffffff",
     fontSize:12,
     fontWeight: "bold"
   },
