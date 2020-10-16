@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Footer, FooterTab, Button, Icon } from "native-base";
-import { StyleSheet, View, ScrollView, Image, Text, Alert, TouchableHighlight } from "react-native";
+import { StyleSheet, View, ScrollView, Image, Text, Alert, TouchableHighlight ,TextInput} from "react-native";
 import InputSpinner from "react-native-input-spinner";
 import firebase from "../database/firebase";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -322,7 +322,7 @@ export default class Order extends Component {
               style={styles.submit}
               onPress={() => this.onPressButton()}
               underlayColor='#145c9e'>
-              <Text style={styles.datetimeText}>Drop Off</Text>
+              <Text style={styles.datetimeText}>Click to select Drop Off date/time</Text>
           </TouchableHighlight>
                <DateTimePickerModal
               isVisible={this.state.visibility}
@@ -330,13 +330,13 @@ export default class Order extends Component {
               onCancel={this.onPressCancel}
               mode="datetime"
             />
-            <Text style={styles.alignsameline}>{this.state.DropDateDisplay}</Text>
+            <Text style={styles.result}>{this.state.DropDateDisplay}</Text>
           
             <TouchableHighlight
               style={styles.submit}
               onPress={() => this.onPressButton2()}
               underlayColor='#145c9e'>
-              <Text style={styles.datetimeText}>Pick Up</Text>
+              <Text style={styles.datetimeText}>Click to select Pick Up date/time</Text>
           </TouchableHighlight>
           <DateTimePickerModal
               isVisible={this.state.visibility2}
@@ -344,7 +344,7 @@ export default class Order extends Component {
               onCancel={this.onPressCancel2}
               mode="datetime"
             />
-            <Text style={styles.alignsameline}>{this.state.PickDateDisplay}</Text>
+            <Text style={styles.result}>{this.state.PickDateDisplay}</Text>
 
             <TouchableHighlight
               style={styles.submitcolor}
@@ -450,16 +450,27 @@ const styles = StyleSheet.create({
   paddingBottom:4,
   backgroundColor:'#4ea5d9',
   borderRadius:5,
-  width: "40%",
+  width: "70%",
   alignSelf: "center",
   
+
+},
+result:{
+
+  paddingTop:4,
+  paddingBottom:4,
+  backgroundColor:'#efefef',
+  borderRadius:5,
+  width: "70%",
+  alignSelf: "center",
+  textAlign: "center"
 
 },
 datetimeText:{
   color:'#fff',
   textAlign:'center',
   overflow: 'hidden',
-  fontSize: 12,
+  fontSize: 14,
   
 },
 

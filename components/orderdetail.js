@@ -362,7 +362,7 @@ export default class OrderDetail extends Component {
               <TouchableOpacity 
                           style={styles.followButton} 
                           onPress={() => this.removeOrder()}>
-                              <Text style={styles.followButtonText}>Cancle Order</Text>  
+                              <Text style={styles.followButtonText}>Cancel Order</Text>  
               </TouchableOpacity>
               </View>
               </View>
