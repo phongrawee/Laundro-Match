@@ -63,7 +63,7 @@ function MyStack() {
         component={Landing3}
         options={{ title: "LaundroMatch" }}
       />
-      <Stack.Screen name="Feed" component={Feed} options={{ title: "Feed" }} />
+      <Stack.Screen name="Feed" component={Feed} options={{ title: "Laundry Feed" }} />
       <Stack.Screen
         name="Order"
         component={Order}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Alert, TextInput, Card, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, Alert, TextInput, Card, TouchableOpacity, Image } from "react-native";
 import firebase from "../database/firebase";
 import {Footer, FooterTab, Button, Icon, Container } from "native-base";
 import { Rating, AirbnbRating } from "react-native-ratings";
@@ -302,24 +302,28 @@ export default class OrderDetail extends Component {
             {this.state.selectstatus != null ? (
             <View style={styles.card}  >
               <View style={styles.cardContent}>
-              <View style={styles.statusSuccessPos}>
-                  <Text style={styles.statusSuccessText}>This order is matching with {this.state.laundry} </Text>
-                  <Text style={styles.statusSuccessText}>Send the clothes at {this.state.Laddress}</Text>
-                  <Text style={styles.statusSuccessText}>Amount {this.state.bid} baht</Text>                  
+              <View style={styles.alignsameline}>
+                <Image style={styles.image} source={require("../src/img/green.png")}/><Text style={{color: "#429846", marginBottom:5, fontWeight: "bold"}}>Order is Matched</Text>
+              </View>                    
+              <View>
+                  <Text style={styles.statusSuccessText}>- Matching with <Text style={{fontSize: 12, fontWeight: "bold"}}>{this.state.laundry}</Text></Text>
+                  <Text style={styles.statusSuccessText}>- Send your clothes at <Text style={{fontSize: 12, fontWeight: "bold"}}>{this.state.Laddress}</Text></Text>
+                  <Text style={{marginLeft: 40, marginBottom: 4, fontSize: 12, fontWeight: "normal",
+                      color: "#4caf50",}}>- Bid amount <Text style={{fontSize: 12, fontWeight: "bold"}}>{this.state.bid} baht</Text> </Text>                  
                 </View>
-              <Text>User Name</Text>  
+              <Text style={styles.textsub}>User Name</Text>  
               <Text style={styles.textContent}>{this.state.displayName}</Text>  
-              <Text>Your Clothes</Text>                        
+              <Text style={styles.textsub}>Your Clothes</Text>                        
               <Text style={styles.textContent}>Jacket x{this.state.Jacket}</Text>                                                                     
               <Text style={styles.textContent}>T-Shirt x{this.state.Tshirt}</Text>                                                                            
               <Text style={styles.textContent}>Shorts x{this.state.Shorts}</Text>
-              <Text>Service Type</Text> 
+              <Text style={styles.textsub}>Service Type</Text> 
               <Text style={styles.textContent}>{this.state.Service}</Text>
-              <Text>Drop Time</Text> 
+              <Text style={styles.textsub}>Drop Time</Text> 
               <Text style={styles.textContent}>{this.state.orderDropdatetime}</Text>
-              <Text>Pick Time</Text> 
+              <Text style={styles.textsub}>Pick Time</Text> 
               <Text style={styles.textContent}>{this.state.orderPickdatetime}</Text>
-              <Text>Address</Text> 
+              <Text style={styles.textsub}>Address</Text> 
               <Text style={styles.textContent}>{this.state.address}</Text>  
               <TouchableOpacity                          
                           style={styles.followButton} 
@@ -337,20 +341,22 @@ export default class OrderDetail extends Component {
             <View style={styles.card}>
             
               <View style={styles.cardContent}>
-              <Text>This order is not match</Text>
-              <Text>User Name</Text>  
-              <Text style={styles.textContent}>{this.state.displayName}</Text>  
-              <Text>Your Clothes</Text>                        
+              <View style={styles.alignsameline}>
+                <Image style={styles.image} source={require("../src/img/red.png")}/><Text style={{color: "#e21b1b"}}>Order Not Matching</Text>
+              </View>                              
+              <Text style={styles.textsub}>User Name</Text>  
+              <Text style={styles.textContent}>{this.state.displayName}</Text>               
+              <Text style={styles.textsub}>Your Clothes</Text>                        
               <Text style={styles.textContent}>Jacket x{this.state.Jacket2}</Text>                                                                     
               <Text style={styles.textContent}>T-Shirt x{this.state.Tshirt2}</Text>                                                                            
-              <Text style={styles.textContent}>Shorts x{this.state.Shorts2}</Text>
-              <Text>Service Type</Text> 
-              <Text style={styles.textContent}>{this.state.Service2}</Text>
-              <Text>Drop Time</Text> 
+              <Text style={styles.textContent}>Shorts x{this.state.Shorts2}</Text>              
+              <Text style={styles.textsub}>Service Type</Text> 
+              <Text style={styles.textContent}>{this.state.Service2}</Text>              
+              <Text style={styles.textsub}>Drop Time</Text> 
               <Text style={styles.textContent}>{this.state.orderDropdatetime2}</Text>
-              <Text>Pick Time</Text> 
+              <Text style={styles.textsub}>Pick Time</Text> 
               <Text style={styles.textContent}>{this.state.orderPickdatetime2}</Text>
-              <Text>Address</Text> 
+              <Text style={styles.textsub}>Address</Text> 
               <Text style={styles.textContent}>{this.state.address}</Text>                                                                          
                <View>
               <TouchableOpacity 
@@ -372,7 +378,7 @@ export default class OrderDetail extends Component {
         
         <View style={styles.container}>
           {this.state.orderstatus2 == 0 ? (          
-              <Text style={styles.statusAlertText}>No Order Yet!</Text>           
+              <Text style={{alignSelf :"center", marginTop: 275}}>No Order Yet!</Text>           
           ) : null}
         </View>
         
@@ -385,9 +391,10 @@ export default class OrderDetail extends Component {
           }}
         >
           <View>
-            <Text>You have finished the order! </Text>
-            <Text>Please rating for {this.state.laundry} </Text>
-           
+          
+            <Text style={styles.textTitle}>You have finished the order! </Text>
+            <Text style={styles.textTitle}>Please rating for <Text style={{fontSize: 16, fontWeight: "bold"}}>{this.state.laundry}</Text> </Text>
+          
 
             <AirbnbRating
               showRating
@@ -402,7 +409,8 @@ export default class OrderDetail extends Component {
               maxLength={50}
             />
             <TouchableOpacity 
-                          style={styles.followButton} 
+                          style={styles.followButton2} 
+                          
                           onPress={() =>
                             this.FinFunc(
                               this.state.Lrate,
@@ -460,8 +468,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 10,
     flexDirection: "column",
-    
-    
   },
 
   card:{
@@ -486,13 +492,25 @@ const styles = StyleSheet.create({
     marginTop:10
   },
 
+  image:{
+    marginRight: 10,
+    width:10,
+    height:10,
+  },
+  alignsameline:{
+   flexDirection:'row', 
+   alignItems:'center',  
+  },
+
   textContent:{
-    fontSize:14,
-    marginTop: 5,
+    fontSize:16,
     color:"#122c34",
     fontWeight:'bold'
   },
 
+  textsub:{
+    marginTop: 10
+  } , 
   followButton: {
     marginTop:10,
     marginLeft:95,
@@ -504,59 +522,48 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius:30,
-    backgroundColor: "#ffffff",
-    borderWidth:1,
-    borderColor:  "#145c9e",
+    borderRadius:30,
+    backgroundColor: "#145c9e",
 
   },
   followButtonText:{
-    color: "#145c9e",
+    color: "#ffffff",
     fontSize:12,
     fontWeight: "bold"
   },
 
   textTitle: {
     fontSize: 16,
-    fontWeight: "bold",
+    alignSelf: "center"
+  },
+  followButton2: {
+    marginTop:10,
+    marginLeft:65,
+    marginBottom: 8,
+    height:35,
+    width:100,
+    padding:10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius:30,
+    borderRadius:30,
+    backgroundColor: "#145c9e",
+
+  },
+  
+
+  statusSuccessText: {
+    marginLeft: 40,
+    marginBottom:2,
+    fontSize: 12,
+    fontWeight: "normal",
+    color: "#4caf50",
+    
   },
 
   
 
-  buttonText: {
-    fontWeight: "bold",
-    fontSize: 16,
-    color: "#fff",
-  },
-
-  statusAlertText: {
-    alignSelf: "center",
-    marginTop: 275,
-    fontSize: 14,
-    fontWeight: "normal",
-  },
-
-  statusSuccessText: {
-    fontSize: 14,
-    fontWeight: "normal",
-    color: "#8da835",
-  },
-
-  detail: {
-    backgroundColor: "#EFEFEF",
-    padding: 12,
-    marginVertical: 6,
-    marginHorizontal: 16,
-    flexDirection: "column",
-    borderRadius: 15,
-  },
-
-  statusAlertPos: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 140,
-    padding: 10,
-    backgroundColor: "#ffe3e1",
-  },
-
+  
   
 }); 

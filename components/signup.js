@@ -154,7 +154,7 @@ export default class Signup extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#ffffff",  
+    backgroundColor:"#ebf0f7",  
     justifyContent: "center",
     alignItems: "center"
   },
