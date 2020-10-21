@@ -332,7 +332,6 @@ export default class Feed extends Component {
               <Icon name="home" />
               <Text>Home</Text>
             </Button>
-
             <Button vertical onPress={() => this.signOut()}>
               <Icon name="log-out" />
               <Text>Logout</Text>

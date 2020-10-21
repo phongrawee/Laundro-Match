@@ -5,13 +5,12 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  Image
+  Image,
 } from "react-native";
 import firebase from "../database/firebase";
 import { Container, Footer, FooterTab, Button, Icon, Card } from "native-base";
 import Overlay from "react-native-modal-overlay";
 import { ceil } from "react-native-reanimated";
-
 
 export default class UserOrder extends Component {
   state = {
@@ -38,7 +37,7 @@ export default class UserOrder extends Component {
       orderPickdatetime: "",
       orderdate: "",
       address: "",
-      Service:"",
+      Service: "",
     };
   }
   signOut = () => {
@@ -76,8 +75,8 @@ export default class UserOrder extends Component {
             Laundry: child.val().Laundry,
             Bidamount: child.val().Bidamount,
             Rating: child.val().Rating,
-            CusNum:child.val().CusNum,
-            Location:child.val().Location,
+            CusNum: child.val().CusNum,
+            Location: child.val().Location,
           });
         });
         li.reverse();
@@ -111,7 +110,7 @@ export default class UserOrder extends Component {
         this.setState({ orderstatus: order });
         console.log("laundrystatus", order);
       });
-      firebase
+    firebase
       .database()
       .ref(`OrderDetail/${this.state.uid}/Jacket`)
       .once("value", (snapshot) => {
@@ -147,7 +146,7 @@ export default class UserOrder extends Component {
       .on("value", (snapshot) => {
         this.setState({ orderdate: snapshot.val() });
       });
-      firebase
+    firebase
       .database()
       .ref(`OrderDetail/${this.state.uid}/service`)
       .on("value", (snapshot) => {
@@ -191,28 +190,26 @@ export default class UserOrder extends Component {
           Laundryid: Laundryid,
           LaundryAddress: add,
           BidAmount: this.state.bid,
-          address: this.state.Laddress
+          address: this.state.Laddress,
         });
         this.setState({ selectstatus: true });
         this.setState({ modalVisible: false });
         firebase.database().ref("OrderDetail").child(this.state.uid).remove();
-
       });
-      var MatchDetail = firebase.database().ref("MatchOrderDetail");
-      var userid2 = MatchDetail.child(userid);
-      userid2
-        .set({
-          orderPickdatetime:this.state.orderPickdatetime,
-          orderDropdatetime:this.state.orderDropdatetime,
-          orderdate:this.state.orderdate,
-          email:this.state.email,
-          Tshirt:this.state.Tshirt,
-          Shorts:this.state.Shorts,
-          Jacket:this.state.Jacket,
-          address:this.state.address,
-          name:this.state.displayName,
-          service:this.state.Service,
-        })
+    var MatchDetail = firebase.database().ref("MatchOrderDetail");
+    var userid2 = MatchDetail.child(userid);
+    userid2.set({
+      orderPickdatetime: this.state.orderPickdatetime,
+      orderDropdatetime: this.state.orderDropdatetime,
+      orderdate: this.state.orderdate,
+      email: this.state.email,
+      Tshirt: this.state.Tshirt,
+      Shorts: this.state.Shorts,
+      Jacket: this.state.Jacket,
+      address: this.state.address,
+      name: this.state.displayName,
+      service: this.state.Service,
+    });
   }
 
   render() {
@@ -235,34 +232,55 @@ export default class UserOrder extends Component {
                     renderItem={({ item }) => {
                       return (
                         <View style={styles.container}>
-                         
-                          <View style={styles.card}  >
-                          <View style={styles.cardContent}>
-                          
-                          <Text style={styles.textHeading}>{item.Laundry}</Text>
-                          <View style={styles.alignsameline}>
-                          <Image style={styles.image} source={require("../src/img/cash.png")}/><Text style={styles.textContent}>{item.Bidamount} Baht</Text>
+                          <View style={styles.card}>
+                            <View style={styles.cardContent}>
+                              <Text style={styles.textHeading}>
+                                {item.Laundry}
+                              </Text>
+                              <View style={styles.alignsameline}>
+                                <Image
+                                  style={styles.image}
+                                  source={require("../src/img/cash.png")}
+                                />
+                                <Text style={styles.textContent}>
+                                  {item.Bidamount} Baht
+                                </Text>
+                              </View>
+                              <View style={styles.alignsameline}>
+                                <Image
+                                  style={styles.image}
+                                  source={require("../src/img/star.png")}
+                                />
+                                <Text style={styles.textContent}>
+                                  {item.Rating} ({item.CusNum})
+                                </Text>
+                              </View>
+                              <View style={styles.alignsameline}>
+                                <Image
+                                  style={styles.image}
+                                  source={require("../src/img/location.png")}
+                                />
+                                <Text style={styles.textContent}>
+                                  {item.Location}{" "}
+                                </Text>
+                              </View>
+                              <TouchableOpacity
+                                style={styles.followButton}
+                                onPress={() =>
+                                  this.selectlaundry(
+                                    item.Laundry,
+                                    item.Bidamount,
+                                    item.key
+                                  )
+                                }
+                              >
+                                <Text style={styles.followButtonText}>
+                                  Select
+                                </Text>
+                              </TouchableOpacity>
+                            </View>
                           </View>
-                          <View style={styles.alignsameline}>
-                          <Image style={styles.image} source={require("../src/img/star.png")}/><Text style={styles.textContent}>{item.Rating} ({item.CusNum})</Text>
-                          </View>  
-                          <View style={styles.alignsameline}>
-                          <Image style={styles.image} source={require("../src/img/location.png")}/><Text style={styles.textContent}>{item.Location} </Text>  
-                          </View>                                               
-                          <TouchableOpacity 
-                          style={styles.followButton} 
-                          onPress={() =>
-                            this.selectlaundry(
-                              item.Laundry,
-                              item.Bidamount,
-                              item.key
-                            )
-                          }>
-                              <Text style={styles.followButtonText}>Select</Text>  
-                          </TouchableOpacity>
-                          </View>
-                          </View>
-                     
+
                           <Overlay
                             visible={this.state.modalVisible}
                             onClose={this.onClose}
@@ -271,31 +289,27 @@ export default class UserOrder extends Component {
                               backgroundColor: "rgba(0, 0, 0, 0.80)",
                             }}
                           >
-
                             <Text>
-                              Laundry Name:{" "}
-                              <Text>
-                                {this.state.Lname}
-                              </Text>
+                              Laundry Name: <Text>{this.state.Lname}</Text>
                             </Text>
                             <Text>
-                              Bid Amount:{" "}
-                              <Text>
-                                {this.state.bid}
-                              </Text>
+                              Bid Amount: <Text>{this.state.bid}</Text>
                             </Text>
 
-                            <TouchableOpacity 
-                          style={styles.OverlayfollowButton} 
-                          onPress={() =>
-                            this.setorder(
-                              this.state.uid,
-                              this.state.Lname,
-                              this.state.Lkey
-                            )
-                          }>
-                              <Text style={styles.followButtonText}>Select</Text>  
-              </TouchableOpacity>
+                            <TouchableOpacity
+                              style={styles.OverlayfollowButton}
+                              onPress={() =>
+                                this.setorder(
+                                  this.state.uid,
+                                  this.state.Lname,
+                                  this.state.Lkey
+                                )
+                              }
+                            >
+                              <Text style={styles.followButtonText}>
+                                Select
+                              </Text>
+                            </TouchableOpacity>
                           </Overlay>
                         </View>
                       );
@@ -306,9 +320,9 @@ export default class UserOrder extends Component {
             ) : null}
             {this.state.bidstatus == null ? (
               <View style={styles.container}>
-              <View style={styles.textStatusContainer}>
-                <Text>No Laundry Bid yet</Text>
-              </View>
+                <View style={styles.textStatusContainer}>
+                  <Text>No Laundry Bid yet</Text>
+                </View>
               </View>
             ) : null}
           </View>
@@ -316,9 +330,9 @@ export default class UserOrder extends Component {
 
         {this.state.orderstatus == null ? (
           <View style={styles.container}>
-          <View style={styles.textStatusContainer}>
-            <Text>You are not have an order</Text>
-          </View>
+            <View style={styles.textStatusContainer}>
+              <Text>You are not have an order</Text>
+            </View>
           </View>
         ) : null}
 
@@ -350,11 +364,11 @@ export default class UserOrder extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:"#ebf0f7",  
-    justifyContent: "center"
+    backgroundColor: "#ebf0f7",
+    justifyContent: "center",
   },
-  card:{
-    shadowColor: '#00000021',
+  card: {
+    shadowColor: "#00000021",
     shadowOffset: {
       width: 0,
       height: 6,
@@ -364,79 +378,75 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginLeft: 20,
     marginRight: 20,
-    marginTop:20,
-    backgroundColor:"white",
+    marginTop: 20,
+    backgroundColor: "white",
     padding: 8,
-    flexDirection:'row',
-    borderRadius:30,
+    flexDirection: "row",
+    borderRadius: 30,
   },
   cardContent: {
-    marginLeft:30,
-    marginTop:10
+    marginLeft: 30,
+    marginTop: 10,
   },
   OverlayfollowButton: {
-    marginTop:15,
-    height:35,
-    width:100,
-    padding:15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius:30,
+    marginTop: 15,
+    height: 35,
+    width: 100,
+    padding: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30,
     backgroundColor: "#145c9e",
-
   },
   followButton: {
-    marginTop:10,
-    marginLeft:95,
+    marginTop: 10,
+    marginLeft: 95,
     marginBottom: 8,
-    height:35,
-    width:100,
-    padding:10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius:30,
+    height: 35,
+    width: 100,
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30,
     backgroundColor: "#145c9e",
-
   },
-  followButtonText:{
+  followButtonText: {
     color: "#ffffff",
-    fontSize:12,
-    fontWeight: "bold"
+    fontSize: 12,
+    fontWeight: "bold",
   },
-  textHeading:{
-    fontSize:20,
-    flex:1,
+  textHeading: {
+    fontSize: 20,
+    flex: 1,
     marginLeft: 30,
-    color:"#145c9e",
-    fontWeight:'bold'
+    color: "#145c9e",
+    fontWeight: "bold",
   },
 
-  textContent:{
-    fontSize:16,
-    flex:1,
+  textContent: {
+    fontSize: 16,
+    flex: 1,
     marginTop: 5,
-    color:"#122c34",
-    fontWeight:'bold'
+    color: "#122c34",
+    fontWeight: "bold",
   },
-  
-  image:{
+
+  image: {
     marginLeft: 50,
     marginRight: 10,
-    width:20,
-    height:20,
-    
+    width: 20,
+    height: 20,
   },
-  alignsameline:{
+  alignsameline: {
     margin: 5,
-   flexDirection:'row', 
-   alignItems:'center',
-   alignSelf: "center"
-  },
-  textStatusContainer:{
-    color: "#dcdcdc",
-    fontSize:12,
+    flexDirection: "row",
+    alignItems: "center",
     alignSelf: "center",
-    
+  },
+  textStatusContainer: {
+    color: "#dcdcdc",
+    fontSize: 12,
+    alignSelf: "center",
   },
 });
