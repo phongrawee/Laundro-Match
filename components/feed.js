@@ -121,7 +121,7 @@ export default class Feed extends Component {
         this.setState({ address: snapshot.val() });
       });
   }
-
+//test
   bidpress = () => {
     this.setState({ modalVisible: true });
   };
