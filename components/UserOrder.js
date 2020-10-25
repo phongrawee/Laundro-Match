@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     color: "#122c34",
-    fontWeight: "bold",
+    
   },
 
   image: {

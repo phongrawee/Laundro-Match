@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
   content: {
     fontSize: 14,
     fontWeight: "bold",
-    color: "#122c34",
+    
   },
   serpicker: {
     marginTop: 3,

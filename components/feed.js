@@ -28,7 +28,7 @@ export default class Feed extends Component {
       orderkey: "",
       average: "",
       num: "",
-      address: "",
+      address:"",
     };
   }
   updateInputVal = (val, prop) => {
@@ -114,7 +114,7 @@ export default class Feed extends Component {
         console.log("total", total);
         console.log("count", count);
       });
-    firebase
+      firebase
       .database()
       .ref(`Users/${this.state.uid}/address`)
       .on("value", (snapshot) => {
@@ -176,24 +176,25 @@ export default class Feed extends Component {
   }
   render() {
     return (
-      <Container>
+      <View style={styles.container}>
         <TouchableOpacity
           style={styles.containerItem}
           onPress={() => this.shoppress()}
         >
           <Text style={styles.textTitle}>Your Shop Infomation</Text>
         </TouchableOpacity>
+        
         <Overlay
           visible={this.state.shopVisible}
           onClose={this.onClose2}
           closeOnTouchOutside
-          containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.60)" }}
+          containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.80)" }}
         >
           <View>
-            <Text style={styles.textTitle}>
+            <Text style={styles.textHeading}>
               {this.state.displayName}'s Laundry Shop
             </Text>
-            <Text style={styles.textTitle}>
+            <Text style={styles.textHeading}>
               Average Rating : {this.state.average}
             </Text>
             <View style={styles.containerFlatlist}>
@@ -210,7 +211,7 @@ export default class Feed extends Component {
                           <Text style={styles.textContent}>{item.Name}</Text>
                         </Text>
                         <Text style={styles.textTitle}>
-                          Rating : {item.Rating}
+                        Rating : <Text style={styles.textContent}>{item.Rating}</Text>
                         </Text>
                         <Text style={styles.textTitle}>
                           Comment :
@@ -220,6 +221,7 @@ export default class Feed extends Component {
                           Date/Time :
                           <Text style={styles.textContent}>{item.time}</Text>
                         </Text>
+                        <Text style={styles.textContent}>_________________________________</Text>
                       </View>
                     </View>
                   );
@@ -229,6 +231,9 @@ export default class Feed extends Component {
           </View>
         </Overlay>
 
+
+
+
         <View style={styles.containerFlatlist}>
           <FlatList
             style={{ width: "100%" }}
@@ -237,17 +242,14 @@ export default class Feed extends Component {
             renderItem={({ item }) => {
               return (
                 <View>
-                  <TouchableOpacity
-                    style={styles.containerItem}
-                    onPress={() => this.setbid(item.name, item.key)}
-                  >
-                    <View style={styles.alignDetail}>
-                      <Text style={styles.textTitle}>
+                  <View style={styles.card}>
+                  <View style={styles.cardContent}>
+                      <Text style={styles.textsub}>
                         Username:{"  "}
                         <Text style={styles.textContent}>{item.name}</Text>
                       </Text>
 
-                      <Text style={styles.textTitle}>Amount of clothes</Text>
+                      <Text style={styles.textsub}>Amount of clothes</Text>
                       <Text style={styles.textContent}>
                         Jacket x{item.Jacket}
                       </Text>
@@ -257,40 +259,47 @@ export default class Feed extends Component {
                       <Text style={styles.textContent}>
                         Shorts x{item.Shorts}
                       </Text>
-                      <Text style={styles.textTitle}>Drop Time</Text>
+                      <Text style={styles.textsub}>Drop Time</Text>
                       <Text style={styles.textContent}>
                         {item.orderDropdatetime}
                       </Text>
-                      <Text style={styles.textTitle}>Pick Time</Text>
+                      <Text style={styles.textsub}>Pick Time</Text>
                       <Text style={styles.textContent}>
                         {item.orderPickdatetime}
                       </Text>
-                      <Text style={styles.textTitle}>
+                      <Text style={styles.textsub}>
                         Address: {"  "}
                         <Text style={styles.textContent}>{item.address}</Text>
                       </Text>
-                      <Text style={styles.textTitle}>
+                      <Text style={styles.textsub}>
                         Expire Time: {"  "}
                         <Text style={styles.textContent}>{item.expire}</Text>
                       </Text>
                     </View>
-                  </TouchableOpacity>
+                   
+                    <TouchableOpacity 
+                          style={styles.followButton} 
+                          onPress={() => this.setbid(item.name, item.key)}>
+                              <Text style={styles.followButtonText}>Select</Text>  
+                    </TouchableOpacity>
+                   
+                    </View>
+
 
                   <Overlay
                     visible={this.state.modalVisible}
                     onClose={this.onClose}
                     closeOnTouchOutside
-                    containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.60)" }}
+                    containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.80)" }}
                   >
-                    <Text style={styles.textTitle}>
+                    <Text style={styles.textsub}>
                       Customer Name:{"  "}
                       <Text style={styles.textContent}>
                         {this.state.ordername}
                       </Text>
                     </Text>
-                    <Text style={styles.textTitle}>Input Bid :</Text>
+                    <Text style={styles.textsub}>Input Bid :</Text>
                     <TextInput
-                      keyboardType="numeric"
                       style={{
                         backgroundColor: "#E0E0E0",
                         width: 50,
@@ -301,21 +310,18 @@ export default class Feed extends Component {
                       onChangeText={(val) => this.updateInputVal(val, "bid")}
                     ></TextInput>
                     <Text style={styles.textTitle}>Baht</Text>
-                    <Button
-                      title="Bid"
-                      block
-                      primary
-                      style={{ marginTop: 10, padding: 5, alignSelf: "center" }}
-                      onPress={() =>
-                        this.savebid(
-                          this.state.displayName,
-                          this.state.bid,
-                          this.state.orderkey
-                        )
-                      }
-                    >
-                      <Text style={styles.buttonText}>Place a Bid</Text>
-                    </Button>
+
+                    <TouchableOpacity 
+                          style={styles.followButton2} 
+                          onPress={() =>
+                            this.savebid(
+                              this.state.displayName,
+                              this.state.bid,
+                              this.state.orderkey
+                            )
+                          }>
+                              <Text style={styles.followButtonText}>Bid</Text>  
+                    </TouchableOpacity>
                   </Overlay>
                 </View>
               );
@@ -323,11 +329,7 @@ export default class Feed extends Component {
           />
         </View>
         <Footer>
-          <FooterTab
-            style={{ backgroundColor: "#145c9e" }}
-            FooterTab
-            style={{ backgroundColor: "#145c9e" }}
-          >
+          <FooterTab>
             <Button vertical onPress={() => this.GoHome()}>
               <Icon name="home" />
               <Text>Home</Text>
@@ -338,12 +340,112 @@ export default class Feed extends Component {
             </Button>
           </FooterTab>
         </Footer>
-      </Container>
+        </View>
     );
   }
 }
 //{item.name} {item.email}{item.address} {item.Jacket}{item.Shorts}{item.TShirt}{item.orderdate}{item.orderDropdatetime}{item.orderPickdatetime}
 const styles = StyleSheet.create({
+  
+  container: {
+    flex: 1,
+    backgroundColor:"#ebf0f7",  
+    justifyContent: "center"
+  },
+
+  card:{
+    shadowColor: '#00000021',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+    elevation: 5,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop:20,
+    backgroundColor:"white",
+    padding: 8,
+    flexDirection:'column',
+    borderRadius:12,
+  },
+  cardContent: {
+    marginLeft:30,
+    marginTop:10
+  },
+
+  followButton: {
+    marginTop:15  ,
+    marginLeft:110,
+    marginBottom: 8,
+    height:35,
+    width:100,
+    padding:10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius:30,
+    backgroundColor: "#145c9e",
+
+  },
+  followButtonText:{
+    color: "#ffffff",
+    fontSize:12,
+    fontWeight: "bold"
+  },
+
+  followButton2: {
+    marginTop:15  ,
+    marginBottom: 8,
+    height:35,
+    width:100,
+    padding:10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius:30,
+    backgroundColor: "#145c9e",
+
+  },
+
+  textsub:{
+    fontSize: 16
+  } , 
+
+  textContent:{
+    fontSize:16,
+    flex:1,
+    marginTop: 5,
+    color:"#122c34",
+    
+  },
+
+  textHeading:{
+    fontSize:16,  
+    color:"#122c34",
+    fontWeight: "bold",
+    
+  },
+
+  image:{
+    marginLeft: 50,
+    marginRight: 10,
+    width:20,
+    height:20,
+    
+  },
+  alignsameline:{
+    margin: 5,
+   flexDirection:'row', 
+   alignItems:'center',
+   alignSelf: "center"
+  },
+
+
+
+
+
   containerFlatlist: {
     flex: 1,
     padding: 8,
@@ -365,15 +467,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignSelf: "center",
   },
-
-  textTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  textContent: {
-    fontSize: 14,
-    fontWeight: "normal",
-  },
+ 
   buttonText: {
     fontWeight: "bold",
     fontSize: 16,

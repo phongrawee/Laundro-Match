@@ -505,7 +505,7 @@ const styles = StyleSheet.create({
   textContent:{
     fontSize:16,
     color:"#122c34",
-    fontWeight:'bold'
+    
   },
 
   textsub:{
