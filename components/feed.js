@@ -271,9 +271,9 @@ export default class Feed extends Component {
                         Address: {"  "}
                         <Text style={styles.textContent}>{item.address}</Text>
                       </Text>
-                      <Text style={styles.textsub}>
-                        Expire Time: {"  "}
-                        <Text style={styles.textContent}>{item.expire}</Text>
+                      <Text style={{color: "#e21b1b"}}>
+                        Expired Time: {"  "}
+                        <Text style={{color: "#e21b1b"}}>{item.expire}</Text>
                       </Text>
                     </View>
                    
